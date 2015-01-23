@@ -1,0 +1,15 @@
+tar zxvf varnish-*.tar.gz
+cd varnish-*
+./configure --prefix=/usr/local/varnish
+make && make install
+
+默认的配置文件在/usr/local/varnish/etc/varnish/default.vcl
+在此目录下建一个my-conf.vcl
+
+开启
+./varnishd -f /usr/local/varnish/etc/varnish/my-config.vcl -a 0.0.0.0:80 -s malloc,256m -w 1024,51200,10 -t 3600 -T 0.0.0.0:2000
+
+./varnishd -f /usr/local/varnish/etc/varnish/my-config.vcl -a 0.0.0.0:80 -s file,/var/varnish_cache,1g -w 1024,51200,10 -t 3600 -T 0.0.0.0:2000
+
+关闭
+pkill varnishd

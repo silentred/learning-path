@@ -1,0 +1,29 @@
+如果用comper update的时候出现了一下错误
+
+                                                                                              
+  [Composer\Downloader\TransportException]                                                      
+  The "https://packagist.org/packages.json" file could not be downloaded: SSL operation failed  
+   with code 1. OpenSSL Error messages:                                                         
+  error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed             
+  Failed to enable crypto                                                                       
+  failed to open stream: operation failed                                                       
+                                                 
+                                                 
+这说明是openssl的证书没有找到。
+
+用 php -r "var_dump(openssl_get_cert_locations());"
+看一下php找的路径是哪里
+
+系统的默认路径是在/etc/ssl/下面
+
+会不一致可能是因为我重新编译了openssl，php编译安装时候使用了我编译的openssl。
+
+解决：
+到php的路径下，把/etc/ssl/cert里面的文件拷贝到对应目录下
+在php搜索的路径下下载 sudo wget http://curl.haxx.se/ca/cert.pem
+
+
+
+参考：
+https://github.com/composer/composer/issues/3045
+http://serverfault.com/questions/151157/ubuntu-10-04-curl-how-do-i-fix-update-the-ca-bundle

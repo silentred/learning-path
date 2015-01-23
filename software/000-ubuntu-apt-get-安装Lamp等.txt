@@ -1,0 +1,41 @@
+# install apache 2.4
+sudo apt-get install apache2 apache2-utils
+
+# mysql
+sudo apt-get install mysql-server mysql-client
+
+# install php
+sudo apt-get install libapache2-mod-php5 php5 php5-gd php5-mysql php-pear php5-dev
+
+# php extensions
+sudo apt-get install php5-mcrypt
+sudo apt-get install php5-curl
+安装完毕后，需要到/etc/php5/mods-available 中对mcrypt.ini创建软连接到 /etc/php5/apache2/conf.d/mcrypt.ini
+最后重启apache2，查看phpinfo，确保已经加载
+
+# install redis server
+sudo apt-get install redis-server
+http://blog.fens.me/linux-redis-install/
+
+
+# install sphinx
+sudo apt-get install sphinxsearch
+cp /etc/sphinxsearch/sphinx.conf.sample     /etc/sphinxsearch/sphinx.conf
+配置文件中要注意现在sphinx的索引data目录位置，还有pid，等等的位置，不要去修改。
+只修改索引数据库的内容即可。
+编辑/etc/default/sphinxsearch文件 将START=no 修改为 START=yes
+
+indexer --all
+sudo service sphinxsearch start
+
+search emodin # 可以测试搜索emodin这个词
+
+
+# install mongoDB
+sudo apt-get update
+sudo apt-get install mongodb
+
+# install postgresql
+sudo apt-get install -y postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4 postgresql-server-dev-9.4 
+
+

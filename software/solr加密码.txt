@@ -1,0 +1,45 @@
+I wouldn't recommend restricting access by IP address. The best way I found is to create a user/password and restrict access that way. Below are instructions for how to do this w/ Solr running on Tomcat.
+
+Step 1.
+
+vim /usr/local/tomcat/conf/tomcat-users.xml
+
+Between the 'tomcat-users' tag add:
+
+<user name="username" password="password" roles="admin, manager"></user>
+
+Step 2:
+
+vim /usr/local/tomcat/webapps/solr/WEB-INF/web.xml
+
+Below the 'web-app xmlns' tag add:
+
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>Restrict access to Solr admin</web-resource-name>
+    <url-pattern>/admin/*</url-pattern>
+    <http-method>DELETE</http-method>
+    <http-method>GET</http-method>
+    <http-method>POST</http-method>
+    <http-method>PUT</http-method>
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>manager</role-name>
+  </auth-constraint>
+  <user-data-constraint>
+    <transport-guarantee>NONE</transport-guarantee>
+  </user-data-constraint>
+</security-constraint>
+<login-config>
+  <auth-method>BASIC</auth-method>
+  <realm-name>default</realm-name>
+</login-config>
+Restart tomcat.
+
+Step 3:
+
+Your Solr admin pg is now password protected. But you'll need to change the 'Solr Server URL' value on admin/config/search/apachesolr/settings/solr/ :
+
+http://username:password@localhost:8983/solr/drupal
+
+This insures that the login and password are always entered when Drupal is interacting w/ your Solr server.

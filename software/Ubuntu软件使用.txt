@@ -1,0 +1,72 @@
+# download goagent
+git clone https://github.com/goagent/goagent.git
+
+# Firefox 播放Flash的插件
+#whereis firefox
+#libflashplayer.so 拷贝到火狐浏览器插件目录（/usr/lib/mozilla/plugins）中即可
+sudo apt-get install flashplugin-nonfree
+#安装这个就行了
+
+
+#安装google chrome
+sudo apt-get install google-chrome-stable
+提示apt-get -f install
+
+#安装sublime-text
+sudo add-apt-repository ppa:webupd8team/sublime-text-2
+sudo apt-get update
+sudo apt-get install sublime-text
+
+# 安装sphinxsearch, 不用编译，直接从apt-get安装
+http://blog.dbshop.net/ubuntu-12-04-%E5%AE%89%E8%A3%85sphinx/
+
+
+
+[GoAgent]
+https://goagent.github.io/?/wiki/InstallGuide.md
+http://blog.dimpurr.com/ubuntu-gae/
+http://www.xzcblog.com/post-125.html
+
+[¹ÒÔØwindows·ÖÇø]
+http://www.cnblogs.com/A-Song/archive/2013/02/27/2935255.html
+
+¡Ÿsublime¡¿
+http://www.cnblogs.com/zhangjun516/archive/2013/01/17/2863957.html
+
+[ÆŽÒôÊäÈë·š]
+http://www.cnblogs.com/zhj5chengfeng/archive/2013/06/23/3150620.html
+
+
+[žÄ·Ö±æÂÊ]
+// to check your screen's name
+xrandr
+// my screen is eDP1
+
+//to check your determined new mode data
+cvt 1600 900
+
+//to create a new mode
+xrandr --newmode "1600x900_60" ........
+
+//to add the new mode to system
+xrandr --addmode eDP1 "1600x900_60"
+
+5.设置分辨率：
+
+cobbliu@x-server:~$ xrandr -s 1280x1024_60.00
+OK了。
+
+6.持久地记忆这个新添加的分辨率 在~/.xprofile中加入下面语句 xrandr --output VBOX0 --mode 1280x1024_60.00
+
+
+
+[ the sublime 2 installation]
+http://evenvi.diandian.com/post/2012-10-17/40039761786
+
+
+[install ia32-libs]
+sudo apt-get install libgtk2.0-0:i386
+
+[compile sphinx from source]
+sudo ./configure --prefix=/usr/local/sphinx --with-mysql-includes=/opt/lampp/include --with-mysql-libs=/opt/lampp/lib
+

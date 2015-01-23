@@ -1,0 +1,55 @@
+yum groupinstall -y "Development tools"
+
+yum remove apr apr-util
+
+cd apr-1.5.0
+./configure --prefix=/usr/local/apr
+make && make install
+
+
+cd apr-util-1.5.3
+./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr/
+
+
+
+sudo apt-get install build-essential
+
+编译与安装 OpenSSL
+
+prefix 是安装目录，openssldir 是配置文件目录，另外建议安装两次，shared 作用是生成动态连接库。
+wget ftp://ftp.openssl.org/source/openssl-1.0.0c.tar.gz
+tar -zxf openssl-1.0.0c.tar.gz
+cd openssl-1.0.0c/
+./config  --prefix=/usr/local --openssldir=/usr/local/ssl
+make && make install
+./config shared --prefix=/usr/local --openssldir=/usr/local/ssl
+make clean
+make && make install
+
+//可能的冲突，原来系统自带的ssl和新装的ssl。检查/usr/local/lib/下是否有libcrypt.so.1.0.0和libssl.so.1.0.0两个文件；在检查/lib/x86-64-gnc/下是否有这两个文件。我在ubuntu下的情况是，/lib/x86-64-gnc/是最新的ssl，/usr/local/lib/下的是旧版本的。做法是：备份旧文件，复制新文件到/usr/local/lib/。这样就能解决git和curl不能使用https的问题。
+
+
+别人的
+./configure --prefix=/usr/local/apache --enable-deflate --enable-expires --enable-headers --enable-modules=most --enable-so --with-mpm=worker --enable-rewrite --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util --with-pcre=/usr/local/pcre
+
+我的最早的
+./configure --prefix=/usr/local/apache --sysconfdir=/etc/httpd24 --enable-so --enable-ssl --enable-cgi --enable-rewrite --with-zlib --with-pcre --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util/ --enable-modules=most --enable-mpms-shared=all --with-mpm=event 
+
+我的新的
+./configure --prefix=/usr/local/apache --sysconfdir=/etc/httpd24 --enable-so --enable-ssl --with-ssl=/usr/local/ssl --enable-cgi --enable-rewrite --with-zlib --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util/ --enable-modules=most --with-pcre=/usr/local/pcre --enable-deflate --enable-expires --enable-headers --with-mpm=worker --enable-rewrite
+
+
+#vim /etc/man.config
+#添加此条目
+MANPATH /usr/local/apache/man
+
+ln -sv /usr/local/apache/include  /usr/include/httpd
+
+vim /etc/profile.d/httpd24.sh
+输入export PATH=/usr/local/apache/bin:$PATH 保存
+source /etc/profile.d/httpd24.sh
+
+
+有时候从windows上传的文件，换行符变为了\r\n，在linux中为\n，所以，需要运行以下命令，把\r从文件中删去
+cat originalfile | tr -d "\r" > newfile
+文件才能正确运行

@@ -1,0 +1,12 @@
+# check
+dpkg -l | grep fcitx
+dpkg -l | grep libssh
+
+#install
+sudo apt-get install fcitx
+
+# install
+sudo dpkg -i sougou_64.deb
+
+系统设置>语言支持>键盘输入方式系统
+然后选择 fcitx 项

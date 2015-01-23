@@ -1,0 +1,107 @@
+./configure --prefix=/usr/local/php \ 
+--with-mysql=mysqlnd\
+--with-pdo-mysql=mysqlnd \
+--with-mysqli=mysqlnd \
+--enable-mbstring \
+--with-freetype-dir=/usr/local/freetype \
+--with-jpeg-dir=/usr/local/libjpeg\
+--with-png-dir=/usr/local/libpng\
+--with-zlib \
+--with-libxml-dir=/usr/local/libxml2 \
+--enable-xml \
+--enable-sockets \
+--enable-fpm \
+--with-mcrypt \
+--with-config-file-path=/etc \
+--with-config-file-scan-dir=/etc/php.d \
+--with-bz2\
+--with-curl=/usr/local/curl \
+--with-gd #重要，用来处理图片
+--with-apxs2=/usr/local/apache/bin/apxs //apxs is the Apache module auto-configuration system.
+#--enable-fastcgi  #这个好像教程中没有提及，可以查下作用
+#--with-png #增强gd的图片处理能力
+
+安装freetype, libjpeg, libpng, zlib
+
+尝试一次，以后还是别这么做了，猜测可能会和现存的旧版本冲突(貌似没问题，可以装)
+(安装libxml的较新版本
+./configure --prefix=/usr/local/libxml2
+在configure apache的时候参数中加上--with-libxml-dir=/usr/local/libxml2即可。)
+
+//我的5.4编译参数
+./configure --prefix=/usr/local/php  --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --enable-mbstring --with-freetype-dir=/usr/local/freetype --with-jpeg-dir=/usr/local/libjpeg --with-png-dir=/usr/local/libpng --with-zlib --with-libxml-dir=/usr/local/libxml2 --enable-xml --enable-sockets --enable-fpm --with-mcrypt --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d --with-bz2 --with-apxs2=/usr/local/apache/bin/apxs --with-curl=/usr/local/curl --with-gd
+#--with-gd后面貌似不用指定目录，自动找到了最新安装的gd
+
+问题：ERROR: xml2-config not found
+解决：yum --install libxml2-devel
+
+问题：configure: error: Please reinstall the BZip2 distribution
+解决：yum install bzip2-devel
+
+问题：configure: error: mcrypt.h not found. Please reinstall libmcrypt.
+解决：【I had the same issue, and found the previous suggestions gave me enough info to get it working on my server. The following is what I did:
+
+1) Install EPEL repository (From: http://www.rackspace.com/knowledge_center/article/installing-rhel-epel-repo-on-centos-5x-or-6x):
+
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+sudo rpm -Uvh remi-release-6*.rpm epel-release-6*.rpm
+2) Install it via:
+
+yum update
+yum install php-mcrypt*
+yum install libmcrypt-devel.x86_64
+
+The yum update updated the repository reference on my server then the 2nd command got what I needed :)
+
+3) Restart your webserver. For my apache install I did:
+
+service httpd restart】
+
+重复编译之前,需要执行make clean
+
+
+---------------------------------------------------------
+Nginx + php-fpm
+
+准备工作
+yum -y install gcc automake autoconf libtool make
+
+yum -y install gcc gcc-c++ glibc
+
+yum -y install libmcrypt-devel mhash-devel libxslt-devel \
+libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel \
+zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel \
+ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel \
+krb5 krb5-devel libidn libidn-devel openssl openssl-devel
+
+安装php-fpm
+tar zvxf php-5.4.7.tar.gz
+cd php-5.4.7
+./configure --prefix=/usr/local/php  --enable-fpm --with-mcrypt \
+--enable-mbstring --disable-pdo --with-curl --disable-debug  --disable-rpath \
+--enable-inline-optimization --with-bz2  --with-zlib --enable-sockets \
+--enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex \
+--with-mhash --enable-zip --with-pcre-regex --with-mysql --with-mysqli \
+--with-gd --with-jpeg-dir
+
+make all install
+
+安装Nginx
+tar -zxvf nginx-1.4.2.tar.gz
+cd nginx-1.4.2
+
+./configure --prefix=/usr/local/nginx \
+--with-http_ssl_module \
+--with-pcre=/usr/local/src/pcre-8.34 \ #源码的位置
+--with-zlib=/usr/local/src/zlib-1.2.8 \
+--with-openssl=/usr/local/src/openssl-1.0.1c
+
+make
+make install
+
+某些没有写明的参数的默认值
+--sbin-path=path 设置nginx的可执行文件的路径，默认为  prefix/sbin/nginx.
+--conf-path=path  设置在nginx.conf配置文件的路径。nginx允许使用不同的配置文件启动，通过命令行中的-c选项。默认为prefix/conf/nginx.conf.
+--pid-path=path  设置nginx.pid文件，将存储的主进程的进程号。安装完成后，可以随时改变的文件名 ， 在nginx.conf配置文件中使用 PID指令。默认情况下，文件名 为prefix/logs/nginx.pid.
+

@@ -1,0 +1,15 @@
+MySQL 5.6 警告信息 command line interface can be insecure 修复
+
+解决方法：
+
+vim /etc/my.cnf
+
+[mysqldump]
+
+user=your_backup_user_name
+
+password=your_backup_password
+
+
+修改完配置文件后, 只需要执行mysqldump 脚本就可以了。备份脚本中不需要涉及用户名密码相关信息。
+mysqldump db_name > /backup/bk.sql

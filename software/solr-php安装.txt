@@ -1,0 +1,27 @@
+﻿libxml2 2.6.31或以上版本 (貌似默认安装并开启，查看phpinfo即可)
+libcurl 7.18.0 或以上版本
+
+1. 下载solr的php 插件
+2. 在目录下执行phpize
+3. ./configure --with-php-config=/usr/local/php/bin/php-config
+4. make && make install
+
+提示需要re2c， 用yum install re2c
+
+提示需要curl，重装libcurl
+下载libcurl， 进入目录， ./configure --with-php-config=/usr/local/php/bin/php-config --prefix=/usr/local/curl
+make && make install
+
+然后进入php源码目录，进入ext/curl/， 调用phpize,
+再 ./configure --with-php-config=/usr/local/php/bin/php-config --with-curl=/usr/local/curl
+最后 make && make install， make test。
+会在/usr/local/php/lib/php/extensions/no-debug-non-zts-20100525/ 中生成libcurl.so
+
+【忽略一下操作！！】括号中的操作有【错误】，libxml好像不是插件，必须先升级libxml再重新编译php，很麻烦，libxml还包括libxml-devel,libxml-python等，如果不是必须升级，千万别尝试
+(如果想重新安装libxml2.9.1版本，则基本同上，下载，解压，安装到某个目录。
+再从php源码目录下的ext/libxml中调用phpize,
+./configure --with-php-config=/usr/local/php/bin/php-config --prefix=/usr/local/libxml2 
+make && make install)
+
+5. 新建 /etc/php.d/solr.ini
+输入 extension=solr.so

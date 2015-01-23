@@ -1,0 +1,6 @@
+sudo service php-fpm restart
+sudo service httpd24 restart
+sudo service mysqld restart
+sudo service redisd start
+sudo service sphinxd start
+php ~/lifomecom/artisan queue:listen &

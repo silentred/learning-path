@@ -1,0 +1,34 @@
+http://www.tecmint.com/install-mod_pagespeed-website-optimizer-for-apache-in-rhel-centos-and-fedora/
+Create a file called /etc/yum.repos.d/mod-pagespeed.repo
+
+RHEL/CentOS/Fedora 32-Bit:
+[mod-pagespeed]
+name=mod-pagespeed
+baseurl=http://dl.google.com/linux/mod-pagespeed/rpm/stable/i386
+enabled=1
+gpgcheck=0
+
+RHEL/CentOS/Fedora 64-Bit:
+[mod-pagespeed]
+name=mod-pagespeed
+baseurl=http://dl.google.com/linux/mod-pagespeed/rpm/stable/x86_64
+enabled=1
+gpgcheck=0
+
+yum --enablerepo=mod-pagespeed install mod-pagespeed
+
+
+
+
+Above command creates following directories and files.
+/etc/cron.daily/mod-pagespeed : mod_pagespeed cron script for checking and installing latest updates.
+/etc/httpd/conf.d/pagespeed.conf : The main configuration file for Apache.【重要】
+/usr/lib/httpd/modules/mod_pagespeed.so : mod_pagespeed module for Apache.【重要】
+/var/www/mod_pagespeed/cache : File caching direcotry for web sites.
+/var/www/mod_pagespeed/files : File generate prefix for web sites.
+
+打开apache 的deflate模块；
+
+引入pagespeed.conf, pagespeed.conf中正确引入pagespeed.so的位置
+
+重启apache

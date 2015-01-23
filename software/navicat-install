@@ -1,0 +1,103 @@
+linux下安装navicat
+http://wiki.navicat.com/wiki/index.php/Can_I_run_Navicat_on_64-bit_Linux%3F
+不用安装wine，软件里自带了，并且做了优化
+64bit的linux需要安装所有的32位lib，按照下面的来按照
+
+
+
+
+
+
+64-bit Debian/Ubuntu
+
+
+sudo apt-get install ia32-libs
+
+
+64-bit Ubuntu 13.10 or above
+
+
+sudo apt-get update
+
+sudo apt-get install libfreetype6:i386
+
+sudo apt-get install libsm6:i386
+
+sudo apt-get install libxext6:i386
+
+
+OpenSuse x64
+
+
+sudo zypper install libfreetype6-32bit
+
+sudo zypper install libSM6-32bit
+
+sudo zypper install libXext6-32bit
+
+
+Fedora 14 x64/CentOS
+
+
+login as root then
+
+
+yum install glibc.i686
+
+yum install freetype.i686
+
+yum install libSM.i686
+
+yum install libXext.i686
+
+
+64-bit Fedora
+
+
+Login as root then
+
+yum install glibc.i686
+
+yum install freetype.i586
+
+yum install libgcc-*.i586
+
+yum install zlib-*.i586
+
+yum install libSM-*.i586
+
+yum install libXext-*.i586
+
+yum install alsa-lib-*.i586
+
+yum install esound-libs-*.i586
+
+
+If failed, check which package has filed and find the package containing the library needed
+
+yum provides */libgcc_s.so.1
+
+yum provides */libz.so.1
+
+yum provides */libSM.so.6
+
+yum provides */libXext.so.6
+
+yum provides */libasound.so.2
+
+yum provides */libesd.so.0
+
+
+Then choose the package WITHOUT x86_64 and do a yum install like above
+
+
+After installed the libraries, try to comment this line in start_navicat script file
+
+exec >/dev/null 2>&1
+
+to
+
+#exec >/dev/null 2>&1
+
+
+and then run start_navicat in terminal.

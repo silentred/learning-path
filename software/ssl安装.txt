@@ -1,0 +1,33 @@
+mkdir /etc/pki/tls/mycert
+cd /etc/pki/tls/mycert
+
+创建私钥
+openssl genrsa -out server.key 1024
+
+用私钥 server.key 文件生成证书签署请求 CSR
+openssl req -new -key server.key -out server.csr
+
+(Country Name (2 letter code) [GB]:【在此输入两个字符的国家名。中国的为 CN 】
+State or Province Name (full name) [Berkshire]:【省份名称，如北京为 beijing 】
+Locality Name (eg, city) [Newbury]:【城市名称，如 beijing】
+Organization Name (eg, company) [My Company Ltd]:【公司名称】
+Organizational Unit Name (eg, section) []:【部门名称】
+Common Name (eg, your name or your server’s hostname) []:【姓名，通常即证书名】
+Email Address []:【电子邮箱地址】
+随后会要求输入一个challenge password（密码），无需输入，后面一律直接回车即可。)
+
+生成证书CRT文件
+openssl x509 -days 3650 -req -in server.csr -signkey server.key -out server.crt
+
+打开httpd.conf中的mod_ssl，打开Include extra/httpd-ssl.conf
+
+编辑extra/httpd-ssl.conf，修改以下文件路径
+SSLCertificateFile /etc/pki/tls/mycert/server.crt
+SSLCertificateKeyFile /etc/pki/tls/mycert/server.key
+最后修改一下网站目录 DocumentRoot "/var/www"
+
+重启下apache，应该可以用https访问了
+
+可能还需要设置一下防火墙
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+/sbin/service iptables save

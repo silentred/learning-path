@@ -1,0 +1,18 @@
+./configure --enable-xdebug --with-php-config=/usr/local/php/bin/php-config
+
+make && make install
+
+zend_extension="/usr/local/php/lib/php/extensions/no-debug-zts-20100525/xdebug.so"
+
+xdebug.auto_trace = On
+xdebug.show_local_vars = On
+xdebug.remote_autostart = On
+xdebug.remote_enable = On
+xdebug.collect_vars = On
+xdebug.collect_return = On
+xdebug.collect_params = On
+
+xdebug.profiler_enable = On
+xdebug.profiler_enable_trigger = On
+xdebug.profiler_output_name = cachegrind.out.%t.%p
+xdebug.profiler_output_dir = "/var/log"

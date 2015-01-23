@@ -1,0 +1,83 @@
+安装freetype, libjpeg, libpng, zlib
+
+尝试一次，以后还是别这么做了，猜测可能会和现存的旧版本冲突(貌似没问题，可以装)
+(安装libxml的较新版本
+./configure --prefix=/usr/local/libxml2
+在configure apache的时候参数中加上--with-libxml-dir=/usr/local/libxml2即可。)
+
+//别人的5.6编译参数
+./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache/bin/apxs --with-config-file-path=/etc --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gettext --enable-mbstring   --with-iconv --with-mcrypt --with-mhash --with-openssl --enable-bcmath --enable-soap --with-libxml-dir --enable-pcntl --enable-shmop --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-sockets --with-curl --with-gd --with-zlib --enable-zip --with-bz2  --without-sqlite3 --without-pdo-sqlite --with-pear 
+
+
+//我自己的5.6编译参数
+./configure --prefix=/usr/local/php --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d --enable-fpm --enable-sysvsem --enable-sockets --enable-pcntl --enable-mbstring --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-freetype-dir=/usr/local/freetype --with-jpeg-dir=/usr/local/libjpeg --with-png-dir=/usr/local/libpng --enable-opcache --enable-shmop  --enable-zip --with-mcrypt --with-zlib=/usr/local/zlib --with-libxml-dir=/usr/local/libxml2 --enable-xml --with-curl=/usr/local/curl/ --with-pcre-dir=/usr/local/pcre/ --with-bz2=/usr/local/bzip2 --with-apxs2=/usr/local/apache/bin/apxs --with-gd --with-gettext --with-iconv -with-mhash --with-openssl --enable-bcmath --enable-soap --with-pear
+
+
+错误八：
+configure: error: Your t1lib distribution is not installed correctly. Please reinstall it.
+解决办法：
+# sudo apt-get install libt1-dev
+
+错误九：
+configure: error: mcrypt.h not found. Please reinstall libmcrypt.
+解决办法：
+# sudo apt-get install libmcrypt-dev
+
+
+
+问题：ERROR: xml2-config not found
+解决：yum --install libxml2-devel
+
+问题：configure: error: Please reinstall the BZip2 distribution
+解决：yum install bzip2-devel
+
+问题：configure: error: mcrypt.h not found. Please reinstall libmcrypt.
+解决：【I had the same issue, and found the previous suggestions gave me enough info to get it working on my server. The following is what I did:
+
+
+
+
+[have error when "make"]
+[PLEASE notice, the error message already give the solution: recompile with -fPIC]
+[check this article: http://www.blogjava.net/haha0515/archive/2009/09/30/296957.html]
+
+/usr/bin/ld: /usr/local/lib/libbz2.a(bzlib.o): relocation R_X86_64_32S against `BZ2_crc32Table' can not be used when making a shared object; recompile with -fPIC
+/usr/local/lib/libbz2.a: error adding symbols: Bad value
+collect2: error: ld returned 1 exit status
+make: *** [libphp5.la] Error 1
+
+我总结了一下方法：
+1、注意顺序问题：（这三个东西一环扣一环，真麻烦） 
+如果发现 libbz2.a: could not read symbols: Bad value
+就应该把/usr/local/lib中的libbz2.a删掉
+进入解压缩的zlib-1.2.3目录，用make clean命令清理一下。
+同样，/usr/local/lib/libz.a: could not read symbols
+操作同上，删掉libz.a，把bzip2-1.0.4目录的编译文件清理一下。
+如果找不到这两个文件的位置，可以在终端敲上：
+find -name libbz2.a
+....
+
+2.修改zlib-1.2.3的Makefile文件 
+把gcc的编译参数加上 -fPIC
+原文：CFLAGS=-O3 -DUSE_MMAP
+修改为：CFLAGS=-O3 -DUSE_MMAP -fPIC
+如果还是过不去，劝你硬来CC=gcc 直接后面跟上-fPIC让他们全部独立编译
+重申：如果你之前编译过了，一定要用make clean清掉，否则还是徒劳。。
+最后make 还有 make install
+
+3.修改bzip2-1.0.4的Makefile文件 
+CC=gcc -fPIC  《＝＝＝这个就是我发飙的结果，全部让他 -fPIC 
+AR=ar
+RANLIB=ranlib
+LDFLAGS=
+
+BIGFILES=-D_FILE_OFFSET_BITS=64
+CFLAGS=-fPIC -Wall -Winline -O2 -g $(BIGFILES)  《＝＝＝当然这里也可以加上
+
+同样，bzip2有一个Makefile-libbz2_so的文件，编译时会调用，当然你也可以单个编译： 
+make -f Makefile-libbz2_so
+make clean <------------保守建议，还是clean一下 
+make
+make install 
+
+

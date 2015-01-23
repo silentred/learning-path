@@ -1,0 +1,67 @@
+ubuntu下的安装依赖
+apt-get install build-essential libncurses5-dev cmake
+
+cmake \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \   #安装路径
+-DMYSQL_DATADIR=/usr/local/mysql/data       \    #数据文件存放位置
+-DSYSCONFDIR=/etc              \                                  #my.cnf路径
+-DWITH_MYISAM_STORAGE_ENGINE=1    \       #支持MyIASM引擎
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \     #支持InnoDB引擎
+-DWITH_MEMORY_STORAGE_ENGINE=1 \        #支持Memory引擎
+-DWITH_READLINE=1                    \                         #快捷键功能(我没用过)
+-DMYSQL_UNIX_ADDR=/tmp/mysqld.sock      \   #连接数据库socket路径
+-DMYSQL_TCP_PORT=3306                  \               #端口
+-DENABLED_LOCAL_INFILE=1            \                #允许从本地导入数据
+-DWITH_PARTITION_STORAGE_ENGINE=1  \   #安装支持数据库分区
+-DEXTRA_CHARSETS=all                  \                   #安装所有的字符集
+-DDEFAULT_CHARSET=utf8              \                   #默认字符
+-DDEFAULT_COLLATION=utf8_general_ci
+
+cmake \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_DATADIR=/usr/local/mysql/data \
+-DSYSCONFDIR=/etc \
+-DWITH_MYISAM_STORAGE_ENGINE=1 \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_MEMORY_STORAGE_ENGINE=1 \
+-DWITH_READLINE=1 \
+-DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock \
+-DMYSQL_TCP_PORT=3306 \
+-DENABLED_LOCAL_INFILE=1 \
+-DWITH_PARTITION_STORAGE_ENGINE=1 \
+-DEXTRA_CHARSETS=all \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci
+
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MEMORY_STORAGE_ENGINE=1 -DWITH_READLINE=1 -DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock -DMYSQL_TCP_PORT=3306 -DENABLED_LOCAL_INFILE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
+
+
+
+groupadd mysql
+useradd -g mysql -M -s /bin/false mysql
+usermod -L mysql
+
+./mysql_install_db --user=mysql --datadir=/usr/local/mysql/data --basedir=/usr/local/mysql
+
+echo "export PATH=/usr/local/mysql/bin:$PATH" > /etc/profile.d/mysql.sh
+chmod +x /etc/profile.d/mysql.sh
+source /etc/profile.d/mysql.sh
+
+ln -sv /usr/local/mysql/include /usr/include/mysql
+
+select user, host, password from mysql.user;
+
+drop user ''@'localhost';
+drop user ''@'server.lifome.com';
+
+SET PASSWORD FOR root@localhost = PASSWORD('Lifome9178Jask');
+
+CREATE USER jason IDENTIFIED BY 'Jason917Lifome';
+
+grant all privileges on *.* to jason@"%";
+flush privileges;
+
+
+create user wangyang IDENTIFIED BY 'wangyang';
+grant all privileges on *.* to wangyang@localhost IDENTIFIED BY 'wangyang';
+flush privileges;

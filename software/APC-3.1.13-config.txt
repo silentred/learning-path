@@ -1,0 +1,26 @@
+./configure --enable-apc --enable-apc-pthreadmutex --with-php-config=/usr/local/php/bin/php-config
+
+extension=apc.so
+
+apc.max_file_size = 2m
+apc.ttl = 7200
+apc.gc_ttl = 3600
+; means we are always atomically editing the files
+apc.file_update_protection = 0
+apc.enabled = 1
+apc.enable_cli = 0
+apc.cache_by_default = 1
+apc.include_once_override=0
+apc.localcache=1
+apc.localcache.size=128m
+apc.shm_size=128m
+apc.num_files_hint = 1000
+apc.report_autofilter=0
+apc.rfc1867=0
+apc.slam_defense = 0
+apc.stat=0
+apc.stat_ctime=0
+;apc.ttl=7200
+apc.user_entries_hint = 4096
+apc.user_ttl = 7200
+apc.write_lock=1

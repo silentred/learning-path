@@ -1,0 +1,8 @@
+iptables -A INPUT -p tcp --dport 30001:30100 -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 30001:30100 -j ACCEPT
+
+service iptables save
+
+service iptables restart
+
+chkconfig vsftpd on

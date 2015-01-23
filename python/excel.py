@@ -68,7 +68,7 @@ def open_file(path):
 	# print first_sheet.row_slice(rowx=0, start_colx=2, end_colx=4)
 
 if __name__ == "__main__":
-	content = open_file("/home/jason/projects/python/pricing.xlsx")
-	path = "/home/jason/projects/python/pb_attr.xls"
+	content = open_file("/home/jason/projects/learning-gist/python/pricing.xlsx")
+	path = "/home/jason/projects/learning-gist/python/pb_attr.xls"
 	write_price(path, content)
 	print "Over"

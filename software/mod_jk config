@@ -1,0 +1,7 @@
+./configure --with-apxs=/usr/local/apache/bin/apxs --with-tomcat=/usr/local/tomcat7 --with-java-home=/usr/java/jdk1.7.0_51 --with-jni
+
+index.jsp
+
+<%@page language="java" import="java.util.*" %>
+Stay hungry Stay foolish !!!
+Now the time is: <%out.println(new Date());%>
