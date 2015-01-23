@@ -2,7 +2,7 @@
 #include <limits.h>
 #include <float.h>
 
-/* function declaration */
+/* function declaration  */
 void func(void);
  
 static int count = 5; /* global variable */
