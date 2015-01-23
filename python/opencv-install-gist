@@ -1,0 +1,463 @@
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install build-essential libgtk2.0-dev libjpeg-dev libtiff5-dev libjasper-dev libopenexr-dev cmake python-dev python-numpy python-tk libtbb-dev libeigen3-dev yasm libfaac-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev libx264-dev libqt4-dev libqt4-opengl-dev sphinx-common texlive-latex-extra libv4l-dev libdc1394-22-dev libavcodec-dev libavformat-dev libswscale-dev  libvtk5-qt4-dev 
+
+# texlive-latex-extra 有900多Mb，可以留在最后单独安装
+
+git clone https://github.com/Itseez/opencv.git
+
+cd opencv
+
+mkdir build
+cd build
+cmake -D WITH_TBB=ON -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_VTK=ON -D WITH_IPP=OFF ..
+#这里的..是指在上级目录执行cmake
+
+#遇到错误：
+CMake Error at 3rdparty/ippicv/downloader.cmake:71 (file):
+  file DOWNLOAD HASH mismatch
+在参数里加了-D WITH_IPP=OFF试试
+
+
+
+make
+sudo make install
+
+sudo vim /etc/ld.so.conf.d/opencv.conf
+输入 /usr/local/lib
+
+sudo ldconfig
+
+sudo vim /etc/bash.bashrc
+
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export PKG_CONFIG_PATH
+
+logout and login
+
+
+python ~/opencv-2.4.9/samples/python2/turing.py
+
+
+====================================================
+分解步骤：
+
+sudo apt-get update
+sudo apt-get upgrade
+
+
+#安装必须组件
+sudo apt-get install build-essential
+sudo apt-get install cmake
+sudo apt-get install pkg-config
+
+
+#The following packages are optional:
+1. libgtk2.0-dev (development files for GTK+ graphical user interfaces library. This is the default GUI backend for highgui on OSes other than Windows and MacOSX)
+2. python-dev (Python 2.6 or later with developer packages)
+3. python-numpy (Numpy)
+因为我想用python接口，所以还是安装吧
+
+sudo apt-get install libgtk2.0-dev python-dev python-numpy
+
+
+#处理图像的lib
+The packages below are used to read and write images in the respective formats (note, that if you don’t install these packages, OpenCV will use the default versions supplied with OpenCV. Also, openexr is not supplied, by default, with OpenCV)
+
+1. libpng12-0,  libpng12-dev, libpng++-dev, libpng3 (libpng library including development and runtime files)
+2. libpnglite-dev, libpngwriter0-dev, libpngwriter0c2
+3. zlib1g-dbg, zlib1g, zlib1g-dev
+4. pngtools
+sudo apt-get install pkg-config5. libjasper1, libjasper-dev, libjasper-runtime
+6. libjpeg8, libjpeg8-dbg, libjpeg62, libjpeg62-dev,  libjpeg-progs (NOTE: The reason of installing libjpeg62-dev development package instead of libjpeg8-dev is that libtiff4-dev depends on libjpeg62-dev and libjpeg8-dev conflicts with libjpeg62-dev)
+7. libtiff4, libtiff4-dev, libtiffxx0c2, libtiff-tools
+8. ffmpeg, libavcodec-dev, libavcodec52, libavformat52, libavformat-dev (ffmpeg multimedia player, server, encoder, codec library, demuxer library. For more information see FFMPEG)好像很重要
+9. libswscale0, libswscale-dev (ffmpeg video scaling library)
+10. openexr,libopenexr-dev, libopenexr6 (HDR image file development tools)
+
+安装命令：
+sudo apt-get install libpng12-0 libpng12-dev libpng++-dev libpng3 libpnglite-dev libpngwriter0-dev libpngwriter0c2 zlib1g-dbg zlib1g zlib1g-dev pngtools libjasper-dev libjasper-runtime libjasper1 libjpeg8 libjpeg8-dbg libjpeg62 libjpeg62-dev libjpeg-progs libtiff5-dev libtiff5 libtiffxx0c2 libtiff-tools ffmpeg libavcodec-dev libavcodec52 libavformat52 libavformat-dev libswscale0 libswscale-dev openexr libopenexr6 libopenexr-dev
+
+
+#处理视频的lib， 选择不装
+
+The packages below are used to add video capturing, video decoding and video encoding capabilities to highgui. The output of the cmake will show which of the packages have been detected and will be used in highgui.
+
+1. libgstreamer0.10-0-dbg, libgstreamer0.10-0,  libgstreamer0.10-dev, libgstreamer-plugins-base0.10-dev (gstreamer streaming media framework)
+2. libxine1-bin, libxine-dev, libxine1-ffmpeg (xine video/media player and core libraries)
+3. libunicap2, libunicap2-dev, libucil2, libucil2-dev (uniform interface to video capture devices)
+4. libdc1394-22-dev, libdc1394-22, libdc1394-utils (high-level programming interface for IEEE1394 digital cameras)
+5. libv4l-0, libv4l-dev (video for linux support libraries)
+
+安装命令：
+sudo apt-get install libgstreamer0.10-0-dbg libgstreamer0.10-0 libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libxine1-ffmpeg libxine-dev libxine1-bin libunicap2 libunicap2-dev libucil2 libucil2-dev libdc1394-22-dev libdc1394-22 libdc1394-utils libv4l-0 libv4l-dev
+
+
+#Other optional packages: 暂时不理会
+
+swig (integrate C and C++ code with other languages like Python)
+bzip2 (this usually comes along with the Debian distributions)
+You can also install other optional packages (depending on your needs) such as
+
+libtbb-dev : parallelism library (TBB) for C++ – development files
+libqt4-dev and libqt4-opengl-dev : Qt 4 development files and Qt 4 OpenGL library development files. To use Qt (Qt 4.6 or later) as the HighGUI backend (instead of GTK). In such case, use WITH_QT=ON flag with Cmake when configuring OpenCV.
+texlive-latex-extra and python-sphinx: LaTeX supplementary packages (TeX Live) and sphinx tool for producing documentation.
+libeigen2-dev : lightweight C++ template library for linear algebra
+yasm : modular assembler with multiple syntaxes support
+CUDA Toolkit with GPU support for Nvidia GPUs.
+IPP 7 or later — OpenCV doesnot require IPP, but can be configured to use IPP to make color conversion, Haar training and DFT functions run faster.
+
+
+cd ~/opencv/OpenCV-2.4.2
+mkdir release
+cd release
+#支持python
+If you are configuring OpenCV-2.4.2 and you want to install OpenCV with Python support, you can use the following command:
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_ZLIB=ON -D BUILD_PYTHON_SUPPORT=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_IPP=OFF ..
+
+Note: The switch that must be turned ON in order to avoid build errors using the OpenCV-2.4.2 is the “BUILD_ZLIB=ON” option.
+
+The following command is what I used (to configure OpenCV with Python, OpenEXR, Gstreamer, video capture and v4l video libraries:
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_ZLIB=ON -D WITH_V4L=ON -D WITH_GSTREAMER=ON -D WITH_OPENEXR=ON -D WITH_UNICAP=ON -D BUILD_PYTHON_SUPPORT=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..
+Note: In the above command, “~/opencv/OpenCV-2.4.2″ has been replaced with just “..” (two dots) at the end of the command. It is an argument to cmake to indicate that the source directory is the parent directory (of the current “release” directory).
+
+If you are configuring OpenCV-2.4.3, you don’t need to use the “BUILD_ZLIB=ON” switch:
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_V4L=ON -D WITH_GSTREAMER=ON -D WITH_OPENEXR=ON -D WITH_UNICAP=ON -D BUILD_PYTHON_SUPPORT=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..
+You should expect to see something similar to the following at the end of a successful configuration step:
+
+
+Generally, you should not see any errors in the above step. If you do, make sure that you have installed all the required packages. Also ensure that you have the following flags in the output of the CMake configuration step set to “YES”:
+
+GTK+ 2.x:   YES
+FFMPEG:   YES
+If you are interested in working with video, ensure that the following are also set to “YES”:
+
+GStreamer:  YES
+V4L/V4L2: YES
+5.4. Compile using GCC from the command line (within the “release” directory) by running “make”:
+
+Installing OpenCV libraries
+
+From the command line (within the “release” directory), execute the following command
+
+1
+sudo make install
+Note: It is NOT necessary to “install” OpenCV if you are using CMake (and, therefore, OpenCVConfig.cmake) for your projects. In fact it is not recommended to actually install OpenCV using “make install” especially if you plan to use different OpenCV versions. If you don’t install, then use OpenCV from where you built it [Reference 4].
+
+7. Configuring OpenCV path
+
+7.1. Configure the system wide library search path:
+
+The path to the OpenCV libraries (/usr/local/lib) is specified by creating a file called “opencv.conf” in “/etc/ld.so.conf.d/”. In order to do so, append the line “/usr/local/lib” at the end of the file “opencv.conf” (the file could be empty) using the following command, and as shown in the following figure, and then save it:
+
+1
+sudo gedit /etc/ld.so.conf.d/opencv.conf
+
+Now, to configure the library, run the following command:
+
+1
+sudo ldconfig -v
+In this case, running the ldconfig command creates the necessary links and cache to the most recent shared libraries found (OpenCV libraries in our case)  in the directories specified in the file /etc/ld.so.conf/opencv.conf.
+
+Note: (alternatively you could do the following)
+
+(I haven’t verified this step) Instead of creating the file “opencv.conf”, modifying it, and then running ldconfig, you could also do the following [Reference 3]:
+
+Export the path to LD_LIBRARY_PATH environment variable, and dynamically link to the OpenCV library using ldconfig [Reference 3] (do this ONLY if you didn’t do sudo gedit /etc/ld.so.conf.d/opencv.conf followed by ldconfig)
+
+1
+2
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+sudo ldconfig
+Also, should you choose to avoid installing OpenCV library, you need to explicitly direct your system to the OpenCV library build directory by executing the following commands (assuming that you built OpenCV in the directory “~/opencv/OpenCV-2.4.3/release/”):
+
+1
+2
+export LD_LIBRARY_PATH=~/opencv/OpenCV-2.0.3/release/:$LD_LIBRARY_PATH
+sudo ldconfig
+7.2. Setup the PKG_CONFIG_PATH variable
+
+Now open the “bash.bashrc” file using gedit as follows:
+
+1
+sudo gedit /etc/bash.bashrc
+Add the following two lines to the “bash.bashrc” file and save the file:
+
+1
+2
+PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+export PKG_CONFIG_PATH
+"bash.bashrc file"
+bash.bashrc file with the two added lines
+
+That brings us to the end of the OpenCV installation on Debian-6. Before, testing the installation, it is highly recommended, that you restart the computer.
+
+8. Test OpenCV installation
+
+ 8.1. Test C samples:
+
+We shall test the OpenCV installation by building  and running the OpenCV samples:
+
+1
+cd ~/opencv/OpenCV-2.4.3/samples/c
+We would like to build all the examples in the directory by using the script “build_all.sh”. However, before doing so, we need to ensure that the script is executable.
+
+1
+2
+chmod +x build_all.sh
+./build_all.sh
+Now we will try some examples:
+
+First one, is going to be the “delaunay” example. Run the example using the following command in the terminal (assuming that we are in the same directory)
+
+1
+./delaunay
+Output:
+
+
+Second, let’s try the “morphology” example:
+
+1
+./morphologyc
+Output:
+
+morphologyoperation
+Output of the sample morphologyc.c
+
+See some more examples in References 2 & 3.
+
+8.2. Compiling our own simple c program:
+
+Before compiling using pkg-config, test the following commands:
+
+1
+2
+pkg-config --cflags opencv
+pkg-config --libs opencv
+The output of the first command should be:
+
+-I/usr/local/include/opencv -I/usr/local/include
+And the output should be something similar to the following for the second command:
+
+/usr/local/lib/libopencv_calib3d.so /usr/local/lib/libopencv_contrib.so /usr/local/lib/libopencv_core.so /usr/local/lib/libopencv_features2d.so /usr/local/lib/libopencv_flann.so /usr/local/lib/libopencv_gpu.so /usr/local/lib/libopencv_highgui.so /usr/local/lib/libopencv_imgproc.so /usr/local/lib/libopencv_legacy.so /usr/local/lib/libopencv_ml.so /usr/local/lib/libopencv_nonfree.so /usr/local/lib/libopencv_objdetect.so /usr/local/lib/libopencv_photo.so /usr/local/lib/libopencv_stitching.so /usr/local/lib/libopencv_ts.so /usr/local/lib/libopencv_video.so /usr/local/lib/libopencv_videostab.so
+Our simple C code:
+
+This is a very simple c code to display an image:
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+/* first.c :Code to display an image using OpenCV */
+#include "opencv2/highgui/highgui.hpp"
+int main(int argc, char** argv){
+ 
+// load the image
+  IplImage* img = cvLoadImage(argv[1],-1);
+// create a window to display the image
+  cvNamedWindow(argv[1],CV_WINDOW_AUTOSIZE);
+// display the image
+  cvShowImage(argv[1],img);
+// wait for keystroke
+  cvWaitKey(0);
+// release the image object
+  cvReleaseImage(&img);
+// destroy the window
+  cvDestroyWindow(argv[1]);
+}
+I had placed the code in the directory ~/opencv/mycprogs/basic/
+
+The code was compiled using the following command:
+
+1
+gcc `pkg-config --cflags --libs opencv` -o first1 first.c
+Note for new users: Please be aware that there are backquote (`) symbols (generally found on the same U.S. computer keyboard key as the tilde) in the above command and not single-quote (‘) or apostrophe symbol! Using a single-quote will mostly spit the following error:
+
+"gcc: pkg-config --cflags --libs opencv: No such file or directory"
+On successful compilation, you can run the program as shown below:
+
+1
+./first1 lena.jpg
+You should expect to see the following output:
+
+lena
+Output of our simple program to display an image
+
+Note: Using pkg-config to get all dependencies to compile ensures that you will be able to compile almost all code written using the OpenCV libraries. However, it my produce a binary with excessive dependencies [Reference 3].  As it is shown in [Reference 3], you can see a list of the OpenCV based share libraries which are loaded dynamically if the above code is compiled using the pkg-config by running the following command:
+
+1
+2
+gcc `pkg-config --cflags --libs opencv` -o first1 first.c
+ldd first1 | grep local
+Output of the above command:
+
+libopencv_calib3d.so.2.4 => /usr/local/lib/libopencv_calib3d.so.2.4 (0xb772e000)
+libopencv_contrib.so.2.4 => /usr/local/lib/libopencv_contrib.so.2.4 (0xb7657000)
+libopencv_core.so.2.4 => /usr/local/lib/libopencv_core.so.2.4 (0xb7455000)
+libopencv_features2d.so.2.4 => /usr/local/lib/libopencv_features2d.so.2.4 (0xb73b7000)
+libopencv_flann.so.2.4 => /usr/local/lib/libopencv_flann.so.2.4 (0xb734d000)
+libopencv_gpu.so.2.4 => /usr/local/lib/libopencv_gpu.so.2.4 (0xb72fd000)libopencv_highgui.so.2.4 => /usr/local/lib/libopencv_highgui.so.2.4 (0xb72b1000)
+libopencv_imgproc.so.2.4 => /usr/local/lib/libopencv_imgproc.so.2.4 (0xb703c000)
+libopencv_legacy.so.2.4 => /usr/local/lib/libopencv_legacy.so.2.4 (0xb6f26000)
+libopencv_ml.so.2.4 => /usr/local/lib/libopencv_ml.so.2.4 (0xb6eaf000)
+libopencv_nonfree.so.2.4 => /usr/local/lib/libopencv_nonfree.so.2.4 (0xb6e99000)
+libopencv_objdetect.so.2.4 => /usr/local/lib/libopencv_objdetect.so.2.4 (0xb6e22000)
+libopencv_photo.so.2.4 => /usr/local/lib/libopencv_photo.so.2.4 (0xb6e06000)
+libopencv_stitching.so.2.4 => /usr/local/lib/libopencv_stitching.so.2.4 (0xb6d8d000)
+libopencv_ts.so.2.4 => /usr/local/lib/libopencv_ts.so.2.4 (0xb6cf7000)
+libopencv_video.so.2.4 => /usr/local/lib/libopencv_video.so.2.4 (0xb6cb7000)
+libopencv_videostab.so.2.4 => /usr/local/lib/libopencv_videostab.so.2.4 (0xb6c84000)
+As you can see all the opencv libraries (including the ones that we really don’t require for this program) have been linked. As a result of this the executable file size is unnecessarily large. Although, it is not that critical for desktop based applications, it is important to be aware of this, especially if would like to use your code for some embedded application.
+
+The above is equivalent to compiling the code by manually providing all the libraries, like so:
+
+1
+gcc -o first1 first.c&nbsp; -I/usr/local/include/opencv -lopencv_core -lopencv_imgproc -lopencv_calib3d -lopencv_video -lopencv_features2d -lopencv_ml -lopencv_highgui -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_flann -lopencv_gpu -lopencv_nonfree -lopencv_photo -lopencv_stitching -lopencv_ts -lopencv_videostab
+You could also compile the code by manually providing the just the needed libraries as follows:
+
+1
+gcc -o first first3.c -I/usr/local/include/opencv -lopencv_highgui
+Finally, if we compare the file sizes of the executable(s) produced by the above 3 methods, we will find that the size of the executable produced by handpicking the libraries is the least (Well, no surprise there). Note that I have named the output files as first1, first2 and first3 respectively.
+
+"first.c comp"
+Comparison of file sizes for the different type of compilation methods.
+
+8.3. Test Python samples:
+
+Change directory to ~/opencv/OpenCV-2.4.3/samples/python/ and then run
+
+1
+python convexhull.py
+convexhull.pyOutput
+Output of python sample convexhull.py
+
+(Note: You need to press “ESC” button to stop the loop and exit the convexhull program.)
+
+Now, lets write a small python code, and call it first.py
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+#!/usr/bin/python
+# Import the CV module
+import cv2.cv as cv
+# Load the image
+img = cv.LoadImage('baboon.jpg',cv.CV_LOAD_IMAGE_COLOR)
+# Create a named window
+cv.NamedWindow('BaboonImage',cv.CV_WINDOW_AUTOSIZE)
+# Display the image
+cv.ShowImage('BaboonImage',img)
+# Wait for keystroke
+cv.WaitKey(0)
+#
+cv.DestroyWindow('BaboonImage')
+Before running the code, you need to first make this script an executable using the following command:
+
+1
+chmod 755 first.py
+Also, make sure you have some image (in this case it is baboon.jpg) in the same directory. Then, from the terminal you can use either of the following two ways to run the script:
+
+1
+python first.py
+ 
+
+1
+./first.py
+(both commands should work)
+
+The output of the above script is shown below:
+
+baboon
+Output of first.py
+
+8.3. Trouble shoot python related problems:
+
+Try to “import” the cv module within python as shown below in the python interactive mode:
+
+"python test"
+Try to import OpenCV modules
+
+According to [Reference 6], python may return an error like “No module named cv” because python module is installed in /usr/local/lib/python2.6/site-packages, but on Debian (and on Ubuntu), Python only looks in /usr/local/python2.6/dist-packages. The following block-quote is from [Reference 6]
+
+ You can fix it using three ways (Use only one of those, the first is the best):
+
+move the cv.so file from the site-packages to the dist-packages :
+1
+sudo mv /usr/local/lib/python2.6/site-packages/cv.so /usr/local/lib/python2.6/dist-packages/cv.so
+add to /usr/local/lib/python2.6/dist-packages os.path in python :
+1
+2
+3
+>>>import sys
+>>>print sys.path
+>>>sys.path.append("/usr/local/lib/python2.6/site-packages")
+Using bash : export $ PYTHONPATH=/usr/local/lib/python2.6/site-package. Add this line to your ~/.bashrc if you want it to be permanent.
+Also, in case, you chose not to install OpenCV, then put cv.so and cv2.so (called cv.pyd and cv2.pyd on Windows) to opencv/samples/python directory, or rather add the directory containing cv.so/cv.pyd to PYTHONPATH [Reference 4], e.g.
+
+1
+export PYTHONPATH=~/projects/opencv/release/lib:$PYTHONPATH
+In case, there is still some problem running python code, then please refer to the section “Making Python work” in [Reference 6].
+
+That brings us to the end of this post. I hope you will find this guide helpful.
+
+9. References:
+
+“Installation in Linux”, OpenCV v2.4.3 documentation. Link: http://docs.opencv.org/trunk/doc/tutorials/introduction/linux_install/linux_install.html
+“Installing OpenCV 2.4.1 in Ubuntu 12.04 LTS”, Sabastian Montabone, June 24, 2012. Link: http://www.samontab.com/web/2012/06/installing-opencv-2-4-1-ubuntu-12-04-lts/
+“Introduction to Computer Vision with the OpenCV Library on Linux”, Lubos Rendek, January 2011. Link: http://linuxconfig.org/introduction-to-computer-vision-with-opencv-on-linux
+“OpenCV installation Guide”, Willowgarage.com. Link: http://opencv.willowgarage.com/wiki/InstallGuide
+“Installing OpenCV on Linux”, Willowgarage.com. Link: http://opencv.willowgarage.com/wiki/InstallGuide_Linux
+“OpenCV Installation Guide on Debian and Ubuntu”, Willowgarage.com. Link: http://opencv.willowgarage.com/wiki/InstallGuide%20%3A%20Debian
+“A Comprehensive Guide to Installing and Configuring OpenCV 2.4.2 on Ubuntu,” by  Osman Eralp, June 6, 2012. Link: http://www.ozbotz.org/opencv-installation/
+“How to compile OpenCV based programs in Linux,” Willowgarage.com. Link: http://opencv.willowgarage.com/wiki/CompileOpenCVUsingLinux
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

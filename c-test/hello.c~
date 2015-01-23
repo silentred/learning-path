@@ -1,0 +1,34 @@
+/*
+#include "stdio.h"
+
+int main(void){
+	printf("%s\n", "Hello World. \n");
+	return 0;
+}
+
+
+#include <math.h>
+#include <stdio.h>
+
+int main(void)
+{
+	double pi = 3.1416;
+	printf("sin(pi/2)=%f\nln1=%f\n", sin(pi/2), log(1.0));
+	return 0;
+}*/
+
+#include <stdio.h>
+
+int hour = 23, minute=59;
+int x =10;
+
+void print_time(void){
+	printf("%d:%d in print_time\n", hour, minute);
+}
+
+int main(void)
+{
+	print_time();
+	printf("%d:%d in main\n", hour, minute);
+	return 0;
+}

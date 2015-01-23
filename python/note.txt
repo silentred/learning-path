@@ -1,0 +1,242 @@
+列表
+list(''hello)
+del name[2]
+list.append('value')
+list.count('value')
+
+listA.extend(listB)
+listA + listB
+
+list.index('value')
+list.insert(3, 'value')
+list.pop() #移除最后一个, 唯一一个既能修改列表，又返回元素值的列表方法
+list.pop(0) #移除第一个
+list.remove('value') #移除第一个匹配项
+list.reverse()
+list.sort()
+list.sort(cmp)
+list.sort(key=len)
+list.sort(reverse=True)
+tuple(list)
+cmp(x, y)
+max(args)
+min(args)
+reversed(seq)
+sorted(seq)
+
+字符串
+print format % values
+
+format:
+%.3f
+
+string.find('subString')
+','.join(seq)
+string.lower()
+string.replace(needle, substitute)
+string.split(',')
+string.strip()
+translate
+
+字典
+dict([('name', 'JJ'), ('age', 23)])
+dict.clear()
+dict.copy()
+deepcopy(dict)
+{}.fromkeys(['name', 'age'])
+dict.get(key)
+key in dict
+dict.items()
+dict.iteritems()
+dict.keys()
+dict.iterkeys()
+dict.pop(key)
+dict.popitem() #随机
+dict.setdefault(key, value)
+dict.update(dictSegment)
+dict.values()
+dict.itervalues()
+
+导入
+import module
+from module import function [,function2] [,function3]
+from module import * #一般不用
+
+赋值
+x,y,z = 1,3,4 #序列解包
+x, y = y, x
+x, y = (1, 3)
+key, value = dict.popitem()
+x = y = 1 #链式
+
+条件
+False None 0 "" () [] {}
+True + False + 42 #结果为43
+
+if something:
+	do sth
+elif something:
+	do sth
+else:
+	do sth
+
+== #比较值
+is #比较指针
+is not
+in
+not in
+
+x == y
+x is y
+
+age=10
+assert 0<age<100 #或为False，程序则中断
+
+
+循环
+name = ''
+while not name.strip():
+    name = raw_input("input your name:")
+print 'Hello %s' % name
+
+
+for word in range(0,10): # 或者用xrange
+    print word
+
+
+for key, value in dict.items():
+	print key, 'is', value
+
+for x, y in zip(range(3,8), xrange(6)):
+	print x, y
+
+from math import sqrt
+for n in range(99,0,-1):
+	root = sqrt(n)
+	if root == int(root):
+		print n
+		break
+else:
+	print 'Did not find'
+
+列表推导式
+[x*x for x in range(10)]
+[x*x for x in range(10) if x%3 ==0]
+[(x,y) for x in range(3) for y in range(3)]
+
+定义函数
+def hello(name):
+	return 'Hello, '+name+'!!!!'
+
+vars()
+globals()
+
+map(str, range(10)) #  Equivalent to [str(i) for i in range(10)]
+filter(function, seq) # function returns a boolean.
+
+
+callable(object) #is callable, like function
+getattr(object, name, default) #get attribute of an object
+hasattr(object, name)
+isinstance(object, class)
+issubclass(A, B)
+random.choice(sequence)
+setattr(object, name, value)
+type(object) #return the type of an object
+
+raise Exception(message)
+
+# 标准的python包目录引入方法：
+配置环境变量 PYTHONPATH
+在 ~/.bashrc 中加入
+export PYTHONPATH=/home/jason/projects/python/packages
+source ~/.bashrc
+
+# module
+sys
+os
+fileinput
+
+# Set 集合
+set(range(5))
+a.union(b) # OR 等于 a|b
+c = a&b # AND 等于 a.intersection(b)
+c.issubset(a) # 子集 等于 c<=a
+c.issuperset(a) #是否是超集 等于 c >= a
+a.defference(b) # a - b, a减去 a和b的交集
+a.symmetric_difference(b) # a^b, a和b的并集减去a和b的交集
+a.copy() is a # False
+
+a.add(frozenset(b)) # 用于给集合中添加集合
+
+
+# Heap
+heappush(heap, x)
+heappop(heap) #弹出最小元素
+heapify(heap)
+heapreplace(heap, x) #弹出最小元素，并将x入堆
+nlargest(n, iter) #返回iter中第n大的元素
+nsmallest(n, iter) #返回iter中第n小的元素
+
+
+
+
+# 双端队列 Double-ended queue
+from collections import deque
+q=deque(range(5))
+q.append(5)
+q.appendleft(6)
+q.pop() # right
+q.popleft()
+q.rotate(3)
+
+
+# Time
+import time
+time.asctime()
+.localtime([seconds])
+.mktime(tuple) # 返回seconds
+sleep(seconds)
+strptime(string [, format])
+time()
+
+# random 伪随机
+# os.urandom 真随机
+random.random() #0-1
+.getrandbits(n) # 长整形的形式 返回n个随机位
+.uniform(a, b) #随机实数， a <= n < b
+.choice(seq) # 从seq中返回随机元素
+.shuffle(seq[, random]) #随机位移
+.sample(seq, n) #从seq中选择n个随机独立的元素
+
+import shelve
+好像类似字典
+shelve.open("test.dat")
+.close()
+
+re 模块
+compile(pattern[, flags])
+search(pattern, string[, flag])
+match(pattern, string[, flag])
+split(pattern, string[, maxsplit=0])
+findall(pattern, string)
+sub(pat, repl, string[, count=0])将字符串中的pat匹配项用repl替换
+escape(string) 将字符串中所有特殊正则表达字符转义
+
+# 得到匹配后的方法
+group()
+start()
+end()
+span()
+
+
+
+
+
+
+
+
+
+
+
+
