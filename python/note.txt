@@ -229,6 +229,54 @@ start()
 end()
 span()
 
+#打开文件资源
+f = open()
+f.write()
+f.read()
+sys.stdin.read()
+f.seek(), f.tell()
+f.readline()
+f.readlines()
+f.writelines()
+os.linesep #换行符
+f.close()
+
+with open('a.txt') as file:
+  do sth
+这样文件在结束后，就会自动close(),不用手动close()
+
+
+数据库API
+close()
+commit()
+rollback()
+cursor()
+
+游标的方法
+close()
+callproc(name[, params])
+execute(oper[, params])
+executemany(oper, pseq)
+fetchone()
+fetchmany([size])
+fetchall()
+nextset()
+setinputsizes(sizes)
+setoutputsize(size[, col])
+游标的属性
+description
+rowcount
+arraysize
+
+
+
+
+
+
+
+
+
+
 
 
 

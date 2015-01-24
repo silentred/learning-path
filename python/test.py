@@ -172,11 +172,74 @@ from random import shuffle
 
 data = range(10)
 shuffle(data)
-print data
+#print data
 heap = []
 for n in data:
 	heappush(heap, n)
-print heap
+#print heap
 heappush(heap, 0.5)
-print heap
+#print heap
+filename = '/home/jason/projects/learning-gist/python/install-pip.txt'
+f = open(filename)
+# while True:
+# 	# char = f.read(1)
+# 	# if not char: break
+# 	# print char
+
+# 	line = f.readline()
+# 	if not line:break
+# 	print line
+
+# for x in f.readlines():
+# 	print x
+
+# for x in f:
+# 	print x
+f.close()
+
+import fileinput
+# for line in fileinput.input(filename):
+# 	print line
+
+
+# wxWedgit
+import wx
+def load(event):
+	file = open(filename.GetValue())
+	contents.SetValue(file.read())
+	file.close()
+def save(event):
+	file = open(filename.GetValue(), 'w')
+	file.write(contents.GetValue())
+	file.close()
+
+app = wx.App()
+win = wx.Frame(None, title="Simple Test", size=(410, 335))
+bkg = wx.Panel(win)
+
+loadBtn = wx.Button(bkg, label="Open")
+loadBtn.Bind(wx.EVT_BUTTON, load)
+
+saveBtn = wx.Button(bkg, label="Save")
+saveBtn.Bind(wx.EVT_BUTTON, save)
+
+filename = wx.TextCtrl(bkg)
+contents = wx.TextCtrl(bkg, style=wx.TE_MULTILINE|wx.HSCROLL)
+
+hbox = wx.BoxSizer()
+hbox.Add(filename, proportion=1, flag=wx.EXPAND)
+hbox.Add(loadBtn, proportion=0, flag=wx.LEFT, border=5)
+hbox.Add(saveBtn, proportion=0, flag=wx.LEFT, border=5)
+
+vbox = wx.BoxSizer(wx.VERTICAL)
+vbox.Add(hbox, proportion=0, flag=wx.EXPAND|wx.ALL, border=5)
+vbox.Add(contents, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.BOTTOM|wx.RIGHT, border=5)
+
+bkg.SetSizer(vbox)
+win.Show()
+app.MainLoop()
+
+
+
+
 
