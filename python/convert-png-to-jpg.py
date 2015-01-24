@@ -8,4 +8,4 @@ import glob
 
 print glob.glob('E:/lifome/product-img-edited/*.png')
 
-
+# box = im.crop(left_up_x,left_up_y, right_down_x, right_down_y)
