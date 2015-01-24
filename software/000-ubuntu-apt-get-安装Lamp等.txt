@@ -39,3 +39,6 @@ sudo apt-get install mongodb
 sudo apt-get install -y postgresql-9.4 postgresql-client-9.4 postgresql-contrib-9.4 postgresql-server-dev-9.4 
 
 
+# install nodejs npm
+sudo apt-get install nodejs
+sudo apt-get install npm
