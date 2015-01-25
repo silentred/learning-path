@@ -236,8 +236,11 @@ vbox.Add(hbox, proportion=0, flag=wx.EXPAND|wx.ALL, border=5)
 vbox.Add(contents, proportion=1, flag=wx.EXPAND|wx.LEFT|wx.BOTTOM|wx.RIGHT, border=5)
 
 bkg.SetSizer(vbox)
-win.Show()
-app.MainLoop()
+# win.Show()
+# app.MainLoop()
+
+
+
 
 
 

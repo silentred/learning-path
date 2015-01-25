@@ -269,8 +269,23 @@ rowcount
 arraysize
 
 
+DB API 构造函数和特殊值
+Date(year, month, day) # 创建保存日期的对象
+Time()
+Timestamp()
+DateFromTicks()
+TimeFromTicks()
+TimestampFromTicks()
+Binary(string)
+STRING
+BINARY
+NUMBER
+DATETIME
+ROWID
 
 
+urllib.urlopen(url)
+urllib.urlretrieve(url, localPathToSave)
 
 
 
