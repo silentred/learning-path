@@ -43,3 +43,6 @@ $index = array_search('b', $a);
 array_splice($a, 1,1);
 print_r("\n the index of b is ".$index . "\n");
 print_r($a);
+
+
+
