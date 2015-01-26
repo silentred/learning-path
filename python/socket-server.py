@@ -28,4 +28,6 @@ class Handler(StreamRequestHandler):
 		self.wfile.write('Thank you')
 s = Server(('', 8808), Handler)
 s.serve_forever()
-		
+
+
+

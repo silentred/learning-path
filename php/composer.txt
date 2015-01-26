@@ -1,0 +1,21 @@
+sudo apt-get install curl 
+
+sudo curl -sS https://getcomposer.org/installer |sudo php -- --install-dir=/usr/local/bin
+
+
+
+
+
+PSR-4是composer推荐使用的一种方式，因为它更易使用并能带来更简洁的目录结构。在composer.json里是这样进行配置的：
+
+{
+    "autoload": {
+        "psr-4": {
+            "Foo\\": "src/",
+        }
+    }
+}
+key和value就定义出了namespace以及到相应path的映射。按照PSR-4的规则，当试图自动加载 "Foo\\Bar\\Baz" 这个class时，会去寻找 "src/Bar/Baz.php" 这个文件，如果它存在则进行加载。注意， "Foo\\" 并没有出现在文件路径中，这是与PSR-0不同的一点，如果PSR-0有此配置，那么会去寻找"src/Foo/Bar/Baz.php"这个文件。
+
+这里我们选择psr-4，配置完成后，需要运行一下 composer dumpautoload
+因为配置composer.json的本质还是根据配置内容生成一个autolaod.php，自动加载是根据这个php文件进行的。
