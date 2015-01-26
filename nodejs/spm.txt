@@ -1,0 +1,13 @@
+安装nodejs，下载binary文件包，软连接到/usr/local/bin下
+
+npm install
+npm update
+# 以上命令会安装在json文件中配置好的依赖
+
+cd spm
+su - 
+npm install spm@2.x
+npm install spm-build@0.x
+#用root身份安装spm
+
+这里可能会涉及到NODE_PATH的环境变量问题， 好像可以设为/usr/local/lib/node_modules
