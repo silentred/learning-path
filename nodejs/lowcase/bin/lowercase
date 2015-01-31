@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+var myfile = process.argv.slice(2);
+console.log(myfile);
+
+var path = require('path');
+var fs = require('fs');
+var dir = path.dirname(fs.realpathSync(__filename)) + "/../";
+require(dir+'lowercase.js').lowerCase(dir+myfile);

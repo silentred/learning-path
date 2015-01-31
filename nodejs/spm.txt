@@ -8,6 +8,7 @@ cd spm
 su - 
 npm install spm@2.x
 npm install spm-build@0.x
+spm install seajs
 #用root身份安装spm
 
 这里可能会涉及到NODE_PATH的环境变量问题， 好像可以设为/usr/local/lib/node_modules

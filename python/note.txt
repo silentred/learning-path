@@ -288,9 +288,19 @@ urllib.urlopen(url)
 urllib.urlretrieve(url, localPathToSave)
 
 
+from ConfigParser import ConfigParser
+
+config.txt
+[messages]
+greeting: abc!
+
+parser = ConfigParser()
+parser.reader('config.txt')
+print parser.get('messages', 'greeting')
 
 
-
+import logging
+logging.info('log')
 
 
 

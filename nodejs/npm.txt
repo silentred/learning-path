@@ -1,0 +1,3 @@
+sudo npm install express-generator -g
+
+sudo npm install restify -g

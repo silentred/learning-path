@@ -45,4 +45,4 @@ print_r("\n the index of b is ".$index . "\n");
 print_r($a);
 
 
-
+var_dump(getallheaders());

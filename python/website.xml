@@ -1,0 +1,11 @@
+<website>
+	<page name="index" title="Home page">
+		<h1>Index H1 tag</h1>
+		<p>Hi, index page</p>
+	</page>
+	<directory name="interests">
+		<page name="shouting" title="Shouting">
+			<h1>Shouting Page</h1>
+		</page>
+	</directory>
+</website>

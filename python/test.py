@@ -241,6 +241,53 @@ bkg.SetSizer(vbox)
 
 
 
+from reportlab.graphics.shapes import Drawing, String
+from reportlab.graphics import renderPDF
+# d= Drawing(100, 100)
+# s = String(50, 50, 'Hello world', textAnchor='middle')
+# d.add(s)
+
+#renderPDF.drawToFile(d, 'hello.pdf', 'A Simple PDF File')
+
+from reportlab.lib import colors
+from reportlab.graphics.shapes import *
+data = [
+#year, month, predected, high, low
+(2007, 12, 11.3, 11.4, 11.2),
+(2008, 1, 12.3, 13.2, 12.1),
+(2008, 2, 11.1, 11.5, 11.0),
+(2008, 3, 30.3, 40.2, 30.5),
+(2008, 4, 50.3, 40.3, 40.2),
+(2008, 5, 40.7, 40.4, 40.1),
+(2008, 6, 40.8, 40.5, 40.3),
+(2008, 7, 40.1, 40.6, 40.2),
+(2008, 8, 40.3, 50.7, 40.0)
+]
+
+drawing = Drawing(200, 150)
+pred = [row[2] for row in data]
+high = [row[3] for row in data]
+low = [row[4] for row in data]
+times = [200*((row[0] + row[1]/12.0) -2007)-180 for row in data]
+
+drawing.add(PolyLine(zip(times, pred), strokeColor=colors.blue))
+drawing.add(PolyLine(zip(times, high), strokeColor=colors.red))
+drawing.add(PolyLine(zip(times, low), strokeColor=colors.green))
+drawing.add(String(65, 115, 'Sunspots', fontSize=18, fillColor=colors.red))
+
+#renderPDF.drawToFile(drawing, 'report.pdf', 'Sunspots')
+
+from xml.sax import make_parser
+from xml.sax.handler import ContentHandler
+from xml.sax import parse
+
+class TestHandler(ContentHandler):
+	def startElement(self, name, attrs):
+		print name, attrs.keys()
+
+parse('website.xml', TestHandler())
+
+
 
 
 
