@@ -1,4 +1,6 @@
 <?php
+
+// Quality is a number between 0 (best compression) and 100 (best quality)
 function resize($originalFile, $outputFile) {
 	$info = getimagesize($originalFile);
     $mime = $info['mime'];
@@ -31,7 +33,7 @@ function resize($originalFile, $outputFile) {
     $img = $image_create_func($originalFile);
 
     list($width, $height) = getimagesize($originalFile);
-    if (($width-$bgWidth) >= ($height-$bgHeight)) {
+    if (($width-$bgWidth) > ($height-$bgHeight)) {
     	$newWidth = $bgWidth;
     	$newHeight = ($height/$width)*$newWidth;
     	$dst_x = 0;

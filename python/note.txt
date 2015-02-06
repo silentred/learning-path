@@ -237,7 +237,6 @@ sys.stdin.read()
 f.seek(), f.tell()
 f.readline()
 f.readlines()
-f.writelines()
 os.linesep #换行符
 f.close()
 
@@ -246,61 +245,11 @@ with open('a.txt') as file:
 这样文件在结束后，就会自动close(),不用手动close()
 
 
-数据库API
-close()
-commit()
-rollback()
-cursor()
-
-游标的方法
-close()
-callproc(name[, params])
-execute(oper[, params])
-executemany(oper, pseq)
-fetchone()
-fetchmany([size])
-fetchall()
-nextset()
-setinputsizes(sizes)
-setoutputsize(size[, col])
-游标的属性
-description
-rowcount
-arraysize
 
 
-DB API 构造函数和特殊值
-Date(year, month, day) # 创建保存日期的对象
-Time()
-Timestamp()
-DateFromTicks()
-TimeFromTicks()
-TimestampFromTicks()
-Binary(string)
-STRING
-BINARY
-NUMBER
-DATETIME
-ROWID
 
 
-urllib.urlopen(url)
-urllib.urlretrieve(url, localPathToSave)
 
-
-from ConfigParser import ConfigParser
-
-config.txt
-[messages]
-greeting: abc!
-
-parser = ConfigParser()
-parser.reader('config.txt')
-print parser.get('messages', 'greeting')
-
-
-import logging
-logging.info('log')
 
 
 

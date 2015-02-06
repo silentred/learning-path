@@ -9,6 +9,9 @@ sudo apt-get install flashplugin-nonfree
 
 
 #安装google chrome
+sudo kate /etc/apt/sources.list.d/google-chrome.list
+deb http://dl.google.com/linux/deb/ stable main
+sudo apt-get update
 sudo apt-get install google-chrome-stable
 提示apt-get -f install
 
