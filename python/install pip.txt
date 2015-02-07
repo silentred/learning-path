@@ -1,5 +1,0 @@
-sudo apt-get install python-pip python-dev
-sudo pip install --upgrade pip 
-
-type pip
-sudo pip install xlwt xlrd

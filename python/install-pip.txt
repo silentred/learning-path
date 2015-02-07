@@ -5,14 +5,23 @@ type pip
 sudo pip install xlwt xlrd
 
 
+# install pyspider
+sudo apt-get install libxml2 libxml2-dev
+sudo apt-get install libxslt1-dev
+sudo apt-get isntall curl libcurl4-openssl-dev
 
+# or
+sudo apt-get install python python-dev python-distribute python-pip libcurl4-openssl-dev libxml2-dev libxslt1-dev python-lxml
+sudo pip install pyspider
+
+sudo apt-get install python-libxml2 python-libxslt
 
 
 
 sudo apt-get install python-wxtools
 
 
-# dont need to install wxWedgit, because Ubuntu 14.10 has already install this library
+# dont need to install wxWedgit, because Ubuntu 14.10 has already install this library; not true
 
 sudo apt-add-repository 'deb http://repos.codelite.org/wx3.0.2/ubuntu/ trusty universe'
 sudo apt-get update
