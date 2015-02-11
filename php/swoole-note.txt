@@ -1,0 +1,25 @@
+./configure --enable-async-mysql --enable-openssl
+
+
+异步读写文件
+swoole_async_readfile(__DIR__.'/../server.php', function($filename, $content){
+	echo "file: $filename\ncontent-length: ".strlen($content)."\nContent:\n";
+	swoole_async_writefile(__DIR__.'/test.copy', $content, function($write_file) {
+		echo "file: $write_file\n";
+		swoole_event_exit(); // 这个函数什么意思？
+	});
+});
+
+swoole_async_readfile
+swoole_async_writefile
+swoole_async_read
+swoole_async_write
+
+
+异步查询dns
+swoole_async_dns_lookup
+运行例子文件时候出现以下Warning
+PHP Warning:  Unknown: swoole_async: Aio Error: Success[0] in Unknown on line 0
+
+
+

@@ -1,0 +1,145 @@
+##Disable unused dangerous functions by configuring PHP. Verify that if dangerous functions are used, they are used safely.
+
+Why
+
+Disabling dangerous functions helps make sure they are not used by the application and prevents attackers from using them. Most dangerous functions allow executing external system commands - this functionality is inherently dangerous, because it may allow command injection vulnerabilities if not implemented correctly. It is best to avoid such functions, if possible. If executing system commands is required, extra caution has to be taken when writing such code.
+
+Disabling dangerous functions also makes privilege escalation more difficult for attackers. Many common attacks on PHP applications involve attackers uploading so-called "Web Shells", which are scripts that give the attacker access to system functions for the purpose of taking over the web server. Web Shells typically use the dangerous PHP functions for access to system commands. Disabling dangerous PHP functions makes using Web Shells more difficult, thus adding an extra layer of defense.
+
+How
+
+To disable dangerous functions:
+
+Search code for dangerous functions. Search application code for the following functions and operator(s):
+system()
+exec()
+shell_exec()
+passthru()
+popen()
+proc_open()
+parse_ini_file()
+show_source()
+symlink()
+' (backtick operator)
+Make a list of used dangerous functions.
+
+Identify dangerous functions that are not used. Make a list of the functions that are not used in your application, by copying the list from Step 1 and removing any dangerous functions that are used from it.
+Disable unused dangerous functions. Use the list from Step 2 to disable unused dangerous functions in the php.ini file by using the disable_functions directive, like so:
+Review all instances of used dangerous functions. Make sure that each case of using a dangerous function is necessary and is done in accordance with best practices. For code that passes arguments to shell commands, use escapeshellarg() to prevent command injection vulnerabilities. Use absolute paths when executing external commands. Do not let users execute arbitrary commands. Be particularly careful with the backtick (') operator.
+disable_functions = system, exec, shell_exec, passthru, popen, proc_open, parse_ini_file, show_shource, symlink.
+
+
+
+
+
+
+
+
+
+##Dangerous PHP Functions Must be Disabled
+
+Posted by Mac Wilson at 7 April, at 11 : 46 AM Print
+PHP Hosting
+
+PHP stands for Hypertext Preprocessor is a powerful and popular server-side scripting language which is used for serving dynamic web pages. It is very simple to code and debug and supports several databases like MySQL, MS SQL and Oracle.
+
+But, have you ever pondered that some of the PHP functions can be very dangerous for your server and data stored on it ?
+
+When the PHP code is used in an improper way or any insecure php code, potentially it can messed up with a web hosting server and can simply be hacked by hackers. Insecure PHP code can literally harm your server data at the level you cannot even imagine it.
+
+Using the insecure PHP code, as a security hole hackers could enable some very dangerous and powerful PHP functions and can take control over your web hosting server. There are many such php function which should be disabled in the PHP configuration file. Let’s check out the functions that should be disabled in the php configuration file right away on your web server.
+
+Following is a list of dangerous php functions:
+
+apache_child_terminate
+apache_setenv
+define_syslog_variables
+escapeshellarg
+escapeshellcmd
+eval
+exec
+fp
+fput
+ftp_connect
+ftp_exec
+ftp_get
+ftp_login
+ftp_nb_fput
+ftp_put
+ftp_raw
+ftp_rawlist
+highlight_file
+ini_alter
+ini_get_all
+ini_restore
+inject_code
+mysql_pconnect
+openlog
+passthru
+php_uname
+phpAds_remoteInfo
+phpAds_XmlRpc
+phpAds_xmlrpcDecode
+phpAds_xmlrpcEncode
+popen
+posix_getpwuid
+posix_kill
+posix_mkfifo
+posix_setpgid
+posix_setsid
+posix_setuid
+posix_setuid
+posix_uname
+proc_close
+proc_get_status
+proc_nice
+proc_open
+proc_terminate
+shell_exec
+syslog
+system
+xmlrpc_entity_decode
+On the cPanel servers where PHP handler is configured to use DSO, PHP runs under nobody ownership. This may become a security hole and create major issue if you have given 777 permission. The 777 permission enables the “nobody” user to read, write and execute the file. So, its better to be careful with the permissions.
+
+It is always recommended to set the permission to 755, so that no one can edit or change the files. The PHPsuexec function disallows the php scripts to run as 777 permissions and the files cannot be read as well. This function should always be enable for ensuring the maximum security.
+
+PHP functions such as “exec” and “system” are always used to execute the external programs. Even a shell command can also be executed. If these two functions are enabled then a user can enter any command as input and execute into your server. The user can also delete all of your data simply by giving “rm -rf *” command. Even the user can enter any command simply by using (;) in the argument area. Thus, it is better to disable the “exec” and “system” functions in your php.ini configuration file.
+
+Enter the following command in ssh to find your php.ini file:
+
+root@server [~]# php -i | grep php.ini
+Mostly, you will get it in the /etc/php.ini directory or you may also get in /usr/local/lib/php.ini
+
+Enter the following command to edit the file using your favorite editor. I have used VI editor here:
+
+root@server [~]# vi /etc/php.ini
+Search for the following text “disable_functions” in the php.ini file.
+
+disable_functions: is a directive used to disable the insecure php functions.
+
+Once you find the “disable_functions” directive in the configuration file, modify the disable_functions=”” as shown below:
+
+disable_functions = “apache_child_terminate, apache_setenv, define_syslog_variables, escapeshellarg, escapeshellcmd, eval, exec, fp, fput, ftp_connect, ftp_exec, ftp_get, ftp_login, ftp_nb_fput, ftp_put, ftp_raw, ftp_rawlist, highlight_file, ini_alter, ini_get_all, ini_restore, inject_code, mysql_pconnect, openlog, passthru, php_uname, phpAds_remoteInfo, phpAds_XmlRpc, phpAds_xmlrpcDecode, phpAds_xmlrpcEncode, popen, posix_getpwuid, posix_kill, posix_mkfifo, posix_setpgid, posix_setsid, posix_setuid, posix_setuid, posix_uname, proc_close, proc_get_status, proc_nice, proc_open, proc_terminate, shell_exec, syslog, system, xmlrpc_entity_decode”
+The above mentioned changes can be applied on both Linux as well as Windows servers.
+
+Once you modify the php.ini configuration file, you will need to restart the Apache web server on Linux server and IIS web server on Windows server for changes to take effect.
+
+After disabling the above dangerous php functions, you may encounter a problem with your web applications. For example: when you disable the “shell_exec” and visit Fantastico in the cPanel, you may see the below error:
+
+Warning: shell_exec() has been disabled for security reasons in /tmp/cpanel_phpengine.*.* on line *
+In this case, you should run the following from SSH:
+
+/scripts/makecpphp
+The above command will install a copy of PHP to use with the cPanel/WHM backend and its addons like Fantastico.
+
+–
+
+Like this post ?
+
+Share on your Social Networking Profile ( Facebook, Twitter & Google+ ) and get a flat 10% Recurring discount on our VPS Hosting and Dedicated Servers.
+
+Email us the shared link at : sales@eukhost.com or speak to our live chat operator now, by clicking on the “Live Chat” Scroller on the left-hand side of this page and we will provide you with the discount Coupon right away!
+
+
+
+

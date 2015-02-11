@@ -14,10 +14,13 @@ http://www.2cto.com/os/201212/176520.html
 sudo apt-get install apache2 apache2-utils
 
 # mysql
-sudo apt-get install mysql-server mysql-client
+sudo apt-get install mysql-server mysql-client libmysqlclient-dev
 
 # install php
-sudo apt-get install libapache2-mod-php5 php5 php5-gd php5-mysql php-pear php5-dev php5-cli php5-cgi php5-fpm
+sudo apt-get install libapache2-mod-php5 php5 php5-gd php-pear php5-dev php5-cli php5-cgi php5-fpm libpcre3-dev php5-mcrypt php5-curl php5-mysql php5-mysqlnd
+
+提示php5-curl php5-mysql php5-mysqlnd冲突，可以先安装php5-mysql， 再安装php5-mysqlnd
+
 sudo apt-get install libpcre3-dev
 
 
@@ -64,3 +67,6 @@ sudo apt-get install python-gtk2 python-vte
 
 #install phantomjs
 sudo apt-get install phantomjs
+
+#netcat?
+sudo apt-get install netcat

@@ -13,6 +13,11 @@
 ./configure --prefix=/usr/local/php --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d --enable-fpm --enable-sysvsem --enable-sockets --enable-pcntl --enable-mbstring --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-freetype-dir=/usr/local/freetype --with-jpeg-dir=/usr/local/libjpeg --with-png-dir=/usr/local/libpng --enable-opcache --enable-shmop  --enable-zip --with-mcrypt --with-zlib=/usr/local/zlib --with-libxml-dir=/usr/local/libxml2 --enable-xml --with-curl=/usr/local/curl/ --with-pcre-dir=/usr/local/pcre/ --with-bz2=/usr/local/bzip2 --with-apxs2=/usr/local/apache/bin/apxs --with-gd --with-gettext --with-iconv -with-mhash --with-openssl --enable-bcmath --enable-soap --with-pear
 
 
+// 用apt-get安装了一个php之后，安装swoole的异步mysql出错，大神建议重新编译个php，于是我打算保留之前的php，重新简单编译个php5.6 ，许多扩展没有安装;测试结果是，async_mysql成功安装
+./configure --prefix=/usr/local/php56 --with-config-file-path=/etc/php56 --with-config-file-scan-dir=/etc/php56/php.d --enable-fpm --enable-sysvsem --enable-sockets --enable-pcntl --enable-mbstring --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --enable-opcache --enable-shmop  --enable-zip --with-mcrypt   --enable-xml --with-gd --with-iconv -with-mhash --with-openssl --enable-bcmath --enable-soap --with-pear
+
+
+
 错误八：
 configure: error: Your t1lib distribution is not installed correctly. Please reinstall it.
 解决办法：
