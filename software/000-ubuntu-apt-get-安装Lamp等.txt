@@ -18,6 +18,7 @@ sudo apt-get install mysql-server mysql-client
 
 # install php
 sudo apt-get install libapache2-mod-php5 php5 php5-gd php5-mysql php-pear php5-dev php5-cli php5-cgi php5-fpm
+sudo apt-get install libpcre3-dev
 
 
 # php extensions
@@ -59,3 +60,7 @@ sudo apt-get install npm
 
 # install python
 sudo apt-get install python-gtk2 python-vte 
+
+
+#install phantomjs
+sudo apt-get install phantomjs
