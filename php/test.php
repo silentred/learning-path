@@ -64,3 +64,5 @@ $today = strtotime(date("Y-m-d"));
 $date = strtotime('2014-10-10');
 $days = round(($today-$date)/3600/24);
 echo $days, "\n";
+
+echo pack("HH", 45, 51);
