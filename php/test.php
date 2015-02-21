@@ -66,3 +66,15 @@ $days = round(($today-$date)/3600/24);
 echo $days, "\n";
 
 echo pack("HH", 45, 51);
+
+echo "\n reverse string start \n ";
+
+$start = microtime();
+$string = "hello world";
+$result;
+for($i=100000;$i--;){
+	$a = str_split($string);
+	$result = join('',array_reverse($a));
+}
+$end = microtime();
+echo "$result, processed for ", ($end-$start), " ms";
