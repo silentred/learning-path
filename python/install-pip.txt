@@ -8,11 +8,14 @@ sudo pip install xlwt xlrd
 # install pyspider
 sudo apt-get install libxml2 libxml2-dev
 sudo apt-get install libxslt1-dev
-sudo apt-get isntall curl libcurl4-openssl-dev
+sudo apt-get install curl libcurl4-openssl-dev
 
 # or
 sudo apt-get install python python-dev python-distribute python-pip libcurl4-openssl-dev libxml2-dev libxslt1-dev python-lxml
 sudo pip install pyspider
+
+# if error "openssl/crypto.h not found" occured, then install libssl-dev
+sudo apt-get install libssl-dev
 
 sudo apt-get install python-libxml2 python-libxslt
 
