@@ -117,4 +117,4 @@ def getId(url, pattern=None):
     id = 0
     if matchObj:
         id = matchObj.group(1)
-    return id
+    return i
