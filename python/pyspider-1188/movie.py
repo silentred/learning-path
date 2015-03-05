@@ -107,4 +107,11 @@ class Handler(BaseHandler):
 def delUrlParams(url):
     parsed = urlparse(url)
     empty = '', '', ''
-    return urlun
+    return urlunparse(parsed[:3] + empty) 
+
+#得到视频的id
+def getId(url, pattern=None):
+    parsed = urlparse(url)
+    matchObj = re.search(pattern, parsed.path)
+    id = 0
+    i
