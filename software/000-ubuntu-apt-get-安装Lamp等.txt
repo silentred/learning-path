@@ -1,3 +1,5 @@
+sudo apt-get install build-essential 
+
 # install nginx
 sudo add-apt-repository ppa:nginx/stable
 sudo apt-get update
