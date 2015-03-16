@@ -28,8 +28,9 @@ class Handler(BaseHandler):
             img_url = img.attr.src
             if re.match(".*noimg.jpg.*", img_url):
                 img_url = img.attr.loadsrc
-            small_image = {"small_image": img_url}
-            self.crawl(pq(each).find('div.txt .sTit>a').attr.href, callback=self.detail_page, save=small_image)
+            rating =  pq(each).find('.sScore em').text() or 0
+            save = {"small_image": img_url, "rating": rating}
+            self.crawl(pq(each).find('div.txt .sTit>a').attr.href, callback=self.detail_page, save=save)
 
         for each in response.doc('DIV#pageList>A').items():
             if re.match("http://v.2345.com/zongyi/lpxdefault/\d+/$", each.attr.href):
@@ -87,9 +88,11 @@ class Handler(BaseHandler):
             "hosts" : hostList,
             "small_image": response.save['small_image'] or '',
             "orig_id" : orig_id,
+            "rating": response.save['rating'],
             "is_play_source": 0
         }
 
+    @config(priority=2)
     def jsonYearList(self, response):
         save = response.save
         yearList = response.json['yearList']
@@ -99,6 +102,7 @@ class Handler(BaseHandler):
             save['year'] = each
             self.crawl(self.ajaxBaseUrl+makeAjaxParam(api=save['api'], id=save['variety_id'], year=save['year']), callback=self.source_list_page, save=save)
 
+    @config(priority=2)
     def source_list_page(self, response):
         save = response.save
         save['source'] = []

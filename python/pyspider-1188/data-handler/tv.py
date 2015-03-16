@@ -12,7 +12,7 @@ import logging
 import pinyin
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from declarative import  Base, Video, VideoInfo, Category, PlaySource, Specicalty
+from declarative import  Base, Video, VideoInfo, Category, PlaySource, Specicalty, TVPlot
 from sqlalchemy.orm.exc import NoResultFound
 
 def initSession():
@@ -32,6 +32,15 @@ def searchVideo(session,movie, video_type_id):
         raise e
     return movie
 
+def searchTV(session,tv_id, video_type_id):
+    try:
+        movie = session.query(Video).filter(Video.orig_id == tv_id).filter(Video.video_type_id == video_type_id).one()
+    except NoResultFound, e:
+        raise e
+    except Exception, e:
+        raise e
+    return movie
+
 def saveVideo(session, movie, video_type_id):
     #处理rating和runtime
     if not movie['rating']:
@@ -46,12 +55,13 @@ def saveVideo(session, movie, video_type_id):
             location = movie['location'].decode('unicode-escape'),
             orig_id = int(movie['orig_id']),
             video_type_id = video_type_id,
-            is_closed = int(movie['closed'])
+            is_closed = int(movie['closed']),
+            director=movie['director'].decode('unicode-escape')
         )
     session.add(video)
     return video
 
-def searchAndSaveMovie(session, movie, video_type_id):
+def searchAndSaveVideo(session, movie, video_type_id):
     if not movie['title']:
         return None
 
@@ -73,11 +83,16 @@ def saveVideoInfo(session, movie, savedMovieObj):
         videoInfoObj = session.query(VideoInfo).filter(VideoInfo.video == savedMovieObj).one()
         return videoInfoObj
     except NoResultFound, e:
+        actors = ''
+        if len(movie['casting']) > 0:
+            actorList = [x.decode('unicode-escape') for x in movie['casting']]
+            actors = ', '.join(actorList)
+
         videoInfoObj = VideoInfo(introduction=movie['introduction'].decode('unicode-escape'),
                 poster_image = movie['poster_image'],
                 small_image = movie['small_image'],
                 video = savedMovieObj,
-                alias = movie['alias'].decode('unicode-escape')
+                actors = actors
             )
         session.add(videoInfoObj)
         return videoInfoObj
@@ -147,28 +162,44 @@ def searchAndLinkSpecialty(sesstion, movie, savedMovieObj, video_type_id):
             logging.error(e)
             raise e
 
-def doesVideoExist(session, video_id):
-    pass
+def searchAndSaveTVPlot(session, video,savedTVObj ):
+    if savedTVObj is None:
+        return None
+    try:
+        tvPlot = session.query(TVPlot).filter(TVPlot.video == savedTVObj).filter(TVPlot.episode_num == video['episode_num']).one()
+    except NoResultFound, e:
+        tvPlot = TVPlot(content=video['content'], 
+                episode_num = video['episode_num'],
+                video = savedTVObj
+            )
+        session.add(tvPlot)
+    except Exception, e:
+        raise e
+    return tvPlot
 
 session = initSession()
 with sqlite3.connect('result.db') as db:
     cursor = db.cursor()
-    cursor.execute('''SELECT taskid, result from resultdb_comic limit 0, 100''')
+    cursor.execute('''SELECT taskid, result from resultdb_tv limit 0, 500''')
     allRows = cursor.fetchall()
     i = 0
     for row in allRows:
         try:
-            movie = ast.literal_eval(row[1])
-            # 保存video, 如果已经存在就返回搜索到的Video对象
-            savedMovieObj = searchAndSaveMovie(session, movie, 2)
-            # 保存VideoInfo
-            saveVideoInfo(session, movie, savedMovieObj)
-            #保存并关联category
-            searchAndLinkCategory(session, movie, savedMovieObj, 2)
-            #保存并关联play source
-            searchAndLinkPlaySource(session, movie, savedMovieObj, 2)
-            # 保存并关联sepcialty
-            #searchAndLinkSpecialty(session, movie, savedMovieObj, 2)
+            video = ast.literal_eval(row[1])
+            if not video['is_plot']:
+                # 保存video, 如果已经存在就返回搜索到的Video对象
+                savedMovieObj = searchAndSaveVideo(session, video, 3)
+                # 保存VideoInfo
+                saveVideoInfo(session, video, savedMovieObj)
+                #保存并关联category
+                searchAndLinkCategory(session, video, savedMovieObj, 3)
+                #保存并关联play source
+                searchAndLinkPlaySource(session, video, savedMovieObj, 3)
+                # 保存并关联sepcialty
+                #searchAndLinkSpecialty(session, video, savedMovieObj, 2)
+            else:
+                savedTVObj = searchTV(session, video['tv_id'], 3)
+                searchAndSaveTVPlot(session, video, savedTVObj)
             
             i += 1
             if i % 200 == 0:

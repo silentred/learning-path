@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String, Date, Numeric, Boolean, Text, Table, CHAR
+from sqlalchemy import Column, ForeignKey, Integer, String, Date, Numeric, Boolean, Text, Table, CHAR, SmallInteger, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import create_engine
@@ -53,6 +53,7 @@ class VideoInfo(Base):
     actors = Column(String(255), nullable=False, default='')
     meta_title = Column(String(255), nullable=False, default='')
     alias = Column(String(255), nullable=False, default='')
+    upd_desc = Column(String(255), nullable=False, default='')
      # one to one relation
     video = relationship("Video", backref=backref("video_info", uselist=False))
 
@@ -83,6 +84,30 @@ class Specicalty(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False, default='')
     video_type_id = Column(Integer, nullable=False)
+
+class TVPlot(Base):
+    __tablename__='tv_plot'
+    id = Column(Integer, primary_key=True)
+    video_id = Column(Integer, ForeignKey('video.id'), nullable=False)
+    content =  Column(Text, nullable=False, default='')
+    episode_num = Column(SmallInteger, nullable=True)
+    # many to one
+    video = relationship("Video", backref=backref("tv_plot"))
+        
+class VarietySource(Base):
+    __tablename__= 'variety_source'
+    id = Column(Integer, primary_key=True)
+    api_id =  Column(Integer, nullable=True)
+    api_name = Column(CHAR(30), nullable=True)
+    url = Column(String(355), nullable=False)
+    title = Column(CHAR(100), nullable=True)
+    guests = Column(String(255), nullable=False, default='')
+    date = Column(Date, nullable=False)
+    small_image = Column(String(255), nullable=False, default='')
+    # many to one
+    video_id = Column(Integer, ForeignKey('video.id'))
+    video = relationship('Video')
+
 
         
         

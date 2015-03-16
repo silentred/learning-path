@@ -31,4 +31,8 @@ play_source的结构不同
 
 TV
 play_source和Comic相同
-先保存所有Video主题，再保存所有的plot。因为如果同时保存，可能会出现plot对应的video不存在的情况。（理论是不会，因为抓取时是先抓主体再抓plot的。观察结果好像是如此，那么就可以同时处理，用is_plot区分）
+先保存所有Video主题，再保存所有的plot。因为如果同时保存，可能会出现plot对应的video不存在的情况。（理论是不会，因为抓取时是先抓主体再抓plot的。观察结果好像是如此，那么就可以同时处理，用is_plot区分； 实验结果的确不会，提高plot页的抓取权重，来保证抓到video信息的电视，其剧情是尽量完整的）
+
+Variety
+播放源需要重新定义，VarietySource；处理的方法有些不同
+

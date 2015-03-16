@@ -65,6 +65,9 @@ class Handler(BaseHandler):
             matchObj = re.search(u'.*上映于(\d+)年.*' ,response.doc('meta[name=Description]').eq(0).attr.content)
             year = matchObj.group(1)
 
+        orig_id = 0
+        orig_id = re.search('.*/detail/(\d+).html$', response.url).group(1)
+
         #抓取播放源地址
         playSources = {}
         for each in response.doc('.sourceList').items():
@@ -111,21 +114,24 @@ class Handler(BaseHandler):
             "director" : director or '',
             "closed": closed,
             "upd_desc": upd_desc or '',
-            "is_plot": 0
+            "is_plot": 0,
+            "orig_id": orig_id
         }
 
     #剧情列表
     @config(priority=2, age=4 * 24 * 60 * 60)
     def plot_list_page(self, response):
-        for each in response.doc('.dramaChoice a').items():
-            self.crawl(each.attr.href, callback=self.plot_detail_page)
+        for each in response.doc('.th_b .sourceList>.numList> a').items():
+            if each.attr.href != 'javascript:void(0);':
+                self.crawl(each.attr.href, callback=self.plot_detail_page)
         return self.crawl_plot_detail(response)
 
-    @config(age=4 * 24 * 60 * 60)
+    @config(priority=2,age=4 * 24 * 60 * 60)
     def plot_detail_page(self, response):
         return self.crawl_plot_detail(response)
 
     #剧情页的首页不能抓两次，以为taskId重复，所以在进入plot_list_page方法时候就要返回一次数据
+    @config(priority=3,age=4 * 24 * 60 * 60)
     def crawl_plot_detail(self, response):
         rawHtml = response.doc('.paragraphCon').html()
         match = re.search('.*/juqing/(\d+)(-\d+)?\.html$', response.url)

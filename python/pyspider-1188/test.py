@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ## -*- encoding: utf-8 -*-
-import re
+import re, datetime
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
 
 url = 'http://v.2345.com/moviecore/server/variety/index.php?ctl=newDetail&act=ajaxList&id=47&year=0&api=qiyi&month=0&time=1425537044206&timeStamp=1425537044206'
@@ -55,3 +55,5 @@ a = []
 print len(a)
 playSources = {}
 print(len(playSources))
+
+print datetime.datetime.strptime('2014-09-17', '%Y-%m-%d').date()
