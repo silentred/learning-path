@@ -10,6 +10,9 @@ from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
 
 class Handler(BaseHandler):
     crawl_config = {
+        "headers" : {
+            "User-Agent" : "Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36"
+        }
     }
 
     @every(minutes=24 * 60)
@@ -36,69 +39,88 @@ class Handler(BaseHandler):
     @config(priority=2, age=1 * 24 * 60 * 60)
     def detail_page(self, response):
         ##抓取基本信息
-        casting= director= categories= specialties= runtime= year= location= lang = play_source = ''
+        casting= director= categories= specialties= runtime= year= location= poster_image = lang = play_source = title = None
+        castingList = []
+        catList = []
+        sepList = []
         for each in response.doc('dl.dlTxt dd em.emTit'):
             # TODO 这里可以包装为一个方法，目前太乱
             if pq(each).text() == u'主演：':
-                castingList = []
                 for cast in pq(each).siblings('a'):
                     castingList.append(pq(cast).text())
-                casting = ", ".join(castingList[:-1])
 
             elif pq(each).text() == u'导演：':
-                directorList = []
-                for director in pq(each).siblings('a'):
-                    directorList.append(pq(director).text())
-                director = ", ".join(directorList)
+                director = pq(each).siblings().eq(0).text() or ''
 
             elif pq(each).text() == u'类型：':
-                catList = []
                 for cat in pq(each).siblings('a'):
                     catList.append(pq(cat).text())
-                categories = ", ".join(catList)
 
             elif pq(each).text() == u'看点：':
-                sepList = []
                 for cat in pq(each).siblings('a'):
                     sepList.append(pq(cat).text())
-                specialties = ", ".join(sepList)
 
             elif pq(each).text() == u'时长：':
-                runtime =  pq(each).siblings().eq(0).text()
+                runtime =  pq(each).siblings().eq(0).text() or ''
 
             elif pq(each).text() == u'年代：':
-                year =  pq(each).siblings().eq(0).text()
+                year =  pq(each).siblings().eq(0).text() or ''
 
             elif pq(each).text() == u'国家/地区：':
-                location =  pq(each).siblings().eq(0).text()
+                location =  pq(each).siblings().eq(0).text() or ''
 
             elif pq(each).text() == u'语言：':
-                lang =  pq(each).siblings().eq(0).text()
+                lang =  pq(each).siblings().eq(0).text() or ''
 
         #抓取播放源地址
-        playSources = []
+        playSources = {}
         for each in response.doc('.sourceTab>a'):
-            playSources.append(delUrlParams(pq(each).attr.href))
-        play_source = ", ".join(playSources)
+            playSources[pq(each).attr.data[:-2]] = delUrlParams(pq(each).attr.href)
+
+        #还存在一种旧的的模板，需要对没有抓到的内容再次抓取
+        poster_image = response.doc('.posterCon .pic>img').attr.src or response.doc('.detailPicIntro img').attr.src
+        title = response.doc('h1 a').text() or response.doc('.titleName .sName').text()
+        introduction = response.doc('#pIntroId').text() or response.doc('#intro').text()
+        for each in response.doc('.txt .sTit'):
+            if len(catList) < 1:
+                if pq(each).text() == u'类型：':
+                    catList = pq(each).siblings('span').text().split(' ')
+            if location is None:
+                if pq(each).text() == u'地区：':
+                    location = pq(each).siblings('span').text() or ''
+            if year is None:
+                if pq(each).text() == u'年代：':
+                    year = pq(each).parents('p').contents()[1] or ''
+        for each in response.doc('.col_b>div>div>dl>dt'):
+            if len(castingList) < 1:
+                if pq(each).text() == u'主演：':
+                    castingList = [pq(actor).text() for actor in pq(pq(each).nextAll('dd')[0]).find('a') ]
+            if director is None:
+                if pq(each).text() == u'导演：':
+                    director = pq(pq(each).nextAll('dd')[0]).find('a').text() or ''
+
+        if len(playSources) < 1:
+            for each in response.doc('.moviePlaySourceA p a').items():
+                playSources[pq(each).attr.apiname] = delUrlParams(pq(each).attr.href)
 
         mainResult = {
             "url": response.url,
             "meta_title": response.doc('title').text(),
-            "title": response.doc('h1 a').text(),
-            "rating": response.doc('.sScore em').text(),
-            "casting": casting,
-            "introduction": response.doc('#pIntroId').text()[:-9],
-            "play_source": play_source,
-            "poster_image": response.doc('.posterCon .pic>img').attr.src,
-            "director": director,
-            "categories": categories,
-            "specialties": specialties,
-            "runtime": runtime,
-            "year": year,
-            "location": location,
-            "lang" : lang,
-            "small_image" : response.save['small_image'],
-            "orig_id": getId(response.url, '(\d+).html$')
+            "title": title or '',
+            "rating": response.doc('.sScore em').eq(0).text() or '',
+            "casting": castingList,
+            "introduction": introduction or '',
+            "play_source": playSources,
+            "poster_image": poster_image or '',
+            "director": director or '',
+            "categories": catList,
+            "specialties": sepList,
+            "runtime": runtime or '',
+            "year": year or '',
+            "location": location or '',
+            "lang" : lang or '',
+            "small_image" : response.save['small_image'] or '',
+            "orig_id": getId(response.url, '(\d+).html$') or ''
         }
 
         return mainResult
@@ -114,4 +136,6 @@ def getId(url, pattern=None):
     parsed = urlparse(url)
     matchObj = re.search(pattern, parsed.path)
     id = 0
-    i
+    if matchObj:
+        id = matchObj.group(1)
+    return id

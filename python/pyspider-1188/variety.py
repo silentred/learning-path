@@ -41,25 +41,23 @@ class Handler(BaseHandler):
     def detail_page(self, response):
         ##抓取基本信息
         categories = platform = location = orig_id = hosts= None
+        catList = []
+        hostList = []
         for each in response.doc('dl.dlTxt dd em.emTit'):
             # TODO 这里可以包装为一个方法，目前太乱
             if pq(each).text() == u'类型：':
-                catList = []
                 for cat in pq(each).siblings('a'):
                     catList.append(pq(cat).text())
-                categories = ", ".join(catList)
 
             elif pq(each).text() == u'播出平台：':
-                platform =  pq(each).siblings().eq(0).text()
+                platform =  pq(each).siblings().eq(0).text() or None
 
             elif pq(each).text() == u'国家/地区：':
-                location =  pq(each).siblings().eq(0).text()
+                location =  pq(each).siblings().eq(0).text() or None
 
             elif pq(each).text() == u'主持人/嘉宾：':
-                hostList = []
                 for cat in pq(each).siblings('a'):
                     hostList.append(pq(cat).text())
-                hosts = ", ".join(hostList)
 
         #get original id
         orig_id = getId(response.url, '.*zongyi/zy_(\d+)/$')
@@ -80,15 +78,16 @@ class Handler(BaseHandler):
         return {
             "url": response.url,
             "meta_title": response.doc('title').text(),
-            "title": response.doc('h1 a').text(),
-            "introduction": response.doc('#pIntroId').text()[:-9],
-            "poster_image": response.doc('.posterCon .pic>img').attr.src,
-            "categories": categories,
-            "platform": platform,
-            "location": location,
-            "hosts" : hosts,
-            "small_image": response.save['small_image'],
-            "orig_id" : orig_id
+            "title": response.doc('h1 a').text() or '',
+            "introduction": response.doc('#pIntroId').text() or '',
+            "poster_image": response.doc('.posterCon .pic>img').attr.src or '',
+            "categories": catList,
+            "platform": platform or '',
+            "location": location or '',
+            "hosts" : hostList,
+            "small_image": response.save['small_image'] or '',
+            "orig_id" : orig_id,
+            "is_play_source": 0
         }
 
     def jsonYearList(self, response):
@@ -103,24 +102,20 @@ class Handler(BaseHandler):
     def source_list_page(self, response):
         save = response.save
         save['source'] = []
+        save['is_play_source'] = 1
         for each in pq(response.json['html']).find('ul.ulPic li').items():
             img = pq(each).find('.pic img')
             guests = None
             guests = [pq(x).text() for x in pq(each).find('.sDes').children()]
             episode = {
-                "img": img.attr.src,
-                "desc": img.attr.alt,
-                "date": pq(each).find('.pic .sExplanation em').text()[1:-1],
-                "guests": guests,
-                "url":  pq(each).find('.aPlayBtn').attr.href
+                "img": img.attr.src or '',
+                "desc": img.attr.alt or '',
+                "date": pq(each).find('.pic .sExplanation em').text()[1:-1] or '',
+                "guests": guests or '',
+                "url": delUrlParams(pq(each).find('.aPlayBtn').attr.href)
             }
             save['source'].append(episode)
         return save
-
-
-
-
-
 
 
 #删除url中的参数部分，返回无参的url
@@ -147,4 +142,4 @@ def makeAjaxParam(**params):
     for key, value in params.items():
         defaultParam[key] = value
     pairs = [key+'='+str(value) for key,value in defaultParam.items()]
-    r
+    return '&'.join(pairs)

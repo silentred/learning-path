@@ -51,4 +51,7 @@ def makeAjaxParam(**params):
 
 print makeAjaxParam(id=1234, api="youku")
 
-http://v.2345.com/moviecore/server/variety/index.php?ctl=newDetail&act=ajaxList&id=47&year=0&api=qiyi&month=0
+a = []
+print len(a)
+playSources = {}
+print(len(playSources))

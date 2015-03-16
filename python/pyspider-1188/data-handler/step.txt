@@ -1,0 +1,34 @@
+从汉字转为拼音：
+sudo pip install pinyin
+import pinyin
+pinyin.get(u'你好')    # nihao
+
+[旧版movie]
+http://dianying.2345.com/detail/145313.html
+http://dianying.2345.com/detail/145272.html
+http://dianying.2345.com/detail/145362.html
+
+movie 可以分为几个部分：
+1. Video，需要得到插入的video_id
+2. Video_info, 拆分的一些信息
+3. Category, 是Video的一个关系（可以直接填充完整）
+4. Specicalty（需要即时保存）
+5. PlaySource 
+
+Movie
+1 读取一个result，转化为dict对象
+2 保存video（演员用逗号分隔），得到video对象
+3 保存video_info, 需要video对象
+4 查询并找到每个category对象，在video.categories.append(cat)
+5 每个play_source都保存，需要video对象
+6 查询每个specialty，如果没找到，就插入一个，并得到对象，用video.specialties.append(sep)保存；如果找到了，就直接append
+7 session.commit()
+
+Comic
+VideoInfo多了alias, Video多了is_closed
+play_source的结构不同
+不用保存sepcialty
+
+TV
+play_source和Comic相同
+先保存所有Video主题，再保存所有的plot。因为如果同时保存，可能会出现plot对应的video不存在的情况。（理论是不会，因为抓取时是先抓主体再抓plot的。观察结果好像是如此，那么就可以同时处理，用is_plot区分）
