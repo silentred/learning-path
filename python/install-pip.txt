@@ -38,3 +38,16 @@ sudo apt-get install libwxbase3.0-0-unofficial libwxbase3.0-dev libwxgtk3.0-0-un
  wx3.0-i18n \
  wx3.0-examples \
  wx3.0-doc
+ 
+ 
+# instal pyspider for centos
+wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+sudo rpm -Uvh remi-release-6*.rpm epel-release-6*.rpm
+
+yum groupinstall -y development
+yum install python-pip python-devel libxslt-devel libxml2-devel
+pip install --upgrade pip
+pip install pyspider
+
+pip 和 easy_install有冲突，如果已经安装了easy_install则用其安装pyspider，不用安装pip

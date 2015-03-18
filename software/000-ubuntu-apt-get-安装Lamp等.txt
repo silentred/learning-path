@@ -23,6 +23,9 @@ sudo apt-get install libapache2-mod-php5 php5 php5-gd php-pear php5-dev php5-cli
 
 提示php5-curl php5-mysql php5-mysqlnd冲突，可以先安装php5-mysql， 再安装php5-mysqlnd
 
+# install memcached
+sudo apt-get install php5-memcached memcached
+
 sudo apt-get install libpcre3-dev
 
 
