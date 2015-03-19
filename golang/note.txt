@@ -1,0 +1,36 @@
+程序从main包开始
+package main 
+
+导入包
+import (
+    "fmt"
+    "math/rand"
+)
+也可以，但不推荐
+import "fmt"
+import "math"
+
+
+Exported names的规则：大写开头
+import "math"
+math.pi 会报错，math.Pi 是正确的
+
+函数
+add takes two parameters of type int. 并且返回int
+func add(x int, y int) int {
+    return x + y
+}
+
+参数类型相同的话可以
+func add(x, y int) int {}
+
+
+返回多个值的函数
+func swap(x, y string) (string, string) {
+    return y, x
+}
+func main() {
+    a, b := swap("hello", "world")
+    fmt.Println(a, b)
+}
+
