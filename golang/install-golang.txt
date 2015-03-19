@@ -1,0 +1,3 @@
+sudo apt-get install golang
+
+go run hello.go
