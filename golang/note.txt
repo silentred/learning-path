@@ -322,7 +322,7 @@ b = b[:cap(b)] // len(b)=5, cap(b)=5
 b = b[1:]      // len(b)=4, cap(b)=4
 
 
-Nil slices
+Nil slices，slice默认初始值是Nil
 func main() {
     var z []int
     fmt.Println(z, len(z), cap(z))
@@ -330,3 +330,17 @@ func main() {
         fmt.Println("nil!")
     }
 }
+
+向slice中放入元素，使用append方法
+func append(s []T, vs ...T) []T
+
+
+range：将slice中的key和value遍历取出
+The range form of the for loop iterates over a slice or map.
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+func main() {
+    for i, v := range pow {
+        fmt.Printf("2**%d = %d\n", i, v)
+    }
+}
+
