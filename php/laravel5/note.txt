@@ -1,0 +1,102 @@
+Auth代理的是AuthManager类的实例，这个Manager有一个drivers成员变量，是个array，如下：
+protected 'drivers' => 
+    array (size=1)
+      'eloquent' => 
+        object(Illuminate\Auth\Guard)[171]
+
+Guard类中有一个成员是provider（有getter 和setter），Provider有一个成员变量model，代表了对象的全名，例如‘\App\Model\User’, Provider需要实现一些方法，例如createModel(), retrieveById()等，这些方法就是从数据库读取记录的操作。createModel就是根据$model名称，直接new一个对象；retievedById就是用Eloquent(刚才new的对象)的方法去find()
+
+Provider还有一个Hasher对象，好像是用来加密用的。
+
+思路：
+添加一个driver，需要使用时候，从Manager::$drivers中取那个driver，因为这个driver是自己写的，所以他的provider可以自己指定，就能绑定到想要的Model。
+方法：
+Provider:
+//If you want things to be simple, you dont even need to create this Provider
+class MyProvider extends EloquentUserProvider {
+
+}
+
+AdminAuthServiceProvider:
+public function register(){
+    Auth::extend('adminEloquent', function($app){
+        // you can use Config::get() to retrieve the model class name from config file
+        $myProvider = new MyProvider($app['hash'], '\App\AdminModel') 
+        return new Guard($myProvider, $app['session.store']);
+    })
+    $app->singleton('auth.driver_admin', function($app){
+        return Auth::driver('adminEloquent');
+    });
+}
+
+
+Facade:
+class AdminAuth extends Facade {
+    protected static function getFacadeAccessor() { return 'auth.driver_admin'; }
+}
+
+Kernal:
+'aliases' => [
+    //has to be beneath the 'Auth' alias
+    'AdminAuth'       => '\App\Facades\AdminAuth',
+]
+
+
+session store中产生session id的方法：
+protected function generateSessionId()
+{
+    return sha1(uniqid('', true).str_random(25).microtime(true));
+}
+
+
+
+
+写了一个stackoverflow的问题，自问自答：
+How to use authentication for multiple tables in Laravel 5
+Q:
+Sometimes, we'd like to seperate users and admins in different 2 tables. I think it is a good practise. So I was looking for if that is possible in Laravel 5. After a quick search, I found many people have the same question with me. There is some answers. But I dont think any of them is good enough. Therefore, I spent some time to dig into the source code and finally find a way to achieve this.
+
+A:
+Before reading the following, you are supposed have basic knowledge on ServiceProvider, Facade and IoC in Laravel 5. Here we go.
+
+According to the doc of Laravel, you could find the Facade 'Auth' is refering to the Illuminate\Auth\AuthManager, which has a magic __call(). You could see the major function is not in AuthManager, but in Illuminate\Auth\Guard
+
+Guard has a Provider. This provider has a $model property, according to which the EloquentUserProvider would create this model by "new $model". These are all we need to know. Here goes the code.
+
+1.We need to create a AdminAuthServiceProvider.
+
+    public function register(){
+        Auth::extend('adminEloquent', function($app){
+            // you can use Config::get() to retrieve the model class name from config file
+            $myProvider = new EloquentUserProvider($app['hash'], '\App\AdminModel') 
+            return new Guard($myProvider, $app['session.store']);
+        })
+        $app->singleton('auth.driver_admin', function($app){
+            return Auth::driver('adminEloquent');
+        });
+    }
+
+2.Facade:
+
+    class AdminAuth extends Facade {
+            protected static function getFacadeAccessor() { return 'auth.driver_admin'; }
+        }
+
+3. add the alias to Kernel:
+
+    'aliases' => [
+
+        //has to be beneath the 'Auth' alias
+        'AdminAuth'       => '\App\Facades\AdminAuth'
+    ]
+
+Hope this could be helpful.
+
+
+
+
+
+
+
+
+
