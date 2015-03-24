@@ -48,8 +48,21 @@ class Handler(BaseHandler):
                         })
         #banner
         for each in response.doc('#focus ul li').items():
+            cover = pq(each).find("img").attr.loadsrc or pq(each).find("img").attr.src
+            url = pq(each).find('.playBtn a').attr.href
+            orig_id = getOrigId(url)
+            video_type_id = detectVideoType(pq(each).find('i.videoStyleLogo'))
+            if orig_id is not None:
+                items.append({
+                            "page_id": 0,
+                            "section": "banner",
+                            "cover": cover,
+                            "url" : url, 
+                            "desc": '',
+                            "orig_id": orig_id,
+                            "video_type_id": video_type_id
+                    })
             
-
         return items
 
 
@@ -325,3 +338,11 @@ def getVideoTypeIdByName(name):
         return 2
     elif name == u'综艺':
         return 4
+
+def detectVideoType(node):
+    if pq(node).hasClass('videoStyleLogoA'):
+        return 3
+    elif pq(node).hasClass('videoStyleLogoC'):
+        return 4
+    else:
+        return 1

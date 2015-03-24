@@ -114,12 +114,13 @@ class IndexItem(Base):
     section  = Column(CHAR(15), nullable=False)
     sub_section = Column(CHAR(15), nullable=True)
     video_id = Column(Integer, ForeignKey('video.id'))
-    title = Column(CHAR(20), nullable=False)
     desc =  Column(CHAR(40), nullable=False)
     cover = Column(String(255), nullable=False)
     big_cover = Column(String(255), nullable=True)
     broadcast_time = Column(CHAR(40), nullable=True)
     long_desc = Column(String(150), nullable=True)
+    page_id = Column(SmallInteger, nullable=False)
+    video = relationship('Video')
 
 class RankItem(Base):
     __tablename__= 'rank_item'
@@ -128,6 +129,7 @@ class RankItem(Base):
     section  = Column(CHAR(15), nullable=False)
     video_id = Column(Integer, ForeignKey('video.id'))
     position = Column(SmallInteger, nullable=False)
+    video = relationship('Video')
     
 
 
