@@ -34,8 +34,10 @@ class Handler(BaseHandler):
         for each in response.doc('DIV#pageList>A').items():
             if re.match("http://tv.2345.com/----default-\d+\.html$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
-            
-
+    
+    @config(priority=4)   
+    def on_message(self, project, msg):
+        self.crawl(msg['url'], callback=self.detail_page )
 
     @config(priority=2, age=4 * 24 * 60 * 60)
     def detail_page(self, response):

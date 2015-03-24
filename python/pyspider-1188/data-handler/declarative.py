@@ -20,7 +20,7 @@ category_video = Table('category_video', Base.metadata,
 )
 
 specialty_video = Table('specialty_video', Base.metadata,
-    Column('sep_id', Integer, ForeignKey('specialty.id')),
+    Column('spe_id', Integer, ForeignKey('specialty.id')),
     Column('video_id', Integer, ForeignKey('video.id'))
 )
 
@@ -70,10 +70,9 @@ class Category(Base):
 class PlaySource(Base):
     __tablename__ = 'play_source'
     id = Column(Integer, primary_key=True)
-    api_id =  Column(Integer, nullable=True)
-    api_name = Column(CHAR(30), nullable=True)
-    url = Column(String(355), nullable=False)
-    title = Column(CHAR(50), nullable=True)
+    #api_id =  Column(Integer, nullable=True)
+    api_name = Column(CHAR(15), nullable=True)
+    url = Column(String(255), nullable=False)
     episode_num = Column(Integer, nullable=True)
     # many to one
     video_id = Column(Integer, ForeignKey('video.id'))
@@ -97,7 +96,7 @@ class TVPlot(Base):
 class VarietySource(Base):
     __tablename__= 'variety_source'
     id = Column(Integer, primary_key=True)
-    api_id =  Column(Integer, nullable=True)
+    #api_id =  Column(Integer, nullable=True)
     api_name = Column(CHAR(30), nullable=True)
     url = Column(String(355), nullable=False)
     title = Column(CHAR(100), nullable=True)
@@ -108,9 +107,28 @@ class VarietySource(Base):
     video_id = Column(Integer, ForeignKey('video.id'))
     video = relationship('Video')
 
+class IndexItem(Base):
+    __tablename__= 'index_item'
+    id = Column(Integer, primary_key=True)
+    video_type_id =  Column(Integer, nullable=False, index=True)
+    section  = Column(CHAR(15), nullable=False)
+    sub_section = Column(CHAR(15), nullable=True)
+    video_id = Column(Integer, ForeignKey('video.id'))
+    title = Column(CHAR(20), nullable=False)
+    desc =  Column(CHAR(40), nullable=False)
+    cover = Column(String(255), nullable=False)
+    big_cover = Column(String(255), nullable=True)
+    broadcast_time = Column(CHAR(40), nullable=True)
+    long_desc = Column(String(150), nullable=True)
 
-        
-        
+class RankItem(Base):
+    __tablename__= 'rank_item'
+    id = Column(Integer, primary_key=True)
+    video_type_id =  Column(Integer, nullable=False, index=True)
+    section  = Column(CHAR(15), nullable=False)
+    video_id = Column(Integer, ForeignKey('video.id'))
+    position = Column(SmallInteger, nullable=False)
+    
 
 
 # Create an engine that stores data in the local directory's

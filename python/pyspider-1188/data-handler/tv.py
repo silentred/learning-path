@@ -168,7 +168,7 @@ def searchAndSaveTVPlot(session, video,savedTVObj ):
     try:
         tvPlot = session.query(TVPlot).filter(TVPlot.video == savedTVObj).filter(TVPlot.episode_num == video['episode_num']).one()
     except NoResultFound, e:
-        tvPlot = TVPlot(content=video['content'], 
+        tvPlot = TVPlot(content=video['content'].decode('unicode-escape'), 
                 episode_num = video['episode_num'],
                 video = savedTVObj
             )

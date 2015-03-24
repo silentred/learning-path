@@ -57,3 +57,7 @@ playSources = {}
 print(len(playSources))
 
 print datetime.datetime.strptime('2014-09-17', '%Y-%m-%d').date()
+
+a = {"a":'123a', "b": '456b'}
+if not a.has_key('c'):
+    print "good, I can check key of a dict"

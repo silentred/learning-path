@@ -130,7 +130,8 @@ def searchAndSaveVarietySource(session, video,savedVSObj ):
                     guests = each['guests'],
                     video = savedVSObj,
                     small_image = each['img'],
-                    url = each['url']
+                    url = each['url'],
+                    api_name = video['api']
                 )
             session.add(playSource)
         except Exception, e:
