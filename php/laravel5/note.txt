@@ -94,8 +94,23 @@ Hope this could be helpful.
 
 
 
+Laravel中用这种方式evaluate:
+$obLevel = ob_get_level();
+ob_start();
+extract($__data);//data是数组，key是变量名，value是值，会在下面的$__path中产生作用
+// We'll evaluate the contents of the view inside a try/catch block so we can
+// flush out any stray output that might get out before an error occurs or
+// an exception is thrown. This prevents any partial views from leaking.
+try
+{
+	include $__path; //path是编译好的php文件，里面可以是文本内容和php标签混杂的
+}
+catch (Exception $e)
+{
+	$this->handleViewException($e, $obLevel);
+}
 
-
+return ltrim(ob_get_clean());
 
 
 

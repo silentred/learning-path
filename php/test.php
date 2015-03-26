@@ -82,3 +82,11 @@ $array = array();
 
 $instance = new stdClass();
 //echo $instance->no_existing; 这里会提示PHP Notice:  Undefined property:
+
+
+$level = ob_get_level(); //0
+ob_start();
+//$level = ob_get_level();//1
+include "include-me.php";
+$content = ob_get_clean();
+echo "\n!!!This is a cache, not direct output!! OB_LEVEL={$level}\n".$content;

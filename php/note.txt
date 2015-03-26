@@ -84,3 +84,6 @@ Another possibility is to suppress the call with the @ operator and check the re
 数据库插入数据后的自增id如何获得：
 PDO::lastInsertId();
 $mysqli->insert_id
+有些中间表没有自增的字段，这时返回0；in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
+
+
