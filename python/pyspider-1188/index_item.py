@@ -23,6 +23,7 @@ class Handler(BaseHandler):
         self.crawl('http://v.2345.com/zongyi/', callback=self.variety_index)
         self.crawl('http://v.2345.com/', callback=self.index_index)
 
+    @config(age=10 * 24 * 60 * 60)
     def index_index(self, response):
         items = []
         for each in response.doc('.mod_a').items():

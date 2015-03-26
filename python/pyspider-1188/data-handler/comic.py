@@ -5,7 +5,7 @@
 
 import re
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
-import sqlite3
+import sqlite3, math, time
 import ast
 import MySQLdb
 import logging
@@ -73,7 +73,9 @@ def saveVideoInfo(session, movie, savedMovieObj):
         videoInfoObj = session.query(VideoInfo).filter(VideoInfo.video == savedMovieObj).one()
         return videoInfoObj
     except NoResultFound, e:
-        videoInfoObj = VideoInfo(introduction=movie['introduction'].decode('unicode-escape'),
+        introduction = movie['introduction'].decode('unicode-escape')
+        introduction = re.sub(r'\s*展开全部\s*收起全部\s*', '', introduction)
+        videoInfoObj = VideoInfo(introduction=introduction,
                 poster_image = movie['poster_image'],
                 small_image = movie['small_image'],
                 video = savedMovieObj,
@@ -151,32 +153,39 @@ def doesVideoExist(session, video_id):
     pass
 
 session = initSession()
+limit = 1000.0
 with sqlite3.connect('result.db') as db:
     cursor = db.cursor()
-    cursor.execute('''SELECT taskid, result from resultdb_comic limit 0, 100''')
-    allRows = cursor.fetchall()
-    i = 0
-    for row in allRows:
-        try:
-            movie = ast.literal_eval(row[1])
-            # 保存video, 如果已经存在就返回搜索到的Video对象
-            savedMovieObj = searchAndSaveMovie(session, movie, 2)
-            # 保存VideoInfo
-            saveVideoInfo(session, movie, savedMovieObj)
-            #保存并关联category
-            searchAndLinkCategory(session, movie, savedMovieObj, 2)
-            #保存并关联play source
-            searchAndLinkPlaySource(session, movie, savedMovieObj, 2)
-            # 保存并关联sepcialty
-            #searchAndLinkSpecialty(session, movie, savedMovieObj, 2)
-            
-            i += 1
-            if i % 200 == 0:
-                session.commit()
-        except Exception, e:
-            logging.error('Error: %s, taskid : %s',e, row[0])
-            #logging.error('task id is  %s, eval error ', row[0])
-    session.commit()
+    rowCount = cursor.execute('''SELECT count(*) from resultdb_comic''').fetchone()[0]
+    runtimes = math.ceil(rowCount/limit)
+    for x in xrange(0, int(runtimes)):
+        sql = "SELECT taskid, result from resultdb_comic limit %d, %d" % (int(x*limit ), int(limit))
+        print sql
+        print time.asctime( time.localtime(time.time()) )
+        cursor.execute(sql)
+        allRows = cursor.fetchall()
+        i = 0
+        for row in allRows:
+            try:
+                movie = ast.literal_eval(row[1])
+                # 保存video, 如果已经存在就返回搜索到的Video对象
+                savedMovieObj = searchAndSaveMovie(session, movie, 2)
+                # 保存VideoInfo
+                saveVideoInfo(session, movie, savedMovieObj)
+                #保存并关联category
+                searchAndLinkCategory(session, movie, savedMovieObj, 2)
+                #保存并关联play source
+                searchAndLinkPlaySource(session, movie, savedMovieObj, 2)
+                # 保存并关联sepcialty
+                #searchAndLinkSpecialty(session, movie, savedMovieObj, 2)
+                
+                i += 1
+                if i % 200 == 0:
+                    session.commit()
+            except Exception, e:
+                logging.error('Error: %s, taskid : %s',e, row[0])
+                #logging.error('task id is  %s, eval error ', row[0])
+        session.commit()
     
 
 

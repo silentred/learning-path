@@ -1,0 +1,387 @@
+ 
+jason@jason-VirtualBox:~/shared/pyspider/data-handler$ python comic.py 
+SELECT taskid, result from resultdb_comic limit 0, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 1000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 2000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 3000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 4000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 5000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 6000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 7000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 8000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 9000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 10000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 11000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 12000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 13000, 1000
+Thu Mar 26 14:41:30 2015
+SELECT taskid, result from resultdb_comic limit 14000, 1000
+Thu Mar 26 14:41:30 2015
+jason@jason-VirtualBox:~/shared/pyspider/data-handler$ python comic.py 
+SELECT taskid, result from resultdb_comic limit 0, 1000
+Thu Mar 26 14:42:09 2015
+/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py:436: Warning: Data truncated for column 'rating' at row 1
+  cursor.execute(statement, parameters)
+SELECT taskid, result from resultdb_comic limit 1000, 1000
+Thu Mar 26 14:57:36 2015
+SELECT taskid, result from resultdb_comic limit 2000, 1000
+Thu Mar 26 15:08:53 2015
+SELECT taskid, result from resultdb_comic limit 3000, 1000
+Thu Mar 26 15:13:50 2015
+SELECT taskid, result from resultdb_comic limit 4000, 1000
+Thu Mar 26 15:18:56 2015
+SELECT taskid, result from resultdb_comic limit 5000, 1000
+Thu Mar 26 15:21:31 2015
+SELECT taskid, result from resultdb_comic limit 6000, 1000
+Thu Mar 26 15:22:39 2015
+SELECT taskid, result from resultdb_comic limit 7000, 1000
+Thu Mar 26 15:25:20 2015
+ERROR:root:Error: invalid literal for int() with base 10: '\\u6682\\u65e0', taskid : 753c353779cc3c9a9f29171ec9b7c5fe
+SELECT taskid, result from resultdb_comic limit 8000, 1000
+Thu Mar 26 15:28:12 2015
+SELECT taskid, result from resultdb_comic limit 9000, 1000
+Thu Mar 26 15:30:55 2015
+SELECT taskid, result from resultdb_comic limit 10000, 1000
+Thu Mar 26 15:33:17 2015
+SELECT taskid, result from resultdb_comic limit 11000, 1000
+Thu Mar 26 15:35:19 2015
+SELECT taskid, result from resultdb_comic limit 12000, 1000
+Thu Mar 26 15:37:38 2015
+SELECT taskid, result from resultdb_comic limit 13000, 1000
+Thu Mar 26 15:39:10 2015
+SELECT taskid, result from resultdb_comic limit 14000, 1000
+Thu Mar 26 15:40:39 2015
+jason@jason-VirtualBox:~/shared/pyspider/data-handler$ python tv.py 
+jason@jason-VirtualBox:~/shared/pyspider/data-handler$ python tv.py 
+SELECT taskid, result from resultdb_tv limit 0, 1000
+Thu Mar 26 15:53:27 2015
+SELECT taskid, result from resultdb_tv limit 1000, 1000
+Thu Mar 26 15:53:57 2015
+SELECT taskid, result from resultdb_tv limit 2000, 1000
+Thu Mar 26 15:54:14 2015
+SELECT taskid, result from resultdb_tv limit 3000, 1000
+Thu Mar 26 15:54:36 2015
+SELECT taskid, result from resultdb_tv limit 4000, 1000
+Thu Mar 26 15:55:08 2015
+SELECT taskid, result from resultdb_tv limit 5000, 1000
+Thu Mar 26 15:55:25 2015
+SELECT taskid, result from resultdb_tv limit 6000, 1000
+Thu Mar 26 15:55:41 2015
+SELECT taskid, result from resultdb_tv limit 7000, 1000
+Thu Mar 26 15:56:07 2015
+SELECT taskid, result from resultdb_tv limit 8000, 1000
+Thu Mar 26 15:56:25 2015
+SELECT taskid, result from resultdb_tv limit 9000, 1000
+Thu Mar 26 15:56:45 2015
+SELECT taskid, result from resultdb_tv limit 10000, 1000
+Thu Mar 26 15:57:02 2015
+SELECT taskid, result from resultdb_tv limit 11000, 1000
+Thu Mar 26 15:57:24 2015
+SELECT taskid, result from resultdb_tv limit 12000, 1000
+Thu Mar 26 15:57:43 2015
+SELECT taskid, result from resultdb_tv limit 13000, 1000
+Thu Mar 26 15:58:02 2015
+SELECT taskid, result from resultdb_tv limit 14000, 1000
+Thu Mar 26 15:58:26 2015
+SELECT taskid, result from resultdb_tv limit 15000, 1000
+Thu Mar 26 15:58:59 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 7c2f43a7b04fa9915283c040d58d3efe
+SELECT taskid, result from resultdb_tv limit 16000, 1000
+Thu Mar 26 15:59:20 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 2c61caf033750893a37a3f405d08b426
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 0a10589c08e9f8d259238bee065b16a0
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 7b5333ef74683f57af890de570eb21ee
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 0bc10167062e3ebf320dfdc86164f7e1
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 02222158f3acf2ee49c97ffb89ceb537
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 9a7ceca410dddbebe67725f62aca9a7e
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 7e1b419338de3c8b64de36ad4005f0e0
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 65203c38c636f76ca8bc1fe1d2aa253e
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 1ec654c9434794f4b69193d4fb2c8481
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : ea429f9aec4d86439585f0550474ae69
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 42fa250227b1fe43df142a03ab5cc5ae
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 6bebba3f8f8eab37169ce25bed5e34d9
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : edf96ccfeb1dc0cd682dc5060c36390e
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 02bb56fc0e8f2ac35b70642423c982b3
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 092d531a07e0b7346978789dbd3d5503
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 63f7cf8642e388c3df1a3fa1b65d54d8
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : bd469a78620b4ee97787bde9de8828dc
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : adce5f79651bc6bc68463c40767bc91f
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 53e884323bdaa0d54413febb2042c866
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : f447bb846f5051e8447becbbf3bda0d3
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 40ab11977f2970d4aea30478fc41e1d6
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : fe24f0ba8e45303c2027a23e4bb5d7a7
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : c8b807488c3fb4c02cf0ac26bad2c857
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 3a2d069627f17b26cee1c09caafca781
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 8c6d79eba9eb62becc265aa072cd814c
+SELECT taskid, result from resultdb_tv limit 17000, 1000
+Thu Mar 26 15:59:45 2015
+SELECT taskid, result from resultdb_tv limit 18000, 1000
+Thu Mar 26 16:00:21 2015
+SELECT taskid, result from resultdb_tv limit 19000, 1000
+Thu Mar 26 16:01:01 2015
+SELECT taskid, result from resultdb_tv limit 20000, 1000
+Thu Mar 26 16:01:41 2015
+SELECT taskid, result from resultdb_tv limit 21000, 1000
+Thu Mar 26 16:02:11 2015
+SELECT taskid, result from resultdb_tv limit 22000, 1000
+Thu Mar 26 16:02:33 2015
+SELECT taskid, result from resultdb_tv limit 23000, 1000
+Thu Mar 26 16:03:07 2015
+SELECT taskid, result from resultdb_tv limit 24000, 1000
+Thu Mar 26 16:03:33 2015
+SELECT taskid, result from resultdb_tv limit 25000, 1000
+Thu Mar 26 16:04:02 2015
+SELECT taskid, result from resultdb_tv limit 26000, 1000
+Thu Mar 26 16:04:34 2015
+SELECT taskid, result from resultdb_tv limit 27000, 1000
+Thu Mar 26 16:05:09 2015
+SELECT taskid, result from resultdb_tv limit 28000, 1000
+Thu Mar 26 16:05:45 2015
+SELECT taskid, result from resultdb_tv limit 29000, 1000
+Thu Mar 26 16:06:19 2015
+SELECT taskid, result from resultdb_tv limit 30000, 1000
+Thu Mar 26 16:06:50 2015
+SELECT taskid, result from resultdb_tv limit 31000, 1000
+Thu Mar 26 16:07:23 2015
+SELECT taskid, result from resultdb_tv limit 32000, 1000
+Thu Mar 26 16:08:06 2015
+SELECT taskid, result from resultdb_tv limit 33000, 1000
+Thu Mar 26 16:08:36 2015
+SELECT taskid, result from resultdb_tv limit 34000, 1000
+Thu Mar 26 16:09:04 2015
+SELECT taskid, result from resultdb_tv limit 35000, 1000
+Thu Mar 26 16:09:43 2015
+SELECT taskid, result from resultdb_tv limit 36000, 1000
+Thu Mar 26 16:10:12 2015
+SELECT taskid, result from resultdb_tv limit 37000, 1000
+Thu Mar 26 16:10:40 2015
+SELECT taskid, result from resultdb_tv limit 38000, 1000
+Thu Mar 26 16:11:15 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : d7cb5d24aaafea255d4f3abb512422fd
+SELECT taskid, result from resultdb_tv limit 39000, 1000
+Thu Mar 26 16:11:50 2015
+SELECT taskid, result from resultdb_tv limit 40000, 1000
+Thu Mar 26 16:12:19 2015
+/usr/local/lib/python2.7/dist-packages/sqlalchemy/engine/default.py:436: Warning: Data truncated for column 'director' at row 1
+  cursor.execute(statement, parameters)
+SELECT taskid, result from resultdb_tv limit 41000, 1000
+Thu Mar 26 16:12:54 2015
+SELECT taskid, result from resultdb_tv limit 42000, 1000
+Thu Mar 26 16:13:33 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 1cff9f4567efed323d4483726027fc19
+SELECT taskid, result from resultdb_tv limit 43000, 1000
+Thu Mar 26 16:14:04 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : e05765ee1aa203b2c5d04486cb268350
+SELECT taskid, result from resultdb_tv limit 44000, 1000
+Thu Mar 26 16:14:41 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 10dca9a8b45105d740e40e7711a88ae7
+SELECT taskid, result from resultdb_tv limit 45000, 1000
+Thu Mar 26 16:15:15 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 241b6365b644d121a96aa55bce7c00c4
+SELECT taskid, result from resultdb_tv limit 46000, 1000
+Thu Mar 26 16:15:59 2015
+SELECT taskid, result from resultdb_tv limit 47000, 1000
+Thu Mar 26 16:16:38 2015
+SELECT taskid, result from resultdb_tv limit 48000, 1000
+Thu Mar 26 16:17:20 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : a716b0d19eb4d2743b8b85073c7ff85c
+SELECT taskid, result from resultdb_tv limit 49000, 1000
+Thu Mar 26 16:17:59 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : f7c980f7ab59d00d1823cecc7ade344a
+SELECT taskid, result from resultdb_tv limit 50000, 1000
+Thu Mar 26 16:18:39 2015
+SELECT taskid, result from resultdb_tv limit 51000, 1000
+Thu Mar 26 16:19:13 2015
+SELECT taskid, result from resultdb_tv limit 52000, 1000
+Thu Mar 26 16:19:45 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : bccf91da81b9bd300a3ab47a972507d4
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 9e2bb521b9715ab77c6976d3e96bb98f
+SELECT taskid, result from resultdb_tv limit 53000, 1000
+Thu Mar 26 16:20:23 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : bea1aaa7b7428ec992a4745646087dba
+SELECT taskid, result from resultdb_tv limit 54000, 1000
+Thu Mar 26 16:20:55 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : cc3d9807f7559976fabed5b79427b7bd
+SELECT taskid, result from resultdb_tv limit 55000, 1000
+Thu Mar 26 16:21:49 2015
+SELECT taskid, result from resultdb_tv limit 56000, 1000
+Thu Mar 26 16:22:27 2015
+SELECT taskid, result from resultdb_tv limit 57000, 1000
+Thu Mar 26 16:23:09 2015
+SELECT taskid, result from resultdb_tv limit 58000, 1000
+Thu Mar 26 16:23:50 2015
+SELECT taskid, result from resultdb_tv limit 59000, 1000
+Thu Mar 26 16:24:31 2015
+SELECT taskid, result from resultdb_tv limit 60000, 1000
+Thu Mar 26 16:25:18 2015
+SELECT taskid, result from resultdb_tv limit 61000, 1000
+Thu Mar 26 16:26:00 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : a9f99943f65a948ed2a03dd2587f5113
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 68e7962f12608b5a1c60d61e263d7db0
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 3baa6046f8dc943a53c9a64bc4e46e40
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 31aff2b9d076cf8b5e8dcd02293344eb
+SELECT taskid, result from resultdb_tv limit 62000, 1000
+Thu Mar 26 16:26:43 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : ed957c864e771dc1242f8c33e09ce770
+SELECT taskid, result from resultdb_tv limit 63000, 1000
+Thu Mar 26 16:27:21 2015
+SELECT taskid, result from resultdb_tv limit 64000, 1000
+Thu Mar 26 16:28:01 2015
+SELECT taskid, result from resultdb_tv limit 65000, 1000
+Thu Mar 26 16:28:46 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 903a2240c910ffa84b40121a3488f722
+SELECT taskid, result from resultdb_tv limit 66000, 1000
+Thu Mar 26 16:29:37 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 9ba7ce0debe9adb89c82a597801fb5c3
+SELECT taskid, result from resultdb_tv limit 67000, 1000
+Thu Mar 26 16:30:21 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 7ce5c5f12bb03061f913a32d8cb5d04e
+SELECT taskid, result from resultdb_tv limit 68000, 1000
+Thu Mar 26 16:31:07 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 24405ce7ae05ec49ef196daaef02567a
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : ebecde838d4613aedb556fc7bd1ad94f
+SELECT taskid, result from resultdb_tv limit 69000, 1000
+Thu Mar 26 16:31:53 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 562d124c2e5238c65946a192b2a43bfe
+SELECT taskid, result from resultdb_tv limit 70000, 1000
+Thu Mar 26 16:32:42 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 421e21b1d4615df99614ebdc22019a2f
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : f20b130e09637d7b0d7bfd6d49ffeb92
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 0df9969f4bd14d09f866575ae3a33984
+SELECT taskid, result from resultdb_tv limit 71000, 1000
+Thu Mar 26 16:33:32 2015
+SELECT taskid, result from resultdb_tv limit 72000, 1000
+Thu Mar 26 16:34:18 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 531ae887f119331d12079c6fc947d95b
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : cf09698e04b88d120340270874b5fc63
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : cf9d1c97d074f8f015df0a585077fe8b
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 6fdb1b61561c8d87df7bf3b37952975c
+SELECT taskid, result from resultdb_tv limit 73000, 1000
+Thu Mar 26 16:35:08 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : d88977b301cea5ce20362ba0f9c18259
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 14623d64ed5208de453cdaa5291f1c58
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 180f610396a513e2bbca22524ae88cbf
+SELECT taskid, result from resultdb_tv limit 74000, 1000
+Thu Mar 26 16:35:51 2015
+SELECT taskid, result from resultdb_tv limit 75000, 1000
+Thu Mar 26 16:36:32 2015
+SELECT taskid, result from resultdb_tv limit 76000, 1000
+Thu Mar 26 16:37:16 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 492ba8bc1a319840ae87d56113ac994d
+SELECT taskid, result from resultdb_tv limit 77000, 1000
+Thu Mar 26 16:38:00 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 2d3aef80ee290347f157bc1933eff05f
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : b3a66cae957095593aff6406156a6ee1
+SELECT taskid, result from resultdb_tv limit 78000, 1000
+Thu Mar 26 16:38:46 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 54d1a88154b05a4db05dc675b9401f21
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 0b1b7957a9c8d7f7a69402621bf2e29f
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 0b78b9b39a2f63f610377ed63402b4c7
+SELECT taskid, result from resultdb_tv limit 79000, 1000
+Thu Mar 26 16:39:25 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : e93755d61ee73f746644324c4376b611
+SELECT taskid, result from resultdb_tv limit 80000, 1000
+Thu Mar 26 16:40:08 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : daac7c9120b6aa2e495ab95d3703be02
+SELECT taskid, result from resultdb_tv limit 81000, 1000
+Thu Mar 26 16:41:02 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 26d92e9564cb550f75af2d75f6fa4297
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 55d04806f0fad038f769da93f91fd60f
+SELECT taskid, result from resultdb_tv limit 82000, 1000
+Thu Mar 26 16:42:06 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 65e1429772d576eb3c93acc9f821829d
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 9c7870c11aaa7ef5cf7b6bd80537b346
+SELECT taskid, result from resultdb_tv limit 83000, 1000
+Thu Mar 26 16:43:19 2015
+ERROR:root:'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string
+ERROR:root:Error: 'decimal' codec can't encode characters in position 0-2: invalid decimal Unicode string, taskid : 2d2f746d27df765ebc0845a408f77908
+jason@jason-VirtualBox:~/shared/pyspider/data-handler$ 
+
+
+ERROR:root:Error: time data '2013-13-23' does not match format '%Y-%m-%d', taskid : 6584f432efb063ce378eec61a501609a
+SELECT taskid, result from resultdb_variety limit 5000, 1000
+Thu Mar 26 17:02:03 2015
+ERROR:root:Error: time data '2013-40-25' does not match format '%Y-%m-%d', taskid : 0c07b34e54b0d8062c5f729add21ab10

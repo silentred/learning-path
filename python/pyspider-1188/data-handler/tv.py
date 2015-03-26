@@ -5,7 +5,7 @@
 
 import re
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
-import sqlite3
+import sqlite3, math, time
 import ast
 import MySQLdb
 import logging
@@ -88,7 +88,9 @@ def saveVideoInfo(session, movie, savedMovieObj):
             actorList = [x.decode('unicode-escape') for x in movie['casting']]
             actors = ', '.join(actorList)
 
-        videoInfoObj = VideoInfo(introduction=movie['introduction'].decode('unicode-escape'),
+        introduction = movie['introduction'].decode('unicode-escape')
+        introduction = re.sub(r'\s*展开全部\s*收起全部\s*', '', introduction)
+        videoInfoObj = VideoInfo(introduction=introduction,
                 poster_image = movie['poster_image'],
                 small_image = movie['small_image'],
                 video = savedMovieObj,
@@ -178,36 +180,43 @@ def searchAndSaveTVPlot(session, video,savedTVObj ):
     return tvPlot
 
 session = initSession()
+limit = 1000.0
 with sqlite3.connect('result.db') as db:
     cursor = db.cursor()
-    cursor.execute('''SELECT taskid, result from resultdb_tv limit 0, 500''')
-    allRows = cursor.fetchall()
-    i = 0
-    for row in allRows:
-        try:
-            video = ast.literal_eval(row[1])
-            if not video['is_plot']:
-                # 保存video, 如果已经存在就返回搜索到的Video对象
-                savedMovieObj = searchAndSaveVideo(session, video, 3)
-                # 保存VideoInfo
-                saveVideoInfo(session, video, savedMovieObj)
-                #保存并关联category
-                searchAndLinkCategory(session, video, savedMovieObj, 3)
-                #保存并关联play source
-                searchAndLinkPlaySource(session, video, savedMovieObj, 3)
-                # 保存并关联sepcialty
-                #searchAndLinkSpecialty(session, video, savedMovieObj, 2)
-            else:
-                savedTVObj = searchTV(session, video['tv_id'], 3)
-                searchAndSaveTVPlot(session, video, savedTVObj)
-            
-            i += 1
-            if i % 200 == 0:
-                session.commit()
-        except Exception, e:
-            logging.error('Error: %s, taskid : %s',e, row[0])
-            #logging.error('task id is  %s, eval error ', row[0])
-    session.commit()
+    rowCount = cursor.execute('''SELECT count(*) from resultdb_tv''').fetchone()[0]
+    runtimes = math.ceil(rowCount/limit)
+    for x in xrange(0, int(runtimes)):
+        sql = "SELECT taskid, result from resultdb_tv limit %d, %d" % (int(x*limit ), int(limit))
+        print sql
+        print time.asctime( time.localtime(time.time()) )
+        cursor.execute(sql)
+        allRows = cursor.fetchall()
+        i = 0
+        for row in allRows:
+            try:
+                video = ast.literal_eval(row[1])
+                if not video['is_plot']:
+                    # 保存video, 如果已经存在就返回搜索到的Video对象
+                    savedMovieObj = searchAndSaveVideo(session, video, 3)
+                    # 保存VideoInfo
+                    saveVideoInfo(session, video, savedMovieObj)
+                    #保存并关联category
+                    searchAndLinkCategory(session, video, savedMovieObj, 3)
+                    #保存并关联play source
+                    searchAndLinkPlaySource(session, video, savedMovieObj, 3)
+                    # 保存并关联sepcialty
+                    #searchAndLinkSpecialty(session, video, savedMovieObj, 2)
+                else:
+                    savedTVObj = searchTV(session, video['tv_id'], 3)
+                    searchAndSaveTVPlot(session, video, savedTVObj)
+                
+                i += 1
+                if i % 200 == 0:
+                    session.commit()
+            except Exception, e:
+                logging.error('Error: %s, taskid : %s',e, row[0])
+                #logging.error('task id is  %s, eval error ', row[0])
+        session.commit()
     
 
 

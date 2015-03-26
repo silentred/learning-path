@@ -61,3 +61,8 @@ print datetime.datetime.strptime('2014-09-17', '%Y-%m-%d').date()
 a = {"a":'123a', "b": '456b'}
 if not a.has_key('c'):
     print "good, I can check key of a dict"
+
+string ="    周迅饰演的外星人来到地球，通过美食的传递，与井柏然饰演的小厨师展开了一场颇为简单纯粹的感情，不甚复杂的故事中却道出了引人思考的爱情观。 展开全部 收起全部"
+pattern = r'\s*展开全部\s*收起全部\s*'
+newStr = re.sub(pattern, '', string)
+print newStr
