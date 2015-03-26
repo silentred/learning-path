@@ -1,3 +1,4 @@
+//关于PDO的操作
 $resAdd = $this->addVideoRelations($video_id, $toAdd);
 //in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
 if((int)$resAdd === 0 ) $resAdd=true;
@@ -21,3 +22,65 @@ $statement->execute([':id'=>2]);
 $result = $statement->fetchAll();
 var_dump($result);
 var_dump($statement->rowCount());
+
+关于php发送GET/POST http 请求：
+//GET
+$query_string = http_build_query($param); //param是array
+$opts = array(
+    'http'=>array(
+        'method'=>"GET",
+        'timeout'=>30
+    )
+);
+$context = stream_context_create($opts);
+$content = file_get_contents($url, false, $context);
+//POST
+$options = array(
+    'http' => array(
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data),
+    ),
+);
+$context = stream_context_create($opts);
+$content = file_get_contents($url, false, $context);
+或者post还可以用curl来发送：
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HEADER, false);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+$result = curl_exec($ch);
+curl_close($ch);
+unset($ch);
+
+
+PHP的notices， warning，error等错误级别需要查看一下
+关于如何处理错误：
+方法1： set your own error handler before the call and restore the previous error handler later with restore_error_handler().
+set_error_handler(function() { /* ignore errors */ });
+dns_get_record();
+restore_error_handler(); //恢复到之前的处理函数
+方法2：Turning errors into exceptions
+set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
+    // error was suppressed with the @-operator
+    if (0 === error_reporting()) {
+        return false;
+    }
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+});
+try {
+    dns_get_record();
+} catch (ErrorException $e) {
+    // ...
+}
+The important thing to note when using your own error handler is that it will bypass the error_reporting setting and pass all errors (notices, warnings, etc.) to your error handler. You can set a second argument on set_error_handler() to define which error types you want to receive, or access the current setting using ... = error_reporting() inside the error handler.
+方法3（不推荐）：Suppressing the warning
+Another possibility is to suppress the call with the @ operator and check the return value of dns_get_record() afterwards. But I'd advise against this as errors/warnings are triggered to be handled, not to be suppressed.
+
+
+数据库插入数据后的自增id如何获得：
+PDO::lastInsertId();
+$mysqli->insert_id
