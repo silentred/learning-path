@@ -1,0 +1,23 @@
+$resAdd = $this->addVideoRelations($video_id, $toAdd);
+//in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
+if((int)$resAdd === 0 ) $resAdd=true;
+这里PDO和mysqli作为driver时候，insert的返回结果不同，PDO为“0“， mysqli为0
+
+PDO的使用：
+$pdo = \DB::connection()->getPdo();
+$sql = 'select * from video where id=1';
+$result = $pdo->query($sql);
+//dd($result->fetch());
+
+$sql2 = 'select * from video where id<?';
+$statement = $pdo->prepare($sql2);
+$statement->execute([3]);
+$result = $statement->fetchObject();
+var_dump($statement->rowCount());
+
+$sql3 = 'select * from video where id<:id';
+$statement = $pdo->prepare($sql3);
+$statement->execute([':id'=>2]);
+$result = $statement->fetchAll();
+var_dump($result);
+var_dump($statement->rowCount());
