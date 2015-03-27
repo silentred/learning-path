@@ -90,3 +90,62 @@ ob_start();
 include "include-me.php";
 $content = ob_get_clean();
 echo "\n!!!This is a cache, not direct output!! OB_LEVEL={$level}\n".$content;
+
+echo "\n".urlencode('http://sss.sss.com/!@#%$^&喜剧');
+
+
+
+
+class MyEncryption
+{
+
+    public $pubkey;
+    public $privkey ;
+
+    public function __construct(){
+    	$config = array(
+	    "digest_alg" => "sha512",
+	    "private_key_bits" => 4096,
+	    "private_key_type" => OPENSSL_KEYTYPE_RSA,
+	);
+    	// Create the private and public key
+	$res = openssl_pkey_new($config);
+	// Extract the private key from $res to $privKey
+	openssl_pkey_export($res, $privKey);
+	// Extract the public key from $res to $pubKey
+	$pubKey = openssl_pkey_get_details($res);
+	$pubKey = $pubKey["key"];
+
+    	$this->privkey = $privKey;
+    	$this->pubkey = $pubKey;
+    }
+
+    public function encrypt($data)
+    {
+        if (openssl_public_encrypt($data, $encrypted, $this->pubkey))
+            $data = base64_encode($encrypted);
+        else
+            throw new Exception('Unable to encrypt data. Perhaps it is bigger than the key size?');
+
+        return $data;
+    }
+
+    public function decrypt($data)
+    {
+        if (openssl_private_decrypt(base64_decode($data), $decrypted, $this->privkey))
+            $data = $decrypted;
+        else
+            $data = '';
+
+        return $data;
+    }
+}
+
+$hasher = new MyEncryption();
+$encryptData = $hasher->encrypt('hello world');
+//echo "\n public key : {$hasher->pubkey} \n";
+//echo "\n public key : {$hasher->privkey} \n";
+echo "\n". $encryptData;
+$decryptData = $hasher->decrypt($encryptData);
+echo "\n". $decryptData;
+
