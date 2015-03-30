@@ -1,7 +1,7 @@
 {
-	"taskdb": "sqlite+taskdb:///data/task.db",
-	"projectdb": "sqlite+projectdb:///data/project.db",
-	"resultdb": "sqlite+resultdb:///data/result.db",
+    "taskdb": "mysql+taskdb://qiye_dev:qiye..dev@192.168.2.248:3306/1188ys_taskdb",
+	"projectdb": "mysql+projectdb://qiye_dev:qiye..dev@192.168.2.248:3306/1188ys_projectdb",
+	"resultdb": "mysql+resultdb://qiye_dev:qiye..dev@192.168.2.248:3306/1188ys_resultdb",
 	"webui":{
 		"username": "1188",
 		"password": "1188",

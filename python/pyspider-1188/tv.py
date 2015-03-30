@@ -4,9 +4,10 @@
 # Project: test
 
 from pyspider.libs.base_handler import *
-import re
+import re, time, random, errno, os, urllib
 from pyquery import PyQuery as pq
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
+from projects.movie import delUrlParams, getId, mkdir_p, downlaodImage, stripHtmlTag
 
 class Handler(BaseHandler):
     crawl_config = {
@@ -15,13 +16,13 @@ class Handler(BaseHandler):
         }
     }
 
-    @every(minutes=24 * 60)
+    @every(seconds=22* 60*60)
     def on_start(self):
         self.crawl('http://tv.2345.com/---.html', callback=self.list_page)
 
 
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=18* 60*60)
     def list_page(self, response):
         for each in response.doc('#picCon li').items():
             img = pq(each).find('div.pic>img')
@@ -35,11 +36,11 @@ class Handler(BaseHandler):
             if re.match("http://tv.2345.com/----default-\d+\.html$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
     
-    @config(priority=4)   
+    @config(priority=4, age=18* 60*60)   
     def on_message(self, project, msg):
         self.crawl(msg['url'], callback=self.detail_page )
 
-    @config(priority=2, age=4 * 24 * 60 * 60)
+    @config(priority=2, age=18* 60*60)
     def detail_page(self, response):
         ##抓取基本信息
         casting = director = categories = year = location = upd_desc = None
@@ -90,7 +91,7 @@ class Handler(BaseHandler):
         closed = 0
         wrap = response.doc('.pTxt .sDes')
         sep = wrap.find('i')
-        if re.match(u'.*更新.*', wrap.html()) or sep:
+        if re.match(u'.*更新.*', wrap.text()) or sep:
             pass
             if sep:
                 upd_desc = wrap.contents()[-1][2:]
@@ -121,19 +122,19 @@ class Handler(BaseHandler):
         }
 
     #剧情列表
-    @config(priority=2, age=4 * 24 * 60 * 60)
+    @config(priority=2, age=18* 60*60)
     def plot_list_page(self, response):
         for each in response.doc('.th_b .sourceList>.numList> a').items():
             if each.attr.href != 'javascript:void(0);':
                 self.crawl(each.attr.href, callback=self.plot_detail_page)
         return self.crawl_plot_detail(response)
 
-    @config(priority=2,age=4 * 24 * 60 * 60)
+    @config(priority=2,age=18* 60*60)
     def plot_detail_page(self, response):
         return self.crawl_plot_detail(response)
 
     #剧情页的首页不能抓两次，以为taskId重复，所以在进入plot_list_page方法时候就要返回一次数据
-    @config(priority=3,age=4 * 24 * 60 * 60)
+    @config(priority=3,age=18* 60*60)
     def crawl_plot_detail(self, response):
         rawHtml = response.doc('.paragraphCon').html()
         match = re.search('.*/juqing/(\d+)(-\d+)?\.html$', response.url)

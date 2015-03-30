@@ -4,9 +4,10 @@
 # Project: test
 
 from pyspider.libs.base_handler import *
-import re
+import re,  time, random, errno, os, urllib
 from pyquery import PyQuery as pq
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
+from projects.movie import delUrlParams, getId, mkdir_p, downlaodImage
 
 class Handler(BaseHandler):
     crawl_config = {
@@ -15,13 +16,13 @@ class Handler(BaseHandler):
         }
     }
 
-    @every(minutes=24 * 60)
+    @every(seconds=23* 60*60)
     def on_start(self):
         self.crawl('http://dongman.2345.com/lt', callback=self.list_page)
 
 
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=18* 60*60)
     def list_page(self, response):
         for each in response.doc('#picCon li').items():
             img = pq(each).find('div.pic>img')
@@ -35,12 +36,24 @@ class Handler(BaseHandler):
             if re.match("http://dongman.2345.com/lt/\d+$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
     
-    @config(priority=4)
+    @config(priority=4, age=18* 60*60)
     def on_message(self, project, msg):
         self.crawl(msg['url'], callback=self.detail_page )
 
-    @config(priority=2, age=4 * 24 * 60 * 60)
+
+    def handleMetaRedirect(self, response):
+        meta = response.doc('meta[http-equiv=refresh]')
+        url = None
+        if meta is not None and meta.attr.content is not None:
+            match = re.search("URL='(.*)'", meta.attr.content or '')
+            if match is not None:
+                url = match.group(1)
+        if url is not None:
+            self.crawl(url, callback=self.detail_page, save=response.save)
+
+    @config(priority=2, age=18* 60*60)
     def detail_page(self, response):
+        self.handleMetaRedirect(response)
         ##抓取基本信息
         categories = year = location = alias = upd_desc = orig_id = None
         catList = []
@@ -62,12 +75,13 @@ class Handler(BaseHandler):
         #抓取播放源地址
         playSources = {}
         for each in response.doc('.sourceList').items():
-            api = each.attr.id[:-4]
-            episodes = {}
-            for episode in pq(each).find('.numList>a').items():
-                if episode.attr.href and episode.attr.href[:10] != 'javascript':
-                    episodes[pq(episode).text()] = delUrlParams(episode.attr.href)
-            playSources[api] = episodes
+            if each.attr.id is not None and len(each.attr.id)>4:
+                api = each.attr.id[:-4]
+                episodes = {}
+                for episode in pq(each).find('.numList>a').items():
+                    if episode.attr.href and episode.attr.href[:10] != 'javascript':
+                        episodes[pq(episode).text()] = delUrlParams(episode.attr.href)
+                playSources[api] = episodes
         #这里必须处理一种情况：sohu_con 和sohu_con_list其实是一种播放源，
         #因为集数太多，所以分了两个列表，需要合并两个dict
         for key in playSources.keys():
@@ -80,7 +94,7 @@ class Handler(BaseHandler):
         closed = 0
         wrap = response.doc('.pTxt .sDes')
         sep = wrap.find('i')
-        if re.match(u'.*更新.*', wrap.html()) or sep:
+        if re.match(u'.*更新.*', wrap.text()) or sep:
             pass
             if sep:
                 upd_desc = wrap.contents()[-1][2:] or None
@@ -108,17 +122,3 @@ class Handler(BaseHandler):
             "small_image": response.save['small_image'] or '',
             "orig_id" : orig_id
         }
-
-#删除url中的参数部分，返回无参的url
-def delUrlParams(url):
-    parsed = urlparse(url)
-    empty = '', '', ''
-    return urlunparse(parsed[:3] + empty) 
-
-def getId(url, pattern=None):
-    parsed = urlparse(url)
-    matchObj = re.search(pattern, parsed.path)
-    id = 0
-    if matchObj:
-        id = matchObj.group(1)
-    return id

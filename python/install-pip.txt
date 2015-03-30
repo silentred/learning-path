@@ -51,3 +51,11 @@ pip install --upgrade pip
 pip install pyspider
 
 pip 和 easy_install有冲突，如果已经安装了easy_install则用其安装pyspider，不用安装pip
+
+
+
+安装 MySQLdb module
+easy_install MySQL-python
+安装 mysql module:
+下载页面 http://dev.mysql.com/downloads/connector/python/
+centos中使用：rpm -Uvh mysql-xxx-xxx.rpm

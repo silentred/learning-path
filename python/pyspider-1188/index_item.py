@@ -40,7 +40,8 @@ class Handler(BaseHandler):
                     orig_id = getOrigId(url)
                     items.append({
                         "page_id": 0,
-                        "section": sub_section,
+                        "section": section,
+                        "sub_section": sub_section,
                         "cover": cover,
                         "url" : url, 
                         "desc": desc,
@@ -48,7 +49,7 @@ class Handler(BaseHandler):
                         "video_type_id": video_type_id
                         })
         #banner
-        for each in response.doc('#focus ul li').items():
+        for each in response.doc('#focus ul').eq(0).find('li').items():
             cover = pq(each).find("img").attr.loadsrc or pq(each).find("img").attr.src
             url = pq(each).find('.playBtn a').attr.href
             orig_id = getOrigId(url)
@@ -119,13 +120,13 @@ class Handler(BaseHandler):
         for each in response.doc('.mod_g').items():
             section = pq(each).find('.animationPng a').text()
             for item in pq(each).find('.ul_picTxtA li').items():
-                cover = pq(item).find('.pic img').attr.loadsrc
+                cover = pq(item).find('.pic img').attr.loadsrc or pq(item).find('.pic img').attr.src
                 url = delUrlParams(pq(item).find('.playBtn a').attr.href)
                 orig_id = re.search('.*/dm/(\d+)\.html',url).group(1)
                 desc = pq(item).find('.sDes').text()
                 items.append({
                     "section": section,
-                    "cover": cover,
+                    "cover": cover or '',
                     "url": url,
                     "orig_id": orig_id,
                     "desc": desc,
@@ -134,7 +135,7 @@ class Handler(BaseHandler):
                     })
         #banner
         for each in response.doc('#focus ul li').items():
-            cover = pq(each).find('img').attr.loadsrc
+            cover = pq(each).find('img').attr.loadsrc or pq(each).find('img').attr.src
             url = delUrlParams(pq(each).find('.sName a').attr.href)
             desc = pq(each).find('.sTxt').text()
             orig_id = None
@@ -145,7 +146,7 @@ class Handler(BaseHandler):
             if orig_id is not None:
                 items.append({
                 "section": 'banner',
-                "cover": cover,
+                "cover": cover or '',
                 "url": url,
                 "orig_id": orig_id,
                 "desc": desc,
@@ -158,13 +159,13 @@ class Handler(BaseHandler):
             section = pq(each).find('.mark').text() or pq(each).find('.sTit').text()
             nextNode = pq(each).nextAll('.tb_h').eq(0)
             for item in pq(nextNode).find('.ul_picTxtA li').items():
-                cover = pq(item).find('img').attr.loadsrc
+                cover = pq(item).find('img').attr.loadsrc or pq(item).find('img').attr.src
                 url = delUrlParams(pq(item).find('.sName a').attr.href)
                 desc = pq(each).find('.sTxt').text() or pq(each).find('.sDes').text() 
                 orig_id = re.search('.*/dm/(\d+)\.html',url).group(1)
                 items.append({
                     "section": section,
-                    "cover": cover,
+                    "cover": cover or '',
                     "url": url,
                     "orig_id": orig_id,
                     "desc": desc,
@@ -247,20 +248,23 @@ class Handler(BaseHandler):
         for each in response.doc('#focus .picCon .con').items():
             url = pq(each).find('a').attr.href
             big_cover = pq(each).find('img').attr.loadsrc
-            orig_id = re.search('.*/zongyi/zy_(\d+)',url).group(1)
+            match = re.search('.*/zongyi/zy_(\d+)',url)
+            if match is not None:
+                orig_id = match.group(1)
             desc =  pq(item).find('.pTxt').text()
             cover = response.doc("#pic_%d img" % i ).attr.src
             i +=1
-            items.append({
-                 "section": "banner",
-                    "cover": cover,
-                    "big_cover": big_cover,
-                    "url": url,
-                    "orig_id": orig_id,
-                    "desc": desc,
-                    "video_type_id": 4,
-                    "page_id": 4
-                })
+            if orig_id is not None:
+                items.append({
+                     "section": "banner",
+                        "cover": cover,
+                        "big_cover": big_cover,
+                        "url": url,
+                        "orig_id": orig_id,
+                        "desc": desc,
+                        "video_type_id": 4,
+                        "page_id": 4
+                    })
 
         #hot
         hot =  response.doc('.mod_e').eq(0)

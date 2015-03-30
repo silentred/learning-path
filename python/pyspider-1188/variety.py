@@ -4,9 +4,10 @@
 # Project: test
 
 from pyspider.libs.base_handler import *
-import re
+import re, time, random, errno, os, urllib
 from pyquery import PyQuery as pq
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
+from projects.movie import delUrlParams, getId, mkdir_p, downlaodImage, stripHtmlTag
 
 class Handler(BaseHandler):
     crawl_config = {
@@ -17,11 +18,11 @@ class Handler(BaseHandler):
 
     ajaxBaseUrl = 'http://v.2345.com/moviecore/server/variety/index.php?'
 
-    @every(minutes=24 * 60)
+    @every(seconds=21* 60*60)
     def on_start(self):
         self.crawl('http://v.2345.com/zongyi/l/', callback=self.list_page)
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=18* 60*60)
     def list_page(self, response):
         for each in response.doc('#picCon li').items():
             img = pq(each).find('div.pic>img')
@@ -36,11 +37,11 @@ class Handler(BaseHandler):
             if re.match("http://v.2345.com/zongyi/lpxdefault/\d+/$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
             
-    @config(priority=4)   
+    @config(priority=4, age=18* 60*60)   
     def on_message(self, project, msg):
         self.crawl(msg['url'], callback=self.detail_page )
 
-    @config(priority=2, age=4 * 24 * 60 * 60)
+    @config(priority=2, age=18* 60*60)
     def detail_page(self, response):
         ##抓取基本信息
         categories = platform = location = orig_id = hosts= None
@@ -94,7 +95,7 @@ class Handler(BaseHandler):
             "is_play_source": 0
         }
 
-    @config(priority=2)
+    @config(priority=2, age=18* 60*60)
     def jsonYearList(self, response):
         save = response.save
         yearList = response.json['yearList']
@@ -104,7 +105,7 @@ class Handler(BaseHandler):
             save['year'] = each
             self.crawl(self.ajaxBaseUrl+makeAjaxParam(api=save['api'], id=save['variety_id'], year=save['year']), callback=self.source_list_page, save=save)
 
-    @config(priority=2)
+    @config(priority=2, age=18* 60*60)
     def source_list_page(self, response):
         save = response.save
         save['source'] = []
@@ -122,21 +123,6 @@ class Handler(BaseHandler):
             }
             save['source'].append(episode)
         return save
-
-
-#删除url中的参数部分，返回无参的url
-def delUrlParams(url):
-    parsed = urlparse(url)
-    empty = '', '', ''
-    return urlunparse(parsed[:3] + empty) 
-
-def getId(url, pattern=None):
-    parsed = urlparse(url)
-    matchObj = re.search(pattern, parsed.path)
-    id = 0
-    if matchObj:
-        id = matchObj.group(1)
-    return id
 
 def makeAjaxParam(**params):
     defaultParam = {

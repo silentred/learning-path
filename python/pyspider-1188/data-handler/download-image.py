@@ -12,8 +12,9 @@ def mkdir_p(path):
         else: raise exc
 
 def downlaodImage(url):
-    start_time = time.time()
+    #start_time = time.time()
     baseDir = "/home/jason/shared/image"
+    #baseDir = "/root/image"
     parsed = urlparse(url)
     path = parsed[2]
     fullPath = baseDir+path
@@ -25,7 +26,7 @@ def downlaodImage(url):
     try:
         if not fileExists:
             result = urllib.urlretrieve(url, fullPath)
-            print "execution time: %f s" % (time.time()-start_time) 
+            #print "execution time: %f s" % (time.time()-start_time) 
     except IOError, e:
         print "io error, url: %s" % (url,)
     except Exception, e:
@@ -75,16 +76,16 @@ def downlaodImage(url):
 #         small = x[1]
 #         downlaodImage(poster)
 #         downlaodImage(small)
+#         print "time: %f s" % (time.time()) 
 
 # threads = []
-# limit  =10000.0
+# limit  =1000.0
 # try:
 #     db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
 #     cursor = db.cursor()
 #     cursor.execute("SELECT count(1) from video_info")
 #     rowCount = cursor.fetchone()[0]
 #     runtimes = math.ceil(rowCount/limit)
-#     print rowCount
 #     for x in xrange(0, int(runtimes)):
 #         sql = "SELECT poster_image, small_image from video_info  limit %d, %d" % (int(x*limit ), int(limit))
 #         cursor.execute(sql)
@@ -98,11 +99,13 @@ def downlaodImage(url):
 try:
     db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
     cursor = db.cursor()
-    cursor.execute(""" SELECT poster_image, small_image from video_info""")
+    cursor.execute(""" SELECT poster_image, small_image, id from video_info LIMIT 47000, 50000""")
     for x in cursor.fetchall():
         poster =  x[0]
         small = x[1]
         downlaodImage(poster)
         downlaodImage(small)
+        if x[2]%100 == 0:
+            print "printing id %d" % (x[2])
 except Exception, e:
-    print e
+    print e, "task id is %s" % x[2]

@@ -385,3 +385,9 @@ ERROR:root:Error: time data '2013-13-23' does not match format '%Y-%m-%d', taski
 SELECT taskid, result from resultdb_variety limit 5000, 1000
 Thu Mar 26 17:02:03 2015
 ERROR:root:Error: time data '2013-40-25' does not match format '%Y-%m-%d', taskid : 0c07b34e54b0d8062c5f729add21ab10
+
+
+
+io error, url: http://img3.2345.com/dianyingimg/img/c/5/sup15461_223x310.jpg?v2015032504
+io error, url: http://img6.2345.com/dianyingimg/img/c/5/15461.jpg
+io error, url: http://img3.2345.com/dianyingimg/img/9/32/s96236_223x310.jpg?1380081958?v2015032504
