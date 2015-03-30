@@ -1,0 +1,12 @@
+You can edit the source list (/etc/apt/sources.list) directly. I think you need to add in/uncomment these lines:
+
+deb-src http://archive.ubuntu.com/ubuntu trusty main restricted #Added by software-properties
+deb-src http://gb.archive.ubuntu.com/ubuntu/ trusty restricted main universe multiverse #Added by software-properties
+deb-src http://gb.archive.ubuntu.com/ubuntu/ trusty-updates restricted main universe multiverse #Added by software-properties
+deb-src http://gb.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse #Added by software-properties
+deb-src http://security.ubuntu.com/ubuntu trusty-security restricted main universe multiverse #Added by software-properties
+deb-src http://gb.archive.ubuntu.com/ubuntu/ trusty-proposed restricted main universe multiverse #Added by software-properties
+
+apt-get update
+
+apt-get source php5
