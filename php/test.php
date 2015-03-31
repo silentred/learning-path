@@ -167,3 +167,18 @@ while (pcntl_waitpid(0, $status) != -1) {
 } */
 
 echo "\n msg_get_queue exists: ".function_exists('msg_get_queue');
+
+
+$users = array(
+    array('name' => 'tom', 'age' => 20)
+    , array('name' => 'anny', 'age' => 18)
+    , array('name' => 'jack', 'age' => 22)
+);
+usort($users, function($a, $b) {
+            $al = $a['age'];
+            $bl = $b['age'];
+            if ($al == $bl)
+                return 0;
+            return ($al > $bl) ? -1 : 1;
+        });
+var_dump($users);
