@@ -84,6 +84,8 @@ $instance = new stdClass();
 //echo $instance->no_existing; 这里会提示PHP Notice:  Undefined property:
 
 
+//Laravel的模板输出用的方式，先打开输出缓存，echo 输出内容，最后get到变量里
+/*
 $level = ob_get_level(); //0
 ob_start();
 //$level = ob_get_level();//1
@@ -92,10 +94,10 @@ $content = ob_get_clean();
 echo "\n!!!This is a cache, not direct output!! OB_LEVEL={$level}\n".$content;
 
 echo "\n".urlencode('http://sss.sss.com/!@#%$^&喜剧');
+*/
 
 
-
-
+//不对称加密，需要安装openssl扩展
 class MyEncryption
 {
 
@@ -182,3 +184,39 @@ usort($users, function($a, $b) {
             return ($al > $bl) ? -1 : 1;
         });
 var_dump($users);
+
+
+
+// array_reduce(input, function)的简介
+// Laravel的责任链的实现方式就用了这个函数
+$arr = array( 
+    array('min' => 1.5456, 'max' => 2.28548, 'volume' => 23.152), 
+    array('min' => 1.5457, 'max' => 2.28549, 'volume' => 23.152), 
+    array('min' => 1.5458, 'max' => 2.28550, 'volume' => 23.152), 
+    array('min' => 1.5459, 'max' => 2.28551, 'volume' => 23.152), 
+    array('min' => 1.5460, 'max' => 2.28552, 'volume' => 23.152), 
+); 
+
+$initial = array_shift($arr); 
+
+$t = array_reduce($arr, function($result, $item) { 
+    $result['min'] = min($result['min'], $item['min']); 
+    $result['max'] = max($result['max'], $item['max']); 
+    $result['volume'] += $item['volume']; 
+
+    return $result; 
+}, $initial); 
+var_dump($t);
+
+//例2, 打印的两个值是相同的
+function f($v,$w){return "f($v,$w)";}
+var_dump(array_reduce(array(1,2,3,4), 'f', 99 ));
+var_dump(array_reduce(array(2,3,4), 'f',  f(99,1) ));
+//他的php实现大致是这样：把上一个reduce的结果作为callback的第一个参数，每一个数组中的元素迭代作为第二个参数；第一次执行callback的时候如果$inital没有指定，则为null
+function my_array_reduce($array, $callback, $initial=null)
+{
+    $acc = $initial;
+    foreach($array as $a)
+        $acc = $callback($acc, $a);
+    return $acc;
+}
