@@ -220,3 +220,12 @@ function my_array_reduce($array, $callback, $initial=null)
         $acc = $callback($acc, $a);
     return $acc;
 }
+
+function time2($value)
+{
+    return $value*2;
+}
+$a = [1,4,6,7];
+var_dump(array_map(time2, $a));
+
+var_dump(empty(array()));
