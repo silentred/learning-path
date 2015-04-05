@@ -1,0 +1,18 @@
+Win64下安装gcc后，遇到丢失zlib1.dll，解决如下：
+I had this same problem, but fixed it like this:
+
+I ran the MinGW Installation Manager (e.g. C:\MinGW\libexec\mingw-get\guimain.exe).
+I navigated to All Packages -> MinGW -> MinGW Libraries.
+I checked the boxes next to mingw32-libz (dev & dll).
+
+I went to Installation -> Apply Changes.
+
+Now everything worked properly.
+
+为什么UINT_MAX为-1
+什么是 宽字符常量 L"X"?
+\377, '\377'代表什么？
+字符串常量的直接值是指针，而不是这些字符本身
+声明指针尽量用 int *a, 不要用 int* a,
+
+
