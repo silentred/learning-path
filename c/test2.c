@@ -24,6 +24,8 @@ int main()
    char *message;
    message = "Hello !!!";  //message是字符指针，字符串字面量的直接值也是指针，所以可以这样赋值；
    printf("char:%s point: %p\n",message, message);
+   
+   
 
    return 0;
 }
