@@ -3,9 +3,10 @@
 #include <float.h>
 
 /* function declaration  */
-void func(void);
+void binary_(int x);
  
 static int count = 5; /* global variable */
+
 
 int main()
 {
@@ -25,7 +26,24 @@ int main()
    message = "Hello !!!";  //message是字符指针，字符串字面量的直接值也是指针，所以可以这样赋值；
    printf("char:%s point: %p\n",message, message);
 
+   /*int a = 48; 这里win下编译通过，但是执行出错
+   printf("string is %s\n", a);*/
+
+   printf("%d\n", EOF);
+
+   int x;
+   x = 70+3;
+   printf("%d\n", ~x);
+
    return 0;
 }
 
-
+void binary_(int x)
+{
+    if (x<=0) return;
+    else
+    {           
+        binary_(x/2);
+        printf("%d",x%2);
+    }
+}
