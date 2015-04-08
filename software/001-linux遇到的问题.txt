@@ -1,0 +1,29 @@
+/目录和/usr可以较大。
+/ --- 10G
+/uar --- 8G
+/home --- 4G
+/boot --- 100M
+
+剩余的空间可以都分给 / 和 /usr
+
+
+挂载光驱
+mount /dev/cdrom ~/cdrom
+
+ifconfig没找到
+yum install net-tools
+其他常用软件：
+yum groupinstall "Development Tools"
+yum install java vim python
+yum grouplist 查看有哪些group可以安装
+
+设置固定ip
+sudo vim /etc/sysconfig/network-scripts/ifcfg-eth0 #根据网卡名字不同
+BOOTPROTO=static #设置网卡获得ip地址的方式，可能的选项为static，dhcp或bootp，分别对应静态指定的 ip地址，通过dhcp协议获得的ip地址，通过bootp协议获得的ip地址
+IPADDR=192.168.1.105 #如果设置网卡获得 ip地址的方式为静态指定，此字段就指定了网卡对应的ip地址
+NETMASK=255.255.255.0 #网卡对应的网络掩码
+本来默认的是dhcp，改为static，配置下ip，掩码就行；
+IPV6INIT=no 关闭ipv6
+重启：sudo service network restart
+
+
