@@ -34,6 +34,7 @@ int main()
    int x;
    x = 70+3;
    printf("%d\n", ~x);
+   
 
    return 0;
 }

@@ -16,7 +16,7 @@ from declarative import  Base, Video, VideoInfo, Category, PlaySource, Specicalt
 from sqlalchemy.orm.exc import NoResultFound
 
 def initSession():
-    engine = create_engine('mysql+mysqldb://test:test@192.168.2.50/1188test?charset=utf8&use_unicode=0')
+    engine = create_engine('mysql+mysqldb://test:test@172.16.1.19/1188test?charset=utf8&use_unicode=0')
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -54,9 +54,9 @@ def searchAndSaveRank(session, rankObjs):
 
 
 session = initSession()
-with sqlite3.connect('result.db') as db:
-    cursor = db.cursor()
-    cursor.execute('''SELECT taskid, result from resultdb_rank limit 0, 500''')
+with MySQLdb.connect('172.16.1.248', 'qiye_dev', 'qiye..dev', '1188ys_resultdb') as cursor:
+    #cursor = db.cursor()
+    cursor.execute('''SELECT taskid, result from rank_item''')
     allRows = cursor.fetchall()
     i = 0
     for row in allRows:

@@ -49,63 +49,62 @@ def downlaodImage(url):
 #     threads.append(t1)
 #     t1.start()
 
-# threads = []
-# try:
-#     db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
-#     cursor = db.cursor()
-#     cursor.execute(""" SELECT poster_image, small_image from video_info""")
-#     for x in cursor.fetchall():
-#         poster =  x[0]
-#         small = x[1]
-#         if len(threads)>20:
-#             for t in threads:
-#                 t.join()
-#             del threads[:] # empty the list
-#         t1 = threading.Thread(target = downlaodImage, args=(poster,) )
-#         t2 = threading.Thread(target = downlaodImage, args=(small,) )
-#         threads.append(t1)
-#         threads.append(t2)
-#         t1.start()
-#         t2.start()
-# except Exception, e:
-#     print e
 
-# def partitionDownload(fetchResult):
-#     for x in fetchResult:
-#         poster =  x[0]
-#         small = x[1]
-#         downlaodImage(poster)
-#         downlaodImage(small)
-#         print "time: %f s" % (time.time()) 
-
-# threads = []
-# limit  =1000.0
-# try:
-#     db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
-#     cursor = db.cursor()
-#     cursor.execute("SELECT count(1) from video_info")
-#     rowCount = cursor.fetchone()[0]
-#     runtimes = math.ceil(rowCount/limit)
-#     for x in xrange(0, int(runtimes)):
-#         sql = "SELECT poster_image, small_image from video_info  limit %d, %d" % (int(x*limit ), int(limit))
-#         cursor.execute(sql)
-#         result = cursor.fetchall()
-#         t1 = threading.Thread(target = partitionDownload, args=(result,) )
-#         threads.append(t1)
-#         t1.start()
-# except Exception, e:
-#     print e
-
-try:
-    db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
-    cursor = db.cursor()
-    cursor.execute(""" SELECT poster_image, small_image, id from video_info LIMIT 47000, 50000""")
-    for x in cursor.fetchall():
+def partitionDownload(fetchResult):
+    for x in fetchResult:
         poster =  x[0]
         small = x[1]
         downlaodImage(poster)
         downlaodImage(small)
         if x[2]%100 == 0:
             print "printing id %d" % (x[2])
+    print "time: %f s" % (time.time()) 
+
+
+start_time = time.time()
+threads = []
+limit  =1000.0
+workerNum = 10
+try:
+    db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
+    cursor = db.cursor()
+    cursor.execute("SELECT count(1) from video_info")
+    rowCount = cursor.fetchone()[0]
+    runtimes = math.ceil(rowCount/limit)
+    for x in xrange(0, int(runtimes)):
+        while True:
+            #if not alive, delete it
+            for t in threads:
+                if not t.isAlive():
+                    threads.remove(t)
+            # if <10, then go to get more from DB 
+            if len(threads) < workerNum:
+                break
+            #sleep for 1s, waiting for the next check
+            time.sleep(1)
+
+        sql = "SELECT poster_image, small_image, id from video_info  limit %d, %d" % (int(x*limit ), int(limit))
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        t1 = threading.Thread(target = partitionDownload, args=(result,) )
+        threads.append(t1)
+        t1.start()
 except Exception, e:
-    print e, "task id is %s" % x[2]
+    print e
+
+
+# try:
+#     db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
+#     cursor = db.cursor()
+#     cursor.execute(""" SELECT poster_image, small_image, id from video_info LIMIT 0, 72000""")
+#     for x in cursor.fetchall():
+#         poster =  x[0]
+#         small = x[1]
+#         downlaodImage(poster)
+#         downlaodImage(small)
+#         if x[2]%100 == 0:
+#             print "printing id %d" % (x[2])
+# except Exception, e:
+#     print e, "task id is %s" % x[2]
+
+print "execution time: %f s" % (time.time()-start_time)

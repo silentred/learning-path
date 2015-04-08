@@ -24,6 +24,13 @@ class Handler(BaseHandler):
 
     @config(age=12 * 24 * 60 * 60)
     def rank_item(self, response):
+        video_type_id = response.save['video_type_id']
+        for each in response.doc('.tabList a').items():
+            self.crawl(each.attr.href, callback=self.crawl_item, save={'video_type_id': video_type_id})
+
+
+    @config(age=12 * 24 * 60 * 60)
+    def crawl_item(self, response):
         items = []
         section = response.doc('.tabList a.cur').text()
         video_type_id = response.save['video_type_id']
@@ -39,10 +46,6 @@ class Handler(BaseHandler):
                 "orig_id": orig_id, 
                 "position": position
                 })
-
-        for each in response.doc('.tabList a').items():
-            self.crawl(each.attr.href, callback=self.rank_item, save={'video_type_id': video_type_id})
-
         return items
 
 
