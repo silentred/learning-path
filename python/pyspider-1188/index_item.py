@@ -15,7 +15,7 @@ class Handler(BaseHandler):
         }
     }
 
-    @every(minutes=24 * 60)
+    @every(minutes=12 * 60)
     def on_start(self):
         self.crawl('http://dianying.2345.com/', callback=self.movie_index)
         self.crawl('http://dongman.2345.com/', callback=self.comic_index)
@@ -23,7 +23,7 @@ class Handler(BaseHandler):
         self.crawl('http://v.2345.com/zongyi/', callback=self.variety_index)
         self.crawl('http://v.2345.com/', callback=self.index_index)
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=12 * 60 * 60)
     def index_index(self, response):
         items = []
         for each in response.doc('.mod_a').items():
@@ -69,7 +69,7 @@ class Handler(BaseHandler):
 
 
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=12 * 60 * 60)
     def movie_index(self, response):
         movieIndexItems = []
         for each in response.doc('.mod_e').items():
@@ -114,7 +114,7 @@ class Handler(BaseHandler):
 
         return movieIndexItems
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=12 * 60 * 60)
     def comic_index(self, response):
         items = []
         for each in response.doc('.mod_g').items():
@@ -178,7 +178,7 @@ class Handler(BaseHandler):
 
         return items
         
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=12 * 60 * 60)
     def tv_index(self, response):
         items = []
         for each in response.doc('.mod_a').items():
@@ -223,7 +223,7 @@ class Handler(BaseHandler):
         return items
 
 
-    @config(age=10 * 24 * 60 * 60)
+    @config(age=12 * 60 * 60)
     def variety_index(self, response):
         items = []
         for each in response.doc('.mod_c .th_c'):

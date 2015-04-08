@@ -229,3 +229,41 @@ $a = [1,4,6,7];
 var_dump(array_map(time2, $a));
 
 var_dump(empty(array()));
+
+
+/*内存泄露：互相引用*/
+class Foo {
+    function __construct()
+    {
+        $this->bar = new Bar($this);
+    }
+}
+
+class Bar {
+    function __construct($foo = null)
+    {
+        $this->foo = $foo;
+    }
+}
+
+/*while (true) {
+    $foo = new Foo();
+    unset($foo);
+    echo number_format(memory_get_usage()) . "\n";
+    sleep(1);
+}*/
+
+//array 的+号操作, 若有元素冲突，则以左侧的值为准，忽略右侧的值。
+$a = array('a'=>'11', 'b'=>'22');
+$b = array('b'=>'bb3', 'c'=>'cc4');
+$new = $a+$b; //这里'b'的值为22
+var_dump($new);
+
+
+
+$regex = '/(?<=\{)[a-zA-z0-9_-]+(?=\})/';  /* d 前面紧跟c, d 后面紧跟e*/
+$str = 'sdf/sdf/{type}-{location}-{year}---.html';
+$matches = array();
+if(preg_match_all($regex, $str, $matches)){
+    var_dump($matches);
+}

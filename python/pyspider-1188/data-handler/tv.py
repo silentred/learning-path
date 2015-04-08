@@ -16,7 +16,7 @@ from declarative import  Base, Video, VideoInfo, Category, PlaySource, Specicalt
 from sqlalchemy.orm.exc import NoResultFound
 
 def initSession():
-    engine = create_engine('mysql+mysqldb://test:test@192.168.2.50/1188test?charset=utf8&use_unicode=0')
+    engine = create_engine('mysql+mysqldb://test:test@172.16.1.19/1188test?charset=utf8&use_unicode=0')
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -89,12 +89,13 @@ def saveVideoInfo(session, movie, savedMovieObj):
             actors = ', '.join(actorList)
 
         introduction = movie['introduction'].decode('unicode-escape')
-        introduction = re.sub(r'\s*展开全部\s*收起全部\s*', '', introduction)
+        introduction = re.sub(r'\s*展开全部.*收起全部.*', '', introduction)
         videoInfoObj = VideoInfo(introduction=introduction,
                 poster_image = movie['poster_image'],
                 small_image = movie['small_image'],
                 video = savedMovieObj,
-                actors = actors
+                actors = actors,
+                upd_desc=movie['upd_desc'].decode('unicode-escape')
             )
         session.add(videoInfoObj)
         return videoInfoObj
@@ -181,12 +182,13 @@ def searchAndSaveTVPlot(session, video,savedTVObj ):
 
 session = initSession()
 limit = 1000.0
-with sqlite3.connect('result.db') as db:
-    cursor = db.cursor()
-    rowCount = cursor.execute('''SELECT count(*) from resultdb_tv''').fetchone()[0]
+with MySQLdb.connect('172.16.1.248', 'qiye_dev', 'qiye..dev', '1188ys_resultdb')  as cursor:
+    #cursor = db.cursor()
+    cursor.execute('''SELECT count(*) from tv''')
+    rowCount = cursor.fetchone()[0]
     runtimes = math.ceil(rowCount/limit)
     for x in xrange(0, int(runtimes)):
-        sql = "SELECT taskid, result from resultdb_tv limit %d, %d" % (int(x*limit ), int(limit))
+        sql = "SELECT taskid, result from tv limit %d, %d" % (int(x*limit ), int(limit))
         print sql
         print time.asctime( time.localtime(time.time()) )
         cursor.execute(sql)

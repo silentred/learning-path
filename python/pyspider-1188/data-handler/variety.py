@@ -3,7 +3,7 @@
 # Created on 2015-03-03 13:14:54
 # Project: test
 
-import re, sqlite3, ast, MySQLdb, logging, pinyin, datetime, math, time
+import re, sqlite3, ast, MySQLdb, logging, pinyin, datetime, math, time, MySQLdb
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -122,7 +122,10 @@ def searchAndSaveVarietySource(session, video,savedVSObj ):
         return None
     sourceList = video['source']
     for each in sourceList:
-        date= datetime.datetime.strptime(each['date'], '%Y-%m-%d').date()
+        try:
+            date= datetime.datetime.strptime(each['date'], '%Y-%m-%d').date()
+        except Exception, e:
+            date= datetime.datetime.strptime('2014-12-05', '%Y-%m-%d').date()
         each['guests'] = ', '.join([x.decode('unicode-escape') for x in each['guests']])
         try:
             playSource = session.query(VarietySource).filter(VarietySource.video == savedVSObj).filter(VarietySource.api_name == video['api']).filter(VarietySource.date == date).one()
@@ -138,16 +141,16 @@ def searchAndSaveVarietySource(session, video,savedVSObj ):
             session.add(playSource)
         except Exception, e:
             raise e
-        return playSource
 
 session = initSession()
 limit = 1000.0
-with sqlite3.connect('result.db') as db:
-    cursor = db.cursor()
-    rowCount = cursor.execute('''SELECT count(*) from resultdb_variety''').fetchone()[0]
+with MySQLdb.connect('172.16.1.248', 'qiye_dev', 'qiye..dev', '1188ys_resultdb') as cursor:
+    #cursor = db.cursor()
+    cursor.execute('''SELECT count(*) from variety''')
+    rowCount = cursor.fetchone()[0]
     runtimes = math.ceil(rowCount/limit)
     for x in xrange(0, int(runtimes)):
-        sql = "SELECT taskid, result from resultdb_variety limit %d, %d" % (int(x*limit ), int(limit))
+        sql = "SELECT taskid, result from variety limit %d, %d" % (int(x*limit ), int(limit))
         print sql
         print time.asctime( time.localtime(time.time()) )
         cursor.execute(sql)
@@ -171,6 +174,7 @@ with sqlite3.connect('result.db') as db:
                 if i % 200 == 0:
                     session.commit()
             except Exception, e:
+                session.commit()
                 logging.error('Error: %s, taskid : %s',e, row[0])
                 #logging.error('task id is  %s, eval error ', row[0])
         session.commit()

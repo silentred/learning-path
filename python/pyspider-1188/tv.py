@@ -16,7 +16,7 @@ class Handler(BaseHandler):
         }
     }
 
-    @every(seconds=22* 60*60)
+    @every(seconds=2*24* 60*60)
     def on_start(self):
         self.crawl('http://tv.2345.com/---.html', callback=self.list_page)
 
@@ -66,7 +66,10 @@ class Handler(BaseHandler):
 
         if year is None:
             matchObj = re.search(u'.*上映于(\d+)年.*' ,response.doc('meta[name=Description]').eq(0).attr.content)
-            year = matchObj.group(1)
+            if year is not None:
+                year = matchObj.group(1)
+            else:
+                year = 1980
 
         orig_id = 0
         orig_id = re.search('.*/detail/(\d+).html$', response.url).group(1)

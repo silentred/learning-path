@@ -16,7 +16,7 @@ from declarative import  Base, Video, VideoInfo, Category, PlaySource, Specicalt
 from sqlalchemy.orm.exc import NoResultFound
 
 def initSession():
-    engine = create_engine('mysql+mysqldb://test:test@192.168.2.50/1188test?charset=utf8&use_unicode=0')
+    engine = create_engine('mysql+mysqldb://test:test@172.16.1.19/1188test?charset=utf8&use_unicode=0')
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -37,7 +37,7 @@ def saveVideo(session, movie, video_type_id):
     if not movie['rating']:
         movie['rating'] = '0'
     rating = re.search('\d+(\.?\d?)*', movie['rating']).group(0)
-    if not movie['year']:
+    if not movie['year'] or not movie['year'].isdigit():
         movie['year'] = 0
     
     video = Video(name=movie['title'].decode('unicode-escape'), 
@@ -74,12 +74,13 @@ def saveVideoInfo(session, movie, savedMovieObj):
         return videoInfoObj
     except NoResultFound, e:
         introduction = movie['introduction'].decode('unicode-escape')
-        introduction = re.sub(r'\s*展开全部\s*收起全部\s*', '', introduction)
+        introduction = re.sub(r'\s*展开全部.*收起全部.*', '', introduction)
         videoInfoObj = VideoInfo(introduction=introduction,
                 poster_image = movie['poster_image'],
                 small_image = movie['small_image'],
                 video = savedMovieObj,
-                alias = movie['alias'].decode('unicode-escape')
+                alias = movie['alias'].decode('unicode-escape'),
+                upd_desc=movie['upd_desc'].decode('unicode-escape')
             )
         session.add(videoInfoObj)
         return videoInfoObj
@@ -154,12 +155,13 @@ def doesVideoExist(session, video_id):
 
 session = initSession()
 limit = 1000.0
-with sqlite3.connect('result.db') as db:
-    cursor = db.cursor()
-    rowCount = cursor.execute('''SELECT count(*) from resultdb_comic''').fetchone()[0]
+with MySQLdb.connect('172.16.1.248', 'qiye_dev', 'qiye..dev', '1188ys_resultdb') as cursor:
+    #cursor = db.cursor()
+    cursor.execute('''SELECT count(*) from comic''')
+    rowCount = cursor.fetchone()[0]
     runtimes = math.ceil(rowCount/limit)
     for x in xrange(0, int(runtimes)):
-        sql = "SELECT taskid, result from resultdb_comic limit %d, %d" % (int(x*limit ), int(limit))
+        sql = "SELECT taskid, result from comic limit %d, %d" % (int(x*limit ), int(limit))
         print sql
         print time.asctime( time.localtime(time.time()) )
         cursor.execute(sql)
