@@ -1,0 +1,36 @@
+RPM安装完成后有简易提示：
+To manage indexes:
+    editor /etc/sphinx/sphinx.conf
+To rebuild all disk indexes:
+    sudo -u sphinx indexer --all --rotate
+To start/stop search daemon:
+    service searchd start/stop
+To query search daemon using MySQL client:
+    mysql -h 0 -P 9306
+    mysql> SELECT * FROM test1 WHERE MATCH('test');
+	
+
+安装
+rpm -ivh sphinx.xxx.rpm
+
+配置：
+vim /etc/sphinx/sphinx.conf
+中文的索引配置
+	# 指定utf-8的编码表
+	charset_table = 0..9, A..Z->a..z, _, a..z, U+410..U+42F->U+430..U+44F, U+430..U+44F
+	# 简单分词，只支持0和1，如果要搜索中文，请指定为1
+	ngram_len = 1
+	# 需要分词的字符，如果要搜索中文，去掉前面的注释
+	ngram_chars   = U+3000..U+2FA1F
+Delta索引
+	通过一个用于记录的中间表来增量索引
+	http://sphinxsearch.com/docs/archives/2.2.8/delta-updates.html
+	http://sphinxsearch.com/docs/archives/2.2.8/index-merging.html
+	
+运行方式
+indexer video --rotate #索引video, 这时video中定义的pre_sql会在中间表记录此时的max(video.id)
+indexer delta_video --rotate #增量索引
+indexer --merge video delta_video --rotate #合并索引，从delta 合并 到 video, 注意，此时因为没有对sph_counter表中的video最大id做更新，所以max_id还是之前的值。如果想要合并一次就从这个点上做更新，需要运行一次一下SQL：REPLACE INTO sph_counter SELECT 1, MAX(id) FROM video
+
+
+配置文件可参考本目录下的sphinx.conf

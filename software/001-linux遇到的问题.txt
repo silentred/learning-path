@@ -24,6 +24,24 @@ IPADDR=192.168.1.105 #Èç¹ûÉèÖÃÍø¿¨»ñµÃ ipµØÖ·µÄ·½Ê½Îª¾²Ì¬Ö¸¶¨£¬´Ë×Ö¶Î¾ÍÖ¸¶¨ÁËÍø¿
 NETMASK=255.255.255.0 #Íø¿¨¶ÔÓ¦µÄÍøÂçÑÚÂë
 ±¾À´Ä¬ÈÏµÄÊÇdhcp£¬¸ÄÎªstatic£¬ÅäÖÃÏÂip£¬ÑÚÂë¾ÍĞĞ£»
 IPV6INIT=no ¹Ø±Õipv6
+#DNS1=114.114.114.114 ÉèÖÃDNS,²»È·¶¨£¬ÔÙ²é²é
+#DNS2=8.8.4.4
 ÖØÆô£ºsudo service network restart
+
+
+rpmÃüÁîµÄ½âÊÍ
+£­ivh£º°²×°ÏÔÊ¾°²×°½ø¶È--install--verbose--hash
+£­Uvh£ºÉı¼¶Èí¼ş°ü--Update£»
+£­qpl£ºÁĞ³öRPMÈí¼ş°üÄÚµÄÎÄ¼şĞÅÏ¢[Query Package list]£»
+£­qpi£ºÁĞ³öRPMÈí¼ş°üµÄÃèÊöĞÅÏ¢[Query Package install package(s)]£»
+£­qf£º²éÕÒÖ¸¶¨ÎÄ¼şÊôÓÚÄÄ¸öRPMÈí¼ş°ü[Query File]£»
+£­Va£ºĞ£ÑéËùÓĞµÄRPMÈí¼ş°ü£¬²éÕÒ¶ªÊ§µÄÎÄ¼ş[View Lost]£»
+£­e£ºÉ¾³ı°ü
+
+
+°²×°sphinx RPM°üÊ±£¬È±ÉÙlibodbc.so.2µÄ½â¾ö·½·¨£º
+yum -y install unixODBC
+
+
 
 
