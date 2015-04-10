@@ -6,3 +6,5 @@ to stop (pause) the program and get back to the shell.
 to run it in the background.
 3. disown -h [job-spec] 
 where [job-spec] is the job number (like %1 for the first running job; find about your number with the jobs command) so that the job isn't killed when the terminal closes.
+
+Q
