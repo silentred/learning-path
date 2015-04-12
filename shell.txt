@@ -7,4 +7,11 @@ to run it in the background.
 3. disown -h [job-spec] 
 where [job-spec] is the job number (like %1 for the first running job; find about your number with the jobs command) so that the job isn't killed when the terminal closes.
 
-Q
+Q:修改密码
+非root：
+passwd ，提示输入旧密码，新密码
+root：
+sudo passwd username，直接输入新密码
+
+Q:查看磁盘情况
+df -h

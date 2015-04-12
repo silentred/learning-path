@@ -1,0 +1,40 @@
+准备工作：
+安装 VBox
+安装 git，并加入PATH
+下载 boot2docker.iso （如果没有墙，可以不下）
+https://github.com/boot2docker/boot2docker
+下载 boot2docker-cli
+https://github.com/boot2docker/boot2docker-cli
+
+
+1. 将下载的boot2docker-cli加入PATH
+# boot2docker init
+会下载iso到 %HOMEPATH%/.boot2docker目录，如果被墙下不了，就自己手动下载，放入目录。
+会生成一对秘钥，在 %HOMEPATH%/.ssh/下，private key 是 id_boot2docker文件。
+boot2docker的网络用的是NAT，ssh对应的本地端口2022。
+
+2. 开启虚拟机：
+# boot2docker up
+
+3. CMD进入ssh
+# boot2docker ssh
+
+4. 默认没有root密码，docker的密码是tcuser，你想改可以自己改
+
+5. 下载image，参考docker的文档吧，我选择的是centos，你也可以看看别的：
+sudo docker pull centos
+sudo docker images centos
+sudo docker run -i -t centos /bin/bash
+这样就进入centos的环境了，想干什么就随你了。
+
+6. 如果你习惯用putty或者xshell客户端登陆，你可以这样配置：
+host: 127.0.0.1
+login: docker
+password: tcuser 
+或者用 private key也行
+
+7. 关闭虚拟机
+# boot2docker down
+
+更多操作请参考docker文档。
+

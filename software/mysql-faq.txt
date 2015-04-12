@@ -1,0 +1,2 @@
+通过控制dump的缓冲，提高source导入的效率
+mysqldump -uroot -p'123' --all-database --max_allowed_packet=1047552 --net_buffer_length=16384 >all.sql
