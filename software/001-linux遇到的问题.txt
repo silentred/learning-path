@@ -42,6 +42,7 @@ rpm命令的解释
 安装sphinx RPM包时，缺少libodbc.so.2的解决方法：
 yum -y install unixODBC
 
-
+安装php
+yum install php php-fpm php-mysqli php-gd php-pear
 
 
