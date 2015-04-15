@@ -225,10 +225,10 @@ function time2($value)
 {
     return $value*2;
 }
-$a = [1,4,6,7];
+$a = array(1,4,6,7);
 var_dump(array_map(time2, $a));
 
-var_dump(empty(array()));
+//var_dump(empty(array()));
 
 
 /*内存泄露：互相引用*/
@@ -268,4 +268,25 @@ if(preg_match_all($regex, $str, $matches)){
     var_dump($matches);
 }
 
+
 var_dump(date('Y-m-d h:i:s'));
+
+
+// Reference
+$var1 = "Example variable";
+$var2 = "null";
+
+function global_references($use_globals)
+{
+    global $var1, $var2;
+    if (!$use_globals) {
+        $var2 =& $var1; // visible only inside the function
+    } else {
+        $GLOBALS["var2"] =& $var1; // visible also in global context
+    }
+}
+global_references(false);
+echo "var2 is set to '{$var2}'\n"; // var2 is set to 'null'
+global_references(true);
+echo "var2 is set to '{$var2}'\n"; // var2 is set to 'Example variable'
+
