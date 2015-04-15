@@ -267,3 +267,5 @@ $matches = array();
 if(preg_match_all($regex, $str, $matches)){
     var_dump($matches);
 }
+
+var_dump(date('Y-m-d h:i:s'));
