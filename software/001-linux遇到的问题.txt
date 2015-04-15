@@ -43,6 +43,8 @@ rpm命令的解释
 yum -y install unixODBC
 
 安装php
-yum install php php-fpm php-mysqli php-gd php-pear
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+sudo rpm -Uvh epel-release-latest-7*.rpm
+yum install php php-fpm php-mysqli php-gd php-pear php-mcrypt
 
 
