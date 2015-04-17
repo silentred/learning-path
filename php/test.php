@@ -290,3 +290,17 @@ echo "var2 is set to '{$var2}'\n"; // var2 is set to 'null'
 global_references(true);
 echo "var2 is set to '{$var2}'\n"; // var2 is set to 'Example variable'
 
+// A key may be either an integer or a string. If a key is the standard representation of an integer, it will be interpreted as such (i.e. "8" will be interpreted as 8, while "08" will be interpreted as "08").
+$a = '23';
+$b = array();
+$c = 'sdf';
+$b[$a] = 'ss';
+$b[$c] = 'cc';
+var_dump($b);
+
+$foo = array('10' => 'bar' );
+echo $foo['10']; // "bar"
+echo $foo[10]; // "bar"
+echo $foo[012]; // "bar"
+echo $foo['012']; // undefined!
+var_dump($foo);
