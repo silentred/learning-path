@@ -1,0 +1,15 @@
+PHP_FUNCTION(strpos)
+if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sz|l", &haystack, &haystack_len, &needle, &offset) == FAILURE)
+
+ZEND_NUM_ARGS() : 参数的个数
+TSRMLS_CC ： 关于线程安全 thread safe resource manager
+"sz|l": 每个参数的类型，s：string，z：zval， |：optional， l：long
+s  // first parameter is a *s*tring
+z  // second parameter is a *z*val (an arbitrary value)
+|  // the following parameters (here just one) are optional
+l  // third parameter is a *l*ong (an integer)
+其他类型：There are more type specifiers than s, z and l, but most should be clear from the character. For example b is a boolean, d is a double (floating point number), a is an array, f is a callback (function) and o is an object.
+
+问题：
+1. 这里的四个参数，"sz|l"是指后面跟的 &haystack, &haystack_len, &needle, &offset吗？看上去不像，反而像是php函数stpos的参数，mixed strpos ( string $haystack , mixed $needle [, int $offset = 0 ] )，但是这里的参数只有三个，最后的long指的是haystack_len吗。
+2. 这里的&haystack_len是如何被传入的，因为php函数只输入了三个值。这四个变量如何保证赋值的顺序？和php函数的参数顺序一致吗？第二个位置多了一个haystack_len。
