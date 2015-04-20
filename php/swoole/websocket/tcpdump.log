@@ -1,0 +1,96 @@
+06:49:00.086006 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61414: Flags [S.], seq 299516884, ack 3240216467, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:49:00.086088 IP promote.cache-dns.local.61414 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:49:00.086579 IP promote.cache-dns.local.61414 > promote.cache-dns.local.9501: Flags [P.], seq 1:388, ack 1, win 16425, length 387
+06:49:00.086586 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61414: Flags [.], ack 388, win 245, length 0
+06:49:02.574646 IP promote.cache-dns.local.61414 > promote.cache-dns.local.9501: Flags [F.], seq 388, ack 1, win 16425, length 0
+06:49:02.615235 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61414: Flags [.], ack 389, win 245, length 0
+06:49:43.930243 IP promote.cache-dns.local.61420 > promote.cache-dns.local.9501: Flags [S], seq 1063855106, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:49:43.930316 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61420: Flags [S.], seq 473550485, ack 1063855107, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:49:43.930698 IP promote.cache-dns.local.61420 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:49:43.932199 IP promote.cache-dns.local.61420 > promote.cache-dns.local.9501: Flags [P.], seq 1:388, ack 1, win 16425, length 387
+06:49:43.932232 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61420: Flags [.], ack 388, win 245, length 0
+06:49:47.627557 IP promote.cache-dns.local.61414 > promote.cache-dns.local.9501: Flags [.], seq 388:389, ack 1, win 16425, length 1
+06:49:47.627591 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61414: Flags [.], ack 389, win 245, options [nop,nop,sack 1 {388:389}], length 0
+06:49:50.843795 IP promote.cache-dns.local.61420 > promote.cache-dns.local.9501: Flags [F.], seq 388, ack 1, win 16425, length 0
+06:49:50.882868 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61420: Flags [.], ack 389, win 245, length 0
+06:49:51.993287 IP promote.cache-dns.local.61425 > promote.cache-dns.local.9501: Flags [S], seq 2794123668, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:49:51.993322 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61425: Flags [S.], seq 935804339, ack 2794123669, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:49:51.993437 IP promote.cache-dns.local.61425 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:49:51.993823 IP promote.cache-dns.local.61425 > promote.cache-dns.local.9501: Flags [P.], seq 1:388, ack 1, win 16425, length 387
+06:49:51.993832 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61425: Flags [.], ack 388, win 245, length 0
+06:50:17.276646 IP promote.cache-dns.local.61425 > promote.cache-dns.local.9501: Flags [F.], seq 388, ack 1, win 16425, length 0
+06:50:17.276664 IP promote.cache-dns.local.61427 > promote.cache-dns.local.9501: Flags [S], seq 313032855, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:17.276686 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61427: Flags [S.], seq 2647946667, ack 313032856, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:17.276829 IP promote.cache-dns.local.61427 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:17.276841 IP promote.cache-dns.local.61427 > promote.cache-dns.local.9501: Flags [F.], seq 1, ack 1, win 16425, length 0
+06:50:17.276861 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61427: Flags [.], ack 2, win 229, length 0
+06:50:17.276944 IP promote.cache-dns.local.61428 > promote.cache-dns.local.9501: Flags [S], seq 833237248, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:17.276952 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61428: Flags [S.], seq 3643252193, ack 833237249, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:17.277010 IP promote.cache-dns.local.61428 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:17.277116 IP promote.cache-dns.local.61428 > promote.cache-dns.local.9501: Flags [F.], seq 1, ack 1, win 16425, length 0
+06:50:17.277120 IP promote.cache-dns.local.61429 > promote.cache-dns.local.9501: Flags [S], seq 4017858281, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:17.277126 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61429: Flags [S.], seq 1713473536, ack 4017858282, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:17.277246 IP promote.cache-dns.local.61429 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:17.277253 IP promote.cache-dns.local.61429 > promote.cache-dns.local.9501: Flags [F.], seq 1, ack 1, win 16425, length 0
+06:50:17.277349 IP promote.cache-dns.local.61430 > promote.cache-dns.local.9501: Flags [S], seq 376629488, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:17.277357 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61430: Flags [S.], seq 3640040878, ack 376629489, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:17.277427 IP promote.cache-dns.local.61430 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:17.277463 IP promote.cache-dns.local.61430 > promote.cache-dns.local.9501: Flags [F.], seq 1, ack 1, win 16425, length 0
+06:50:17.277531 IP promote.cache-dns.local.61431 > promote.cache-dns.local.9501: Flags [S], seq 3604264263, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:17.277539 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61431: Flags [S.], seq 680798631, ack 3604264264, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:17.277594 IP promote.cache-dns.local.61431 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:17.277646 IP promote.cache-dns.local.61431 > promote.cache-dns.local.9501: Flags [F.], seq 1, ack 1, win 16425, length 0
+06:50:17.277717 IP promote.cache-dns.local.61432 > promote.cache-dns.local.9501: Flags [S], seq 1573348615, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:17.277725 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61432: Flags [S.], seq 3542686367, ack 1573348616, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:17.277786 IP promote.cache-dns.local.61432 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:17.277830 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61428: Flags [.], ack 2, win 229, length 0
+06:50:17.277860 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61429: Flags [.], ack 2, win 229, length 0
+06:50:17.277868 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61430: Flags [.], ack 2, win 229, length 0
+06:50:17.277873 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61431: Flags [.], ack 2, win 229, length 0
+06:50:17.277880 IP promote.cache-dns.local.61432 > promote.cache-dns.local.9501: Flags [F.], seq 1, ack 1, win 16425, length 0
+06:50:17.278849 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61432: Flags [.], ack 2, win 229, length 0
+06:50:17.315875 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61425: Flags [.], ack 389, win 245, length 0
+06:50:18.813236 IP promote.cache-dns.local.61434 > promote.cache-dns.local.9501: Flags [S], seq 3783983719, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:50:18.813308 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61434: Flags [S.], seq 3559910129, ack 3783983720, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:50:18.813659 IP promote.cache-dns.local.61434 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:50:18.815420 IP promote.cache-dns.local.61434 > promote.cache-dns.local.9501: Flags [P.], seq 1:388, ack 1, win 16425, length 387
+06:50:18.815449 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61434: Flags [.], ack 388, win 245, length 0
+06:50:32.633750 IP promote.cache-dns.local.61414 > promote.cache-dns.local.9501: Flags [.], seq 388:389, ack 1, win 16425, length 1
+06:50:32.633796 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61414: Flags [.], ack 389, win 245, options [nop,nop,sack 1 {388:389}], length 0
+06:50:35.889249 IP promote.cache-dns.local.61420 > promote.cache-dns.local.9501: Flags [.], seq 388:389, ack 1, win 16425, length 1
+06:50:35.889333 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61420: Flags [.], ack 389, win 245, options [nop,nop,sack 1 {388:389}], length 0
+06:50:53.517421 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61414: Flags [R.], seq 1, ack 389, win 245, length 0
+06:50:53.517506 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61420: Flags [R.], seq 1, ack 389, win 245, length 0
+06:50:53.517557 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61425: Flags [R.], seq 1, ack 389, win 245, length 0
+06:50:53.517604 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61427: Flags [R.], seq 1, ack 2, win 229, length 0
+06:50:53.517651 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61428: Flags [R.], seq 1, ack 2, win 229, length 0
+06:50:53.517659 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61429: Flags [R.], seq 1, ack 2, win 229, length 0
+06:50:53.517667 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61430: Flags [R.], seq 1, ack 2, win 229, length 0
+06:50:53.517675 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61431: Flags [R.], seq 1, ack 2, win 229, length 0
+06:50:53.517726 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61432: Flags [R.], seq 1, ack 2, win 229, length 0
+06:50:53.517774 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61434: Flags [R.], seq 1, ack 388, win 245, length 0
+06:51:08.359496 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [S], seq 420301199, win 8192, options [mss 1460,nop,wscale 2,nop,nop,sackOK], length 0
+06:51:08.359574 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [S.], seq 823965075, ack 420301200, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 6], length 0
+06:51:08.359957 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [.], ack 1, win 16425, length 0
+06:51:08.361781 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [P.], seq 1:388, ack 1, win 16425, length 387
+06:51:08.361814 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [.], ack 388, win 245, length 0
+06:51:08.363675 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [P.], seq 1:190, ack 388, win 245, length 189
+06:51:08.569429 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [.], ack 190, win 16377, length 0
+06:51:09.467475 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [P.], seq 388:460, ack 190, win 16377, length 72
+06:51:09.467855 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [P.], seq 190:286, ack 460, win 245, length 96
+06:51:09.667927 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [.], ack 286, win 16353, length 0
+06:51:09.796651 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [P.], seq 460:532, ack 286, win 16353, length 72
+06:51:09.797312 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [P.], seq 286:382, ack 532, win 245, length 96
+06:51:09.995405 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [P.], seq 532:604, ack 382, win 16329, length 72
+06:51:09.995619 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [P.], seq 382:478, ack 604, win 245, length 96
+06:51:10.196563 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [.], ack 478, win 16305, length 0
+06:51:10.588145 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [P.], seq 604:676, ack 478, win 16305, length 72
+06:51:10.588879 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [P.], seq 478:574, ack 676, win 245, length 96
+06:51:10.788284 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [.], ack 574, win 16281, length 0
+06:51:11.371481 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [P.], seq 676:682, ack 574, win 16281, length 6
+06:51:11.371618 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [P.], seq 574:576, ack 682, win 245, length 2
+06:51:11.372174 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [F.], seq 576, ack 682, win 245, length 0
+06:51:11.372374 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [.], ack 577, win 16281, length 0
+06:51:11.372717 IP promote.cache-dns.local.61439 > promote.cache-dns.local.9501: Flags [F.], seq 682, ack 577, win 16281, length 0
+06:51:11.372745 IP promote.cache-dns.local.9501 > promote.cache-dns.local.61439: Flags [.], ack 683, win 245, length 0
+

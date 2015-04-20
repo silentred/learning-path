@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+</head>
+<body>
+<div>
+    <button id="btn1">Connect</button>
+    <button id="btn2">Send Time</button>
+    <button id="btn3">Close connection</button>
+</div>
+<div>
+    <ul id="time">
+        
+    </ul>
+</div>
+
+<script>
+
+var wsServer = 'ws://192.168.1.106:9501';
+var websocket = null;
+
+var btn1 = document.getElementById("btn1");
+btn1.onclick = function(){
+    websocket = new WebSocket(wsServer); 
+
+    websocket.onopen = function (evt) { 
+        console.log(evt);
+        console.log("Connected to WebSocket server.");
+
+    }; 
+
+    websocket.onclose = function (evt) { 
+        console.log(evt);
+        console.log("Disconnected"); 
+    }; 
+
+    websocket.onmessage = function (evt) { 
+        console.log(evt);
+        console.log('Retrieved data from server: ' + evt.data); 
+    }; 
+
+    websocket.onerror = function (evt, e) {
+        console.log('Error occured: ' + evt.data);
+    };
+}
+
+var btn2 = document.getElementById("btn2");
+btn2.onclick = function(){
+    var date = new Date();
+    websocket.send("now time is "+date );
+}
+
+
+var btn3 = document.getElementById("btn3");
+btn3.onclick = function(){
+    websocket.close();
+}
+
+
+
+
+</script>
+</body>
+</html>
+

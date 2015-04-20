@@ -1,0 +1,75 @@
+22750 epoll_wait(7,  <unfinished ...>
+22748 restart_syscall(<... resuming interrupted call ...>) = 0
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 1 ([{fd=6, revents=POLLIN}])
+22748 accept4(6, {sa_family=AF_INET, sin_port=htons(61318), sin_addr=inet_addr("192.168.1.103")}, [16], SOCK_CLOEXEC|SOCK_NONBLOCK) = 8
+22748 epoll_ctl(7, EPOLL_CTL_ADD, 8, {EPOLLIN, {u32=8, u64=8}}) = 0
+22748 accept4(6, 0x7fff59d88d20, [16], SOCK_CLOEXEC|SOCK_NONBLOCK) = -1 EAGAIN (Resource temporarily unavailable)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000 <unfinished ...>
+22750 <... epoll_wait resumed> {{EPOLLIN, {u32=8, u64=8}}}, 4096, -1) = 1
+22750 recvfrom(8, "GET / HTTP/1.1\r\nUpgrade: websock"..., 8180, 0, NULL, NULL) = 387
+22750 write(4, "\1\0\0\0\203\1\0\0\n\0\0\0GET / HTTP/1.1\r\nUpgr"..., 399) = 399
+22750 epoll_wait(7, {{EPOLLIN, {u32=4, u64=21474836484}}}, 4096, -1) = 1
+22750 read(4, "\1\0\0\0\275\0\0\0\0\0\0\0HTTP/1.1 101 Switchi"..., 8192) = 201
+22750 sendto(8, "HTTP/1.1 101 Switching Protocols"..., 189, 0, NULL, 0) = 189
+22750 read(4, 0x7fcd61e3cc80, 8192)     = -1 EAGAIN (Resource temporarily unavailable)
+22750 epoll_wait(7,  <unfinished ...>
+22748 <... poll resumed> )              = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000 <unfinished ...>
+22750 <... epoll_wait resumed> {{EPOLLIN, {u32=8, u64=8}}}, 4096, -1) = 1
+22750 recvfrom(8, "\201\302)\0e\317Go\22\357]i\10\252\ti\26\357zu\v\357hp\27\357\0309E\375\0311"..., 65536, 0, NULL, NULL) = 72
+22750 write(4, "\1\0\0\0D\0\0\0\n\0\0\0\1\1now time is Sun Ap"..., 80) = 80
+22750 epoll_wait(7, {{EPOLLIN, {u32=4, u64=21474836484}}}, 4096, -1) = 1
+22750 read(4, "\1\0\0\0`\0\0\0\0\0\0\0\201^this is server, yo"..., 8192) = 108
+22750 sendto(8, "\201^this is server, your msg is no"..., 96, 0, NULL, 0) = 96
+22750 read(4, 0x7fcd61e3cc80, 8192)     = -1 EAGAIN (Resource temporarily unavailable)
+22750 epoll_wait(7, {{EPOLLIN, {u32=8, u64=8}}}, 4096, -1) = 1
+22750 recvfrom(8, "\201\302fAC'\10.4\7\22(.BF(0\00754-\7'11\7Wxc\25Vp"..., 65536, 0, NULL, NULL) = 72
+22750 write(4, "\1\0\0\0D\0\0\0\n\0\0\0\1\1now time is Sun Ap"..., 80) = 80
+22750 epoll_wait(7, {{EPOLLIN, {u32=4, u64=21474836484}}}, 4096, -1) = 1
+22750 read(4, "\1\0\0\0`\0\0\0\0\0\0\0\201^this is server, yo"..., 8192) = 108
+22750 sendto(8, "\201^this is server, your msg is no"..., 96, 0, NULL, 0) = 96
+22750 read(4, 0x7fcd61e3cc80, 8192)     = -1 EAGAIN (Resource temporarily unavailable)
+22750 epoll_wait(7,  <unfinished ...>
+22748 <... poll resumed> )              = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000 <unfinished ...>
+22750 <... epoll_wait resumed> {{EPOLLIN, {u32=8, u64=8}}}, 4096, -1) = 1
+22750 recvfrom(8, "\210\2005i\225\33", 65536, 0, NULL, NULL) = 6
+22750 sendto(8, "\3\350", 2, 0, NULL, 0) = 2
+22750 epoll_ctl(7, EPOLL_CTL_DEL, 8, NULL) = 0
+22750 write(4, "\1\0\0\0\0\0\0\0\4\0\0\0", 12) = 12
+22750 epoll_wait(7, {{EPOLLIN, {u32=4, u64=21474836484}}}, 4096, -1) = 1
+22750 read(4, "\1\0\0\0\0\0\0\0\4\0\0\0", 8192) = 12
+22750 close(8)                          = 0
+22750 read(4, 0x7fcd61e3cc80, 8192)     = -1 EAGAIN (Resource temporarily unavailable)
+22750 epoll_wait(7,  <unfinished ...>
+22748 <... poll resumed> )              = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000) = 0 (Timeout)
+22748 poll([{fd=5, events=POLLIN}, {fd=6, events=POLLIN}], 2, 1000 <detached ...>
