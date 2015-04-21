@@ -48,12 +48,11 @@ yum -y install unixODBC
 #yum install php php-fpm php-mysqli php-gd php-pear php-mcrypt php-devel
 
 安装php for centos 7
-rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
+sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 sudo yum install php56w php56w-opcache php56w-cli php56w-common php56w-devel php56w-fpm php56w-gd  php56w-mbstring  php56w-mcrypt php56w-pdo php56w-mysqlnd php56w-pecl-xdebug php56w-pecl-memcache
 
 关闭centos7的防火墙：
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 systemctl status firewalld # 查看状态
-

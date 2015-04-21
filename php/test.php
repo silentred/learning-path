@@ -304,3 +304,6 @@ echo $foo[10]; // "bar"
 echo $foo[012]; // "bar"
 echo $foo['012']; // undefined!
 var_dump($foo);
+
+$url = 'http://img1.2345.com/dianyingimg/zongyi/img/poster/f/5/s15012.jpg?1419516249';
+var_dump(parse_url($url));
