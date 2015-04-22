@@ -7,3 +7,34 @@ git push orgin master
 
 git pull
 # to get things from repo
+
+
+Git分支使用
+参考：https://www.atlassian.com/git/tutorials/using-branches/git-merge
+查看status，包括修改情况等：
+git status
+查看当前所在的分支：
+git branch
+创建一个新的分支，并且checkout：
+git checkout -b <new branch name>
+创建分支：
+git branch <new branch name>
+进入该分支：
+git checkout <new branch name>
+创建完分支，进入分支后，就可以开始正常开发，edit, git add, git commit，循环。
+需要合并分支时候,先进入master，再合并：
+git checkout master
+git merge <new branch name> #表示，把<new branch name>合并到master
+这时候有两种合并方法，git会自动判断使用哪种
+第一种为fast-forward：
+当<new branch name>和master没有冲突时候（称之为liner，线性），采用fast-forward，本质就是把master指向<new branch name>最新的那个commit，就完成了。
+第二种是3-way merge：
+也就是<new branch name>和master有冲突，产生分歧了（diverged），那么会提示出现冲突，如下
+[jason@localhost learngit]$ git merge new-branch
+Auto-merging newBranch.txt
+CONFLICT (content): Merge conflict in newBranch.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+这时候需要手动修复冲突，方法为edit/stage/commit workflow,应该很熟悉了。提交完冲突，这时master就合并完成了。
+
+
