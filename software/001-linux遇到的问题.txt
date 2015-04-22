@@ -50,7 +50,11 @@ yum -y install unixODBC
 安装php for centos 7
 sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-sudo yum install php56w php56w-opcache php56w-cli php56w-common php56w-devel php56w-fpm php56w-gd  php56w-mbstring  php56w-mcrypt php56w-pdo php56w-mysqlnd php56w-pecl-xdebug php56w-pecl-memcache
+sudo yum install php56w php56w-opcache php56w-cli php56w-common php56w-devel php56w-fpm php56w-gd  php56w-mbstring  php56w-mcrypt php56w-pdo php56w-mysqlnd php56w-pecl-xdebug php56w-pecl-memcache 
+
+#php56w-pecl-xdebug.x86_64 上面的已经包含了
+查看有哪些php相关的软件可以按照
+yum list php56w*
 
 关闭centos7的防火墙：
 sudo systemctl stop firewalld
