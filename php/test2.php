@@ -3,8 +3,8 @@
 $arr = array('a'=>'first', 'b'=>'second', 'c'=>'third');
 var_dump(current($arr));
 foreach ($arr as &$a); // do nothing. maybe?
-xdebug_debug_zval('a');
-xdebug_debug_zval('arr');//这时，$arr['c']有两个引用，且is_ref=1
+//xdebug_debug_zval('a');
+//xdebug_debug_zval('arr');//这时，$arr['c']有两个引用，且is_ref=1
 var_dump(current($arr));
 //unset($a); //这里unset以下就正常了
 // 当 foreach 开始执行时，数组内部的指针会自动指向第一个单元。这意味着不需要在 foreach 循环之前调用 reset()。
@@ -15,11 +15,11 @@ var_dump(current($arr));
 // 第三次赋值 不用解释了，这里的整个过程，$a都是一个指向$arr['c']的引用，所以才会出现这种错误
 echo "\nstart second foreach:\n";
 foreach ($arr as $a){
-    xdebug_debug_zval('arr');
+    //xdebug_debug_zval('arr');
     echo "current index is: ".current($arr)."\n";
-    xdebug_debug_zval('a');
+    //xdebug_debug_zval('a');
 };  
-xdebug_debug_zval('arr');
+//xdebug_debug_zval('arr');
 print_r($arr);
 
 
@@ -52,16 +52,16 @@ echo "\$arr2[0] == {$arr2[0]}\n";
 // Example two
 echo "\nExample2:\n";
 $arr3 = array(1);
-xdebug_debug_zval('arr3');
+//xdebug_debug_zval('arr3');
 $a =& $arr3[0];//$arr3的is_ref变为1
 echo "\nbefore:\n";
 echo "\$a == $a\n";
 echo "\$arr3[0] == {$arr3[0]}\n";
-xdebug_debug_zval('a');
-xdebug_debug_zval('arr3');
+//xdebug_debug_zval('a');
+//xdebug_debug_zval('arr3');
 $arr4 = $arr3;
-xdebug_debug_zval('arr3');
-xdebug_debug_zval('arr4');
+//xdebug_debug_zval('arr3');
+//xdebug_debug_zval('arr4');
 $arr4[0]++; //这时候$arr4[0]指向了$arr3[0],而$arr3[0]由于上面的&操作，其is_ref变为了1, 所以这里改变的是$arr3[0]的值
 $arr4[1] = 2;//$arr4并非引用，所以添加元素不影响$arr3
 echo "\nafter:\n";
@@ -72,12 +72,47 @@ var_dump($arr4);
 var_dump($arr3);
 
 
-
-function find_node($key, &$node){
-    $item = &$node[$key];
+/*
+这里的&$node[$key]的&必须存在，或者直接return $node[$key]也可以，不能通过非引用中间变量$item返回，不知道为什么
+ */
+function &find_node($key, &$node){
+    //xdebug_debug_zval('node');
+    $item = &$node[$key]; //这里的&不能省略，原因如下：
+    /*这里如果省去&，$item和$node[$key]虽然指向同一个zval，但是return的时候会有问题，因为php引用赋值的一个特点，如下。
+    $a = 1; $b = $a; $c = &$b; 这里第三步的时候，会复制一个zval（int 1），$c和$b指向他，而$a还是指向最开始的那个zval。
+    好了，当return $item; $item = &find_node()的时候，由于$item不是一个引用，便会复制一个zval，函数中的item和全局变量item都指向他，但是函数结束后，function中的symbol全部被unset，这时刚才创建的zval便只剩下一个引用refcount=1，所以他的is_ref会被设为0。
+    */
+    //xdebug_debug_zval('node');
+    //xdebug_debug_zval('item');
     return $item;
 }
 $tree = array('one', 'two', 'three', 'four');
 $item = &find_node(3, $tree);
+//xdebug_debug_zval('item');
+//xdebug_debug_zval('tree');
 $item = 'new value';
-var_dump($item);
+var_dump($tree[3]);
+
+
+/*
+函数返回引用的时候，必须在定义和使用的时候都加上&，这点和参数传入引用不同
+ */
+function &func(){
+    static $static = 0;
+    $static++;
+    return $static;
+}
+
+$var1 =& func();
+//xdebug_debug_zval('var1');
+echo "var1:", $var1; // 1
+func();
+func();
+echo "var1:", $var1; // 3
+$var2 = func(); // assignment without the &
+echo "var2:", $var2; // 4
+func();
+func();
+echo "var1:", $var1; // 6
+echo "var2:", $var2; // still 4
+
