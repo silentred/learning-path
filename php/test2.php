@@ -116,3 +116,20 @@ func();
 echo "var1:", $var1; // 6
 echo "var2:", $var2; // still 4
 
+
+//和js中的效果不一样，赋值运算优先于or；||优先于赋值运算，所以如果这里用||代替or，则$a结果为true
+$a = 0 or 19;
+var_dump($a);
+
+// Example to parse "PUT" requests 
+$a = file_get_contents('php://input');
+$b = file_get_contents('file:///home/jason/test.txt');
+//$c = file_get_contents(STDIN);
+// The result
+var_dump($a);
+print_r($b);
+//var_dump($c);
+
+foreach (glob("/home/jason/*.txt") as $filename) {
+    echo "$filename size " . filesize($filename) . "\n";
+}
