@@ -133,3 +133,6 @@ print_r($b);
 foreach (glob("/home/jason/*.txt") as $filename) {
     echo "$filename size " . filesize($filename) . "\n";
 }
+
+//查看默认报错级别
+var_dump(error_reporting());

@@ -27,7 +27,7 @@ $client->on("error", function($cli){
 
 $client->on("connect", function($cli) {
     echo "connected";
-    $cli->send('SELECT * FROM `video` limit 0,,, 3');//执行查询
+    $cli->send('SELECT * FROM `video` limit 0,1');//执行查询
 });
 
 $client->connect('127.0.0.1',9509);//连接
