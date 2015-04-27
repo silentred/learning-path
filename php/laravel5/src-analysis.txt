@@ -1,0 +1,19 @@
+源码解析：
+1. autoload.php 用的是composer的autoload
+2. app.php 启动整个项目
+
+class Application extends Container implements ApplicationContract, HttpKernelInterface
+Container中方法很多，实现了ArrayAccess，主要方法都是是用于绑定对象的（利于重用）。
+ApplicationContract 需要实现注册service provider。
+HttpKernelInterface 就一个handle方法，接受一个Request,返回一个Response。
+
+Application的__construct():
+registerBaseBindings(), 把app对象自身绑定到instance属性数组。
+registerBaseServiceProviders(), 注册两个service provider, 一个是EventServiceProvider，注册一个单例Dispatcher，名字为'events'（TODO）,另一个是RoutingServiceProvider(), 包含了Router， RouterGenerator, Redirector, ResponseFactory, 构造ResponseFactory接受两个参数，一个是ViewFactory,一个是Redirecer
+
+registerCoreContainerAliases(), 把一系列key和对应的类名，接口名加入alias属性数组
+'app'                  => ['Illuminate\Foundation\Application', 'Illuminate\Contracts\Container\Container', 'Illuminate\Contracts\Foundation\Application']
+'app'是key， 数组中的三个是别名（猜测：估计是每当用$app->make('Illuminate\Foundation\Application'),都会返回$app['app']）
+
+
+
