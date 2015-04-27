@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>test</title>
+        <style type="text/css">
+            #div1{
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                border: 1px solid black;
+            }
+            img{
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 10;
+            }
+            #title{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: 20px;
+                width: 100%;
+                border: 1px solid red;
+                z-index: 50;
+            }
+            #btn{
+                position: absolute;
+                left: 0;
+                top: 0;
+                width:100%;
+                height: 100%;
+                border: 1px solid green;
+                z-index: 100;
+            }
+            #btn a{
+                display:block;
+                width: 100%;
+                height: 100%;
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+    <!-- 这里IE8中，不论#btn元素的z-index设为多高，总是img在最前面；只有当给#btn的background-color设置一个不为transparent的值，或者background设置一个背景图片（例如1px的透明背景）才能使z-index正常 -->
+        <div id="div1">
+            <img id="img" src="22c8dcd6476d2f20f3a16fd8a6a5ce44.jpg">
+            <i id="title">
+                <em>test</em>
+            </i>
+            <i id="btn">
+                <a href="#">&nbsp;sdfsdf</a>
+            </i>
+        </div>
+    </body>
+</html>
