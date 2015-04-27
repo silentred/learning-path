@@ -136,4 +136,10 @@ class Arr implements ArrayAccess{
 $arr = new Arr(array('a'=>'AAA', 'b'=>'bbb'));
 echo $arr['a']. "\n";
 echo $arr['b']. "\n";
-echo $arr['c']. "\n";
+//echo $arr['c']. "\n"; //报错 undefined index
+unset($arr["two"]);
+var_dump(isset($arr["two"]));
+$arr["two"] = "A value";
+var_dump($arr["two"]);
+$arr[] = 'Append 1';
+print_r($arr);

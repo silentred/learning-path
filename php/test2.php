@@ -136,3 +136,6 @@ foreach (glob("/home/jason/*.txt") as $filename) {
 
 //查看默认报错级别
 var_dump(error_reporting());
+
+$stdin = fopen('php://stdin', 'r');
+echo "$stdin \n";
