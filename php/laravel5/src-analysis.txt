@@ -1,0 +1,8 @@
+源码解析：
+1. autoload.php 用的是composer的autoload
+2. app.php 启动整个项目
+
+class Application extends Container implements ApplicationContract, HttpKernelInterface
+Container中方法很多，实现了ArrayAccess，主要方法都是是用于绑定对象的（利于重用）。
+ApplicationContract 需要实现注册service provider,
+
