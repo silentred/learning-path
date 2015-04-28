@@ -76,5 +76,10 @@ Event的作用，
     		}
     
     		$this->app['events']->fire('kernel.handled', [$request, $response]);
+			return $response;
 
-传给router，或者exeption handler给出response
+传给router，或者exeption handler给出response, 最后返回$response。
+
+先看看sendRequestThroughRouter方法之中到底发生了什么。
+
+- 把$request注册到app中，方便在其他各地使用
