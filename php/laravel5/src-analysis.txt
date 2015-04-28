@@ -1,19 +1,39 @@
-源码解析：
-1. autoload.php 用的是composer的autoload
-2. app.php 启动整个项目
+#源码解析
 
-class Application extends Container implements ApplicationContract, HttpKernelInterface
+## autoload.php 用的是composer的autoload
+
+## app.php 启动整个项目
+
+### 首先看下Application这个类
+`class Application extends Container implements ApplicationContract, HttpKernelInterface`
 Container中方法很多，实现了ArrayAccess，主要方法都是是用于绑定对象的（利于重用）。
 ApplicationContract 需要实现注册service provider。
-HttpKernelInterface 就一个handle方法，接受一个Request,返回一个Response。
+HttpKernelInterface 就一个handle方法，接受一个Request, 返回一个Response。
 
+#### Application的构造方法
 Application的__construct():
-registerBaseBindings(), 把app对象自身绑定到instance属性数组。
-registerBaseServiceProviders(), 注册两个service provider, 一个是EventServiceProvider，注册一个单例Dispatcher，名字为'events'（TODO）,另一个是RoutingServiceProvider(), 包含了Router， RouterGenerator, Redirector, ResponseFactory, 构造ResponseFactory接受两个参数，一个是ViewFactory,一个是Redirecer
+- registerBaseBindings()
+把app对象自身绑定到instance属性数组。
 
-registerCoreContainerAliases(), 把一系列key和对应的类名，接口名加入alias属性数组
-'app'                  => ['Illuminate\Foundation\Application', 'Illuminate\Contracts\Container\Container', 'Illuminate\Contracts\Foundation\Application']
+- registerBaseServiceProviders()
+注册两个service provider, 一个是EventServiceProvider，注册一个单例Dispatcher，名字为'events'（TODO）,另一个是RoutingServiceProvider(), 包含了Router， RouterGenerator, Redirector, ResponseFactory, 构造ResponseFactory接受两个参数，一个是ViewFactory,一个是Redirecer
+
+- registerCoreContainerAliases(), 把一系列key和对应的类名，接口名加入alias属性数组
+`'app'                  => ['Illuminate\Foundation\Application', 'Illuminate\Contracts\Container\Container', 'Illuminate\Contracts\Foundation\Application']`
 'app'是key， 数组中的三个是别名（猜测：估计是每当用$app->make('Illuminate\Foundation\Application'),都会返回$app['app']）
 
+### 构造完App后开始创建重要的instance
+1. 在app容器中共享一个App\Http\Kernel单例。
+看一下这个类，继承了一个`Illuminate\Foundation\Http\Kernel`，实现了bootstrap, handle, terminate, getApplication这四个方法，可以想象，当收到request时候，流程就是前三个依次执行，非常简化。
+protected $bootstrappers数组，包含了bootstrap的一系列启动项目
+他的__construct接受两个参数，一个Application，一个Router。需要再看一下$app->singleton是如何初始化他的，莫非包含了IoC的功能？（**TODO**）
+这里先假设这两个参数已经被正确传入了。接着，立即把protected $routeMiddleware中的给router的middleware方法调用。middleware方法只是把key和Class名称加入到router的middleware属性数组中。
 
+
+
+
+
+在app容器中共享一个App\Console\Kernel单例。
+
+在app容器中共享一个App\Exceptions\Handler单例
 
