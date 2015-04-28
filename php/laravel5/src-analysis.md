@@ -53,6 +53,7 @@ HttpKernelInterface 就一个handle方法，接受一个Request, 返回一个Res
 这里的代码非常明确，首先make一个Kernal，之前已经将其绑定为singleton了。然后kernal handle一个request, 得到一个response, response调用send方法，最后kernal terminate。这里只是一个高纬度的概括，具体其中实现的方法，还需要进一步深入。
 
 看到这里，我的感觉是，整个项目最重要的部分就是$app这个容器，或者说Container这个类，绑定的是什么(Closure)，有哪些绑定方法，各个方法的作用是什么，make 和 build有什么区别，alias的作用是什么，等。了解了这些，对写框架会有帮助。
+Event的作用，
 
 
 ---
@@ -63,3 +64,17 @@ HttpKernelInterface 就一个handle方法，接受一个Request, 返回一个Res
 请求包含的属性可以看一下，其中有一个是sessionStore。
 
 ## $app->handle($request)
+            try
+    		{
+    			$response = $this->sendRequestThroughRouter($request);
+    		}
+    		catch (Exception $e)
+    		{
+    			$this->reportException($e);
+    
+    			$response = $this->renderException($request, $e);
+    		}
+    
+    		$this->app['events']->fire('kernel.handled', [$request, $response]);
+
+传给router，或者exeption handler给出response
