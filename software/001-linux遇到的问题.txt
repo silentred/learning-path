@@ -78,3 +78,7 @@ nginx测试配置
 /usr/local/nginx/sbin/nginx -t
 nginx重启
 /usr/local/nginx/sbin/nginx -s reload
+
+设置ssh private key登陆
+用工具（例如ssh-keygen,xshell等）生成一对秘钥，把生成的id_rsa_2048.pub复制到远程的/home/user/.ssh/下，重命名为authorized_keys, 保证.ssh目录和其中文件权限740，重启ssh服务。
+在本地用私钥登陆。
