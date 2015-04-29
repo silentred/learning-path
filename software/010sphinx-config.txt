@@ -13,6 +13,9 @@ To query search daemon using MySQL client:
 安装
 rpm -ivh sphinx.xxx.rpm
 
+提示缺少libodbc.so.2 ，解决： yum install unixODBC
+缺少libpq.so.5， 
+
 配置：
 vim /etc/sphinx/sphinx.conf
 中文的索引配置

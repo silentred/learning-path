@@ -60,3 +60,21 @@ yum list php56w*
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 systemctl status firewalld # 查看状态
+
+新建无home目录，不可登录shell的用户。-M代表不创建home目录
+useradd -M -s /sbin/nologin userName 
+#--shell /bin/false貌似也可以
+
+
+关闭php-fpm
+kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
+启动php-fpm
+/usr/local/php/sbin/php-fpm
+/usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf
+#重启php-fpm
+kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
+
+nginx测试配置
+/usr/local/nginx/sbin/nginx -t
+nginx重启
+/usr/local/nginx/sbin/nginx -s reload

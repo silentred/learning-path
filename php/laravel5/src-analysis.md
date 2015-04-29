@@ -82,4 +82,6 @@ Event的作用，
 
 先看看sendRequestThroughRouter方法之中到底发生了什么。
 
-- 把$request注册到app中，方便在其他各地使用
+- 把$request注册到app中，方便在其他各地使用。
+- 把Fasade中的缓冲清除。
+- bootstrap()针对属性bootstraper数组中的启动器做初始化。具体步骤在app的bootstrapWith方法内，make一个bootstraper类，调用其bootstrap($app)方法，这个步骤的前后还加了两个事件触发。最后设置hasBeenBootstrapped为true。
