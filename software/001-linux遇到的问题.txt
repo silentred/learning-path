@@ -94,3 +94,8 @@ new result:发现是缺少环境变量HOME,ssh -T git@github.com的时候，默认去找private k
 set HOME=%USERPROFILE%, USERPROFILE就是C:\Users\username这个目录，在其中 mkdir .ssh，再把key放进去就可以了.但是key的名字目前还是根据默认的去查找，看看能否改变默认名称.好像是修改.ssh/config中的内容，http://stackoverflow.com/questions/9672975/switching-between-multiple-ssh-keys-in-git-on-windows
 
 
+TAR的压缩
+tar -czf target.tar.gz /source #v是verbose,文件太多不要加
+解压
+tar xf xxx.tar
+
