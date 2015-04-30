@@ -87,6 +87,10 @@ eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa_2048
 
 windows下的操作：
-ssh-agent bash #进入bash
-evel `ssh-agent`
-ssh-add /.ssh/id_rsa_2048 #这个文件是在Git的安装目录下的.ssh目录下的，很变态，因为存在一个user/.ssh，一开始误以为把私钥放在这里
+#ssh-agent bash #进入bash
+#eval `ssh-agent`
+#ssh-add /.ssh/id_rsa_2048 #这个文件是在Git的安装目录下的.ssh目录下的，很变态，因为存在一个user/.ssh，一开始误以为把私钥放在这里
+new result:发现是缺少环境变量HOME,ssh -T git@github.com的时候，默认去找private key的位置是%HOME%/.ssh, 只要设置环境变量
+set HOME=%USERPROFILE%, USERPROFILE就是C:\Users\username这个目录，在其中 mkdir .ssh，再把key放进去就可以了.但是key的名字目前还是根据默认的去查找，看看能否改变默认名称.好像是修改.ssh/config中的内容，http://stackoverflow.com/questions/9672975/switching-between-multiple-ssh-keys-in-git-on-windows
+
+
