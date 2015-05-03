@@ -1,4 +1,4 @@
-require(['jquery', 'bootbox'], function ($, bootbox) {
+define(['jquery', 'bootbox'], function ($, bootbox) {
 
     $('#uploadBtn').click(function(){
         var formData = new FormData($('#uploadForm')[0]);

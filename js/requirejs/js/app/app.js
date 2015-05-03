@@ -11,7 +11,8 @@ requirejs.config({
     }
 });
 
-require(['jquery'], function ($) {
+/*require(['jquery'], function ($) {
     //console.log($);
     require(['app/upload']);
-});
+});*/
+requirejs(['app/upload']);
