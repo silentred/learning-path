@@ -19,3 +19,15 @@ df -h
 查看一个库文件是32位还是64位的
 file libnss_files-2.17.so
 od -h -N 10 libnss_files-2.17.so
+
+查看当前文件夹和其中子文件夹占用磁盘空间大小
+du -h --max-depth=1 ./
+
+该命令将深入子目录内部并列出其文件
+ls -lR | grep “^-” |wc -l
+-R代表递归
+
+wc -l 统计行数
+sort 排序
+uniq 把相连在一起的内容合并为一行
+cut 分割
