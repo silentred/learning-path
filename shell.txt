@@ -31,3 +31,7 @@ wc -l 统计行数
 sort 排序
 uniq 把相连在一起的内容合并为一行
 cut 分割
+
+windows中的which:
+C:\Users\Jason>for %x in (powershell.exe) do @echo %~$PATH:x
+

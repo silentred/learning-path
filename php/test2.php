@@ -139,3 +139,22 @@ var_dump(error_reporting());
 
 $stdin = fopen('php://stdin', 'r');
 echo "$stdin \n";
+
+
+//popen用来调用系统的命令，他的io pipe是单向的（只能读或者写）
+//返回一个文件指针（file pointer）, 和fopen()一样,但是fopen是双向io。
+//必须用pclose()关闭资源
+//This pointer may be used with fgets(), fgetss(), and fwrite()
+$handle = popen('ls -al /', 'r');
+$contents = '';
+/* 读取内容 方法一 
+while (!feof($handle)) {
+  $contents .= fread($handle, 512);
+  echo 'current point is at'.ftell($handle). "\n";
+}*/
+/*读取内容 方法二*/
+$contents = stream_get_contents($handle);
+
+/*file_get_contents($filename); 参数是文件名， 而stream_get_contents读取的是一个已经打开的资源，所以file_get_contents在这里不适用*/
+pclose($handle);
+echo $contents . "\n";
