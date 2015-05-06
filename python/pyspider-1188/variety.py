@@ -18,11 +18,12 @@ class Handler(BaseHandler):
 
     ajaxBaseUrl = 'http://v.2345.com/moviecore/server/variety/index.php?'
 
-    @every(seconds=21* 60*60)
+    @every(seconds=12* 60*60)
     def on_start(self):
         self.crawl('http://v.2345.com/zongyi/l/', callback=self.list_page)
+        self.crawl('http://v.2345.com/zongyi/', callback=self.index_page)
 
-    @config(age=18* 60*60)
+    @config(age=48* 60*60)
     def list_page(self, response):
         for each in response.doc('#picCon li').items():
             img = pq(each).find('div.pic>img')
@@ -36,6 +37,16 @@ class Handler(BaseHandler):
         for each in response.doc('DIV#pageList>A').items():
             if re.match("http://v.2345.com/zongyi/lpxdefault/\d+/$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
+
+    @config(age=12* 60*60, priority=10)
+    def index_page(self, response):
+        for each in response.doc('.ul_picTxtD li').items():
+            img = pq(each).find('div.pic>img')
+            img_url = img.attr.src
+            if re.match(".*noimg.jpg.*", img_url):
+                img_url = img.attr.loadsrc
+            save = {"small_image": img_url,  "rating": 7.2}
+            self.crawl(pq(each).find('.playBtn>a').attr.href, callback=self.detail_page, save=save)
             
     @config(priority=4, age=18* 60*60)   
     def on_message(self, project, msg):
@@ -72,12 +83,16 @@ class Handler(BaseHandler):
         firstApi = response.doc('#playNumTabFirst').attr.apiname
         apis.append(firstApi)
         for each in response.doc('.sourceMoreList a').items():
-            apis.append(each.attr.apiname)
+            if each is not None and len(each)>0:
+                apis.append(each.attr.apiname)
 
         for apiname in apis:
             save = {"api": apiname, "variety_id": orig_id}
             self.crawl(self.ajaxBaseUrl+makeAjaxParam(api=apiname, id=orig_id), callback=self.jsonYearList, save=save)
 
+        small_image = response.save['small_image']
+        if small_image is None or len(small_image)==0:
+            small_image = poster_image
 
         return {
             "url": response.url,
@@ -89,7 +104,7 @@ class Handler(BaseHandler):
             "platform": platform or '',
             "location": location or '',
             "hosts" : hostList,
-            "small_image": response.save['small_image'] or '',
+            "small_image": small_image or '',
             "orig_id" : orig_id,
             "rating": response.save['rating'],
             "is_play_source": 0
@@ -110,6 +125,8 @@ class Handler(BaseHandler):
         save = response.save
         save['source'] = []
         save['is_play_source'] = 1
+        if save['api']:
+            pass
         for each in pq(response.json['html']).find('ul.ulPic li').items():
             img = pq(each).find('.pic img')
             guests = None

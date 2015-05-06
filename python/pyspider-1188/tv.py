@@ -19,10 +19,9 @@ class Handler(BaseHandler):
     @every(seconds=2*24* 60*60)
     def on_start(self):
         self.crawl('http://tv.2345.com/---.html', callback=self.list_page)
+        self.crawl('http://tv.2345.com/', callback=self.index_page)
 
-
-
-    @config(age=18* 60*60)
+    @config(age=48* 60*60)
     def list_page(self, response):
         for each in response.doc('#picCon li').items():
             img = pq(each).find('div.pic>img')
@@ -35,6 +34,16 @@ class Handler(BaseHandler):
         for each in response.doc('DIV#pageList>A').items():
             if re.match("http://tv.2345.com/----default-\d+\.html$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
+
+    @config(age=12* 60*60, priority=10)
+    def index_page(self, response):
+        for each in response.doc('.picTxt li').items():
+            img = pq(each).find('div.pic>img')
+            img_url = img.attr.src
+            if re.match(".*noimg.jpg.*", img_url):
+                img_url = img.attr.loadsrc
+            small_image = {"small_image": img_url}
+            self.crawl(pq(each).find('.sTit>a').attr.href, callback=self.detail_page, save=small_image)
     
     @config(priority=4, age=18* 60*60)   
     def on_message(self, project, msg):
@@ -104,6 +113,10 @@ class Handler(BaseHandler):
         #测试是否能够同时去爬，并返回另一个结果
         self.crawl(response.doc('.pNumTab>a:last-child').attr.href, callback=self.plot_list_page)
 
+        small_image =  response.save['small_image']
+        if small_image is None or len(small_image)==0:
+            small_image = poster_image
+
         return {
             "url": response.url,
             "meta_title": response.doc('title').text(),
@@ -115,7 +128,7 @@ class Handler(BaseHandler):
             "year": year or '',
             "location": location or '',
             "play_source": playSources,
-            "small_image": response.save['small_image'] or '',
+            "small_image": small_image or '',
             "casting" : castingList,
             "director" : director or '',
             "closed": closed,

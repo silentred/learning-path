@@ -11,7 +11,7 @@ from declarative import  Base, Video, VideoInfo, Category, PlaySource, VarietySo
 from sqlalchemy.orm.exc import NoResultFound
 
 def initSession():
-    engine = create_engine('mysql+mysqldb://test:test@192.168.2.50/1188test?charset=utf8&use_unicode=0')
+    engine = create_engine('mysql+mysqldb://test:test@172.16.1.19/1188test?charset=utf8&use_unicode=0')
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()

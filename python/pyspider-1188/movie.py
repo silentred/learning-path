@@ -18,9 +18,10 @@ class Handler(BaseHandler):
     @every(seconds=24*60*60)
     def on_start(self):
         self.crawl('http://dianying.2345.com/list/', callback=self.list_page)
+        self.crawl('http://dianying.2345.com/', callback=self.index_page)
 
 
-    @config(age=18* 60*60)
+    @config(age=48* 60*60)
     def list_page(self, response):
         for each in response.doc('#picCon li').items():
             img = pq(each).find('div.pic>img')
@@ -33,10 +34,21 @@ class Handler(BaseHandler):
         for each in response.doc('DIV#pageList>A').items():
             if re.match("http://dianying.2345.com/list/-------\d+\.html$", each.attr.href):
                 self.crawl(each.attr.href, callback=self.list_page)
+
+    @config(age=12* 60*60, priority=10)
+    def index_page(self, response):
+        for each in response.doc('.ul_picTxtA li').items():
+            img = pq(each).find('div.pic>img')
+            img_url = img.attr.src
+            if re.match(".*noimg.jpg.*", img_url):
+                img_url = img.attr.loadsrc
+            small_image = {"small_image": img_url}
+            self.crawl(pq(each).find('.playBtn>a').attr.href, callback=self.detail_page, save=small_image)
     
     @config(priority=4, age=18* 60*60)
     def on_message(self, project, msg):
-        self.crawl(msg['url'], callback=self.detail_page )
+        save = {"small_image": small_image}
+        self.crawl(msg['url'], callback=self.detail_page, save=save )
 
     @config(priority=2, age=18* 60*60)
     def detail_page(self, response):
@@ -108,6 +120,8 @@ class Handler(BaseHandler):
         #poster_image = downlaodImage(poster_image)
         #small_image = downlaodImage(response.save['small_image'])
         small_image = response.save['small_image']
+        if small_image is None or len(small_image)==0:
+            small_image = poster_image
 
         mainResult = {
             "url": response.url,

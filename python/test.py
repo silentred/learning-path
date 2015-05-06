@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+# -*- encoding: utf-8 -*-
 def factorial(n):
 	if n==1:
 		return 1
@@ -51,6 +51,7 @@ __metaclass__ = type
 class Person():
 	__name = 'Default Name'
 	num = 0
+	NUM = 0
 	
 	def setName(self, name):
 		self.__name = name
@@ -66,19 +67,27 @@ class Person():
 		print 'private greeting'
 
 	def static(self):
-		Person.num += 1
+		Person.NUM += 1
+	def property(self):
+		self.num += 1
 
 
 foo = Person()
 foo.setName('Jason')
-#foo.greet()
-#foo.__greet()
+foo.greet()
+#foo.__greet() #无法调用隐藏方法
 
 foo.static()
-#print Person.num
+foo.property()
+print Person.NUM #结果为1
+print foo.num
+
 bar = Person()
-bar.static()
-#print Person.num
+bar.static() # 结果为2，因为Person.num是静态调用, self.num才是instance内部的变量
+bar.property()
+print Person.NUM
+print bar.NUM
+print bar.num
 
 
 class Superman(Person):
@@ -94,16 +103,16 @@ class Superman(Person):
 		print "Superman is me, %s" % self.__name
 
 	def __del__(self):
-		print "del the object"
+		print "del the object, Class Superman"
 
 clark = Superman()
-#clark.setName('Clarkkkkk')
-#print clark.getName()
-#print clark.num
-#clark.greet()
+clark.setName('Clarkkkkk')
+print clark.getName()
+print clark.num
+clark.greet()
 
-#print Superman.__bases__
-#print clark.__class__
+print Superman.__bases__
+print clark.__class__
 
 #x = raw_input('enter number1: ')
 #y = raw_input('enter number2: ')
@@ -142,7 +151,10 @@ class MySeq():
 		self.changed[key] = value
 
 s = MySeq(1,2)
-#print s[4]
+s[1] = 'haha'
+print s[4]
+print s[1]
+# __getitem__ 和 __setitem__ 是 []下标操作的接口
 
 
 class Rec():

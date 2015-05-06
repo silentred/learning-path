@@ -120,6 +120,7 @@ class IndexItem(Base):
     broadcast_time = Column(CHAR(40), nullable=True)
     long_desc = Column(String(150), nullable=True)
     page_id = Column(SmallInteger, nullable=False)
+    date_add = Column(Date, nullable=False)
     video = relationship('Video')
 
 class RankItem(Base):
@@ -129,6 +130,19 @@ class RankItem(Base):
     section  = Column(CHAR(15), nullable=False)
     video_id = Column(Integer, ForeignKey('video.id'))
     position = Column(SmallInteger, nullable=False)
+    video = relationship('Video')
+
+class NewsItem(Base):
+    __tablename__= 'news_item'
+    id = Column(Integer, primary_key=True)
+    page_id =  Column(Integer, nullable=False, index=True)
+    section  = Column(CHAR(40), nullable=False)
+    title  = Column(CHAR(80), nullable=False)
+    url  = Column(String(255), nullable=False)
+    cover  = Column(String(255), nullable=False)
+    video_id = Column(Integer, ForeignKey('video.id'))
+    desc = Column(SmallInteger, nullable=True)
+    add_date = Column(Date, nullable=False)
     video = relationship('Video')
     
 

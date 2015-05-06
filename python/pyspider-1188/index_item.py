@@ -18,12 +18,12 @@ class Handler(BaseHandler):
     @every(minutes=12 * 60)
     def on_start(self):
         self.crawl('http://dianying.2345.com/', callback=self.movie_index)
-        self.crawl('http://dongman.2345.com/', callback=self.comic_index)
+        self.crawl('http://dongman.2345.com/', callback=self.comic_index, etag=False, last_modifed=False)
         self.crawl('http://tv.2345.com/', callback=self.tv_index)
         self.crawl('http://v.2345.com/zongyi/', callback=self.variety_index)
         self.crawl('http://v.2345.com/', callback=self.index_index)
 
-    @config(age=12 * 60 * 60)
+    @config(age=12 * 60 * 60, timeout=20)
     def index_index(self, response):
         items = []
         for each in response.doc('.mod_a').items():
@@ -31,11 +31,13 @@ class Handler(BaseHandler):
             video_type_id = getVideoTypeIdByName(section)
             for item in pq(each).find('.pTabList a').items():
                 sub_section = pq(item).text()
+                if pq(item).attr.name is None:
+                    continue
                 length = len(pq(item).attr.name)
                 content_id = pq(item).attr.id[:length]+ '_content' + pq(item).attr.id[length:]
                 for x in pq(each).find("#"+content_id+" ul li").items():
                     cover = pq(x).find('.pic img').attr.loadsrc
-                    url = pq(x).find('.playBtn a').attr.href
+                    url = pq(x).find('.sTit a').attr.href
                     desc = pq(x).find('.sDes').text()
                     orig_id = getOrigId(url)
                     items.append({
@@ -49,10 +51,12 @@ class Handler(BaseHandler):
                         "video_type_id": video_type_id
                         })
         #banner
-        for each in response.doc('#focus ul').eq(0).find('li').items():
+        for each in response.doc('#focusPic_Con ul').eq(0).find('li').items():
             cover = pq(each).find("img").attr.loadsrc or pq(each).find("img").attr.src
-            url = pq(each).find('.playBtn a').attr.href
-            orig_id = getOrigId(url)
+            url = pq(each).find('.sTit a').attr.href
+            orig_id = 0
+            if type(url) is str:
+                orig_id = getOrigId(url)
             video_type_id = detectVideoType(pq(each).find('i.videoStyleLogo'))
             if orig_id is not None:
                 items.append({
@@ -69,7 +73,7 @@ class Handler(BaseHandler):
 
 
 
-    @config(age=12 * 60 * 60)
+    @config(age=12 * 60 * 60, timeout=20)
     def movie_index(self, response):
         movieIndexItems = []
         for each in response.doc('.mod_e').items():
@@ -110,11 +114,11 @@ class Handler(BaseHandler):
                 })
 
         for x in movieIndexItems:
-            self.send_message('movie', {"url": x['url']})
+            self.send_message('movie', {"url": x['url'], "small_image": x['cover']})
 
         return movieIndexItems
 
-    @config(age=12 * 60 * 60)
+    @config(age=12 * 60 * 60, timeout=20)
     def comic_index(self, response):
         items = []
         for each in response.doc('.mod_g').items():
@@ -170,15 +174,15 @@ class Handler(BaseHandler):
                     "orig_id": orig_id,
                     "desc": desc,
                     "video_type_id": 2,
-                    "page_id": 1
+                    "page_id": 2
                     })
 
-        for x in items:
-            self.send_message('comic', {"url": x['url']})
+        # for x in items:
+        #     self.send_message('comic', {"url": x['url']})
 
         return items
         
-    @config(age=12 * 60 * 60)
+    @config(age=12 * 60 * 60, timeout=20)
     def tv_index(self, response):
         items = []
         for each in response.doc('.mod_a').items():
@@ -218,31 +222,35 @@ class Handler(BaseHandler):
                     "page_id": 3
                 })
 
-        for x in items:
-            self.send_message('tv', {"url": x['url']})
+        # for x in items:
+        #     self.send_message('tv', {"url": x['url']})
         return items
 
 
-    @config(age=12 * 60 * 60)
+    @config(age=12 * 60 * 60, timeout=20)
     def variety_index(self, response):
         items = []
         for each in response.doc('.mod_c .th_c'):
             section = pq(each).find('.sMark').text()
+            section = section.strip(u' —❤')
             content = pq(each).nextAll('.tb_c').eq(0)
             for item in pq(content).find('.ul_picTxtD li').items():
                 cover = pq(item).find('.pic img').attr.loadsrc
                 url = delUrlParams(pq(item).find('.playBtn a').attr.href)
-                orig_id = re.search('.*/zongyi/zy_(\d+)',url).group(1)
+                match = re.search('.*/zongyi/zy_(\d+)',url)
+                if match is not None:
+                    orig_id = match.group(1)
                 desc = pq(item).find('.sDes').text()
-                items.append({
-                    "section": section,
-                    "cover": cover,
-                    "url": url,
-                    "orig_id": orig_id,
-                    "desc": desc,
-                    "video_type_id": 4,
-                    "page_id": 4
-                }) 
+                if orig_id is not None:
+                    items.append({
+                        "section": section,
+                        "cover": cover,
+                        "url": url,
+                        "orig_id": orig_id,
+                        "desc": desc,
+                        "video_type_id": 4,
+                        "page_id": 4
+                    }) 
         #banner
         i = 0
         for each in response.doc('#focus .picCon .con').items():
@@ -274,19 +282,24 @@ class Handler(BaseHandler):
         desc = pq(firstHot).find('.pic .sDes').text()
         broadcast_time = pq(firstHot).find('.pic .sTimeBg').text()
         url = pq(firstHot).find('.playBtn a').attr.href
-        orig_id = re.search('.*/zongyi/zy_(\d+)',url).group(1)
+        match = re.search('.*/zongyi/zy_(\d+)',url)
+        if match is not None:
+            orig_id = match.group(1)
         long_desc = pq(firstHot).find('.txt p').text()
-        items.append({
-                    "section": section,
-                    "big_cover": big_cover,
-                    "url": url,
-                    "orig_id": orig_id,
-                    "desc": desc,
-                    "broadcast_time": broadcast_time,
-                    "long_desc": long_desc,
-                    "video_type_id": 4,
-                    "page_id": 4
-            })
+        if orig_id is not None:
+            items.append({
+                        "section": section,
+                        "big_cover": big_cover,
+                        "cover": big_cover,
+                        "url": url,
+                        "orig_id": orig_id,
+                        "desc": desc,
+                        "broadcast_time": broadcast_time,
+                        "long_desc": long_desc,
+                        "video_type_id": 4,
+                        "page_id": 4
+                })
+
         for each in pq(hot).find('.ul_picTxtD li').items():
             url = pq(each).find('.sName a').attr.href
             cover = pq(each).find('.pic img').attr.src
@@ -302,8 +315,8 @@ class Handler(BaseHandler):
                     "page_id": 4
                 })
         
-        for x in items:
-            self.send_message('variety', {"url": x['url']})
+        # for x in items:
+        #     self.send_message('variety', {"url": x['url']})
 
         return items
 
@@ -333,6 +346,8 @@ def getOrigId(url):
         return re.search(detail, url).group(1)
     elif re.match(dm,url):
         return re.search(dm,url).group(1)
+    else:
+        return 0
 
 def getVideoTypeIdByName(name):
     if name == u'电视剧':
