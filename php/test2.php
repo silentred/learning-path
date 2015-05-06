@@ -158,3 +158,20 @@ $contents = stream_get_contents($handle);
 /*file_get_contents($filename); 参数是文件名， 而stream_get_contents读取的是一个已经打开的资源，所以file_get_contents在这里不适用*/
 pclose($handle);
 echo $contents . "\n";
+
+
+declare(ticks=1);
+// A function called on each tick event
+function tick_handler()
+{
+    echo "tick_handler() called\n";
+}
+
+register_tick_function('tick_handler');
+
+$a = 1;
+
+if ($a > 0) {
+    $a += 2;
+    print($a."\n");
+}

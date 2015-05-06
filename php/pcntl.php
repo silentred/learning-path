@@ -5,6 +5,7 @@ for($i = 0; $i < 3; $i++) {
     declare(ticks=1);
     //设置信号处理器
     pcntl_signal(SIGCHLD, function ($signo){
+        echo "\n SIGCHLD == {$signo} \n";
         echo "\nchild process is ending... signal number is {$signo}\n";
         while (($pid = pcntl_waitpid(-1, $stat, WNOHANG) > 0) )
             echo "\n child terminated. {$pid}\n";
@@ -25,9 +26,9 @@ for($i = 0; $i < 3; $i++) {
         //取得父进程的pid
         $ppid = posix_getppid();
         $pid = posix_getpid();
-        echo "this is child, number is {$i}. pid is {$pid} . my parent pid is {$ppid}. sleep 2 seconds\n";
+        echo "this is child, number is {$i}. pid is {$pid} . my parent pid is {$ppid}. sleeping \n";
         // Sleep $i+1 (s). The child process can get this parameters($i).
-        sleep($i+2);
+        sleep($i+1);
         //$ppid = posix_getppid();
         //echo "\n this is child, number is {$i} . my parent pid is {$ppid}. after sleep, end\n";
         
