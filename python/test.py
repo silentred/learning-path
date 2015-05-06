@@ -192,3 +192,43 @@ print heap
 heappush(heap, 0.5)
 print heap
 
+
+string = r"This is a long string\
+with a backslash and a new line in it."
+#这里的r表示原样输出，这里的\转义会被忽略
+print string
+
+print string.isdigit()
+print string.upper()
+print string.count('needle')
+lines = string.splitlines()
+print lines
+#遍历每个字符
+for c in string:
+	pass
+
+print ord('a')
+print chr(97)
+print ord(u'天')
+print repr(unichr(22825))
+
+def is_string(string):
+	return isinstance(string, basestring)
+
+print is_string('test')
+#字符串反转
+print string[::-1]
+
+import string
+def translator(frm='', to='', del='', keep=None):
+	if len(to)==1:
+		to = to*len(frm)
+	trans = string.maketrans(frm, to)
+	if keep is not None:
+		allchars = string.maketrans('', '')
+		del = allchars.translate(allchars, 
+			keep.translate(allchars, del))
+	def translate(s):
+		return s.translate(trans, del)
+	return translate
+
