@@ -3,7 +3,7 @@
 # Created on 2015-03-03 13:14:54
 # Project: test
 
-import re
+import re, datetime
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
 import sqlite3
 import ast
@@ -16,7 +16,7 @@ from declarative import  Base, Video, VideoInfo, Category, PlaySource, Specicalt
 from sqlalchemy.orm.exc import NoResultFound
 
 def initSession():
-    engine = create_engine('mysql+mysqldb://test:test@192.168.2.50/1188test?charset=utf8&use_unicode=0')
+    engine = create_engine('mysql+mysqldb://test:test@172.16.1.19/1188test?charset=utf8&use_unicode=0')
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -40,6 +40,8 @@ def searchAndSaveIndexItem(session, rankObjs):
     for rank in rankObjs:
         try:
             video = searchVideo(session, rank['orig_id'], rank['video_type_id'])
+            if not rank.has_key('cover'):
+                rank['cover'] = ''
             index = IndexItem(video=video,
                     desc = rank['desc'].decode('unicode-escape'),
                     page_id = rank['page_id'],
@@ -49,20 +51,21 @@ def searchAndSaveIndexItem(session, rankObjs):
                     cover = rank['cover'],
                     big_cover = rank['big_cover'] if rank.has_key('big_cover') else '',
                     broadcast_time = rank['broadcast_time'].decode('unicode-escape') if rank.has_key('broadcast_time') else '',
-                    long_desc = rank['long_desc'].decode('unicode-escape') if rank.has_key('long_desc') else ''
+                    long_desc = rank['long_desc'].decode('unicode-escape') if rank.has_key('long_desc') else '',
+                    date_add = datetime.datetime.now()
                 )
             session.add(index)
         except NoResultFound, e:
-            #print 'cannot find video whose orig_id=%s, video_type_id=%s ' % (rank['orig_id'], rank['video_type_id'])
+            print 'cannot find video whose orig_id=%s, video_type_id=%s ' % (rank['orig_id'], rank['video_type_id'])
             continue
         except Exception, e:
             raise e
 
 
 session = initSession()
-with sqlite3.connect('result.db') as db:
-    cursor = db.cursor()
-    cursor.execute('''SELECT taskid, result from resultdb_index_item limit 0, 500''')
+with MySQLdb.connect('172.16.1.248', 'qiye_dev', 'qiye..dev', '1188ys_resultdb') as cursor:
+    #cursor = db.cursor()
+    cursor.execute('''SELECT taskid, result from index_item''')
     allRows = cursor.fetchall()
     i = 0
     for row in allRows:

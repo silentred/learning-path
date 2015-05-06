@@ -28,7 +28,7 @@ def downlaodImage(url):
             result = urllib.urlretrieve(url, fullPath)
             #print "execution time: %f s" % (time.time()-start_time) 
     except IOError, e:
-        print "io error, url: %s" % (url,)
+        print "io error: %s, url: %s" % (e,url)
     except Exception, e:
         raise e
 
@@ -66,7 +66,7 @@ threads = []
 limit  =1000.0
 workerNum = 10
 try:
-    db = MySQLdb.connect('192.168.2.50', 'test', 'test', '1188test')
+    db = MySQLdb.connect('172.16.1.19', 'test', 'test', '1188test')
     cursor = db.cursor()
     cursor.execute("SELECT count(1) from video_info")
     rowCount = cursor.fetchone()[0]
@@ -79,13 +79,19 @@ try:
                     threads.remove(t)
             # if <10, then go to get more from DB 
             if len(threads) < workerNum:
+                print 'current threads num is %d' % (len(threads),)
                 break
             #sleep for 1s, waiting for the next check
+            print "waiting for 1s"
             time.sleep(1)
 
         sql = "SELECT poster_image, small_image, id from video_info  limit %d, %d" % (int(x*limit ), int(limit))
         cursor.execute(sql)
         result = cursor.fetchall()
+        #if result is empty?
+        if len(result) == 0:
+            print 'result is empty, ready to exit main process'
+            break 
         t1 = threading.Thread(target = partitionDownload, args=(result,) )
         threads.append(t1)
         t1.start()
@@ -107,4 +113,4 @@ except Exception, e:
 # except Exception, e:
 #     print e, "task id is %s" % x[2]
 
-print "execution time: %f s" % (time.time()-start_time)
+#print "execution time: %f s" % (time.time()-start_time)
