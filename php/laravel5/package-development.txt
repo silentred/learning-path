@@ -1,0 +1,84 @@
+http://stackoverflow.com/questions/28378460/laravel-5-package-development
+如何在laravel5中使用package开发功能?
+
+Using the laravel Workbench package:
+
+You can add the illuminate/workbench package in a Laravel 5 by adding to your composer.json:
+
+"illuminate/workbench": "dev-master"
+then add the WorkbenchServiceProvider into your config/app.php file:
+
+'Illuminate\Workbench\WorkbenchServiceProvider'
+Now you need to create the config/workbench.php file since it has been removed from Laravel 5:
+
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Workbench Author Name
+    |--------------------------------------------------------------------------
+    |
+    | When you create new packages via the Artisan "workbench" command your
+    | name is needed to generate the composer.json file for your package.
+    | You may specify it now so it is used for all of your workbenches.
+    |
+    */
+    'name' => '',
+    /*
+    |--------------------------------------------------------------------------
+    | Workbench Author E-Mail Address
+    |--------------------------------------------------------------------------
+    |
+    | Like the option above, your e-mail address is used when generating new
+    | workbench packages. The e-mail is placed in your composer.json file
+    | automatically after the package is created by the workbench tool.
+    |
+    */
+    'email' => '',
+];
+Fill your infomrations in this config file then you will be able to use the workbench command:
+
+php artisan workbench vendor/name
+Creating your own package structure
+
+In this exemple we will create our package called awesome in a packages directory.
+
+Here is the package structure:
+
+packages/
+  vendor/
+    awesome/
+      src/
+        Awesome.php
+      composer.json
+Vendor: your vendor name, typically this is your github username.
+Awesome: the name of your package
+src: Where you put the business logic
+To generate a composer.json file you can use this command in the packages/vendor/awesome directory:
+
+composer init
+Now we create a Awesome.php class in the src directory with a simple method:
+
+<?php namespace Vendor/Awesome;
+
+class Awesome
+{
+    public static function printAwesomeness()
+    {
+        echo 'Awesome';
+    }
+}
+After that we add the package to the laravel composer.json psr-4 autoloader:
+
+"autoload": {
+    "psr-4": {
+        "App\\": "app/",
+        "Vendor\\Awesome\\": "packages/vendor/awesome/src"
+    }
+},
+and we dump the composer autoloader
+
+composer dump-autoload
+Now you can use your package everywhere in your laravel 5 project. If you need some laravel specific feature like service provider or view publishing, use them as described in the Laravel 5.0 documentation.
+http://laravel.com/docs/5.0/packages

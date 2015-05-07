@@ -159,14 +159,14 @@ $contents = stream_get_contents($handle);
 pclose($handle);
 echo $contents . "\n";
 
-declare(ticks=1);
+//declare(ticks=1);
 // A function called on each tick event
 function tick_handler()
 {
     echo "tick_handler() called\n";
 }
 
-register_tick_function('tick_handler');
+//register_tick_function('tick_handler');
 
 $a = 1;
 
@@ -181,3 +181,20 @@ $a = "abc";
 $b = &$a;
 unset($a);
 echo $b . "\n";
+
+//测试参数
+$shortopts  = "";
+$shortopts .= "f:";  // Required value
+$shortopts .= "v::"; // Optional value
+$shortopts .= "abc"; // These options do not accept values
+ 
+$longopts  = array(
+    "required:",     // Required value
+    "optional::",    // Optional value
+    "option",        // No value
+    "opt",           // No value
+);
+$options = getopt($shortopts, $longopts);
+var_dump($options);
+//如果是optional的标记，需要用=连接
+//php test2.php -f "value for f" -v="vvalue" -abc --required value --optional="optional value" --option --opt
