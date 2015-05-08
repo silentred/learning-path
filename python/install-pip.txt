@@ -59,3 +59,8 @@ easy_install MySQL-python
 安装 mysql module:
 下载页面 http://dev.mysql.com/downloads/connector/python/
 centos中使用：rpm -Uvh mysql-xxx-xxx.rpm
+
+汉字转拼音
+pip install pinyin
+安装ORM
+pip install SQLAlchemy
