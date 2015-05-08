@@ -1,5 +1,64 @@
 http://stackoverflow.com/questions/28378460/laravel-5-package-development
-如何在laravel5中使用package开发功能?
+如何在laravel5中使用package开发功能?(翻译)
+
+##下载Laravel workbench包
+Laravel5默认没有包含workbench包，需要在composer.json中添加`"illuminate/workbench": "dev-master"`
+
+运行 `composer update`
+
+下载完成后后，把`WorkbenchServiceProvider` 加入app.php，同时创建`config/workbench.php` 文件，内容如下：
+
+```
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Workbench Author Name
+    |--------------------------------------------------------------------------
+    |
+    | When you create new packages via the Artisan "workbench" command your
+    | name is needed to generate the composer.json file for your package.
+    | You may specify it now so it is used for all of your workbenches.
+    |
+    */
+    'name' => '',
+    /*
+    |--------------------------------------------------------------------------
+    | Workbench Author E-Mail Address
+    |--------------------------------------------------------------------------
+    |
+    | Like the option above, your e-mail address is used when generating new
+    | workbench packages. The e-mail is placed in your composer.json file
+    | automatically after the package is created by the workbench tool.
+    |
+    */
+    'email' => '',
+];
+```
+
+
+运行新建package的命令：
+`php artisan workbench vendor/name`
+
+目录结构为：
+```
+packages/
+  vendor/
+    awesome/
+      src/
+        Awesome.php
+      composer.json
+```
+
+
+在`packages/vendor/awesome`目录下生成composer.json:
+`composer init`
+
+更多细节请看官方文档：
+[http://laravel.com/docs/5.0/packages](http://laravel.com/docs/5.0/packages)
+
+
 
 Using the laravel Workbench package:
 
