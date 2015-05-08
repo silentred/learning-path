@@ -219,16 +219,35 @@ print is_string('test')
 #字符串反转
 print string[::-1]
 
-import string
-def translator(frm='', to='', del='', keep=None):
-	if len(to)==1:
-		to = to*len(frm)
-	trans = string.maketrans(frm, to)
-	if keep is not None:
-		allchars = string.maketrans('', '')
-		del = allchars.translate(allchars, 
-			keep.translate(allchars, del))
-	def translate(s):
-		return s.translate(trans, del)
-	return translate
+# import string
+# def translator(frm='', to='', del='', keep=None):
+# 	if len(to)==1:
+# 		to = to*len(frm)
+# 	trans = string.maketrans(frm, to)
+# 	if keep is not None:
+# 		allchars = string.maketrans('', '')
+# 		del = allchars.translate(allchars, 
+# 			keep.translate(allchars, del))
+# 	def translate(s):
+# 		return s.translate(trans, del)
+# 	return translate
 
+
+def read_file_by_chunks(filename, chunksize=100):
+	file_obj = open(filename)
+	while True:
+		chunk = file_obj.read(chunksize)
+		if not chunk:
+			break
+		yield chunk
+	file_obj.close()
+
+#默认按行遍历文件中的内容
+for line in open('/tmp/python.txt', 'rU'):
+	print line.rstrip('\n')
+
+#按chunk遍历文件内容，得益于yield的使用
+for chunk in read_file_by_chunks('/tmp/python.txt'):
+	print chunk.rstrip('\n')
+
+#关于logging搜索"python TimedRotatingFileHandler"
