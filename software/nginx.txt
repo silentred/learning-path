@@ -1,0 +1,65 @@
+# 虚拟主机以server进行定义
+ server {
+     listen       80;
+     # 用来定义访问的ip地址或者域名，多个域名之间使用空格分开
+     server_name  laravel.com local.laravel.com;
+     # 用于指定站点网页的默认编码格式
+     charset utf-8;
+  
+     # 用来指定此站点的访问日志存放路径，后面的main用于设定日志的格式
+     #access_log  /var/log/nginx/laravel-access.log  main;
+  
+     # 用于指定站点的网页根目录，可以是相对路径（相对于nginx安装目录），也可以是绝对路径
+     root /home/jason/shared/projects/laravel5/public
+     # 用于指定访问的默认首页地址
+     index index.html index.php
+  
+     # 用来指定站点默认访问的设置，里面的root和index用法和效果与上面是一样的
+     # 两种方式使用任何一种都是可以的，这里采用 location / {} 的方式
+     location / {
+         root   /home/jason/shared/projects/laravel5/public;
+         index  index.html index.php;
+     }
+  
+     # 使用error_page指令设置各种错误信息的返回页面
+     # 错误信息的返回页面大小如果低于512k则会被ie浏览器替换为ie默认的错误页面
+     #error_page  404              /404.html;
+     #error_page   500 502 503 504 /50x.html;
+     #location = /50x.html {
+     #    root   html;
+     #}
+  
+     # nginx的location指令用于设置url地址匹配，支持正则表达式匹配，也支持条件判断匹配。
+     # 可以通过location指令实现nginx对动态、静态网页的过滤处理。
+     # 下面是对所有的图片设置缓存30天
+     location ~ .*.(gif|jpg|jpeg|png|bmp|swf)$ {
+         expires 30d;
+     }
+     # 对js和css文件缓存1小时
+     location ~ .*.(js|css)$ {
+         expires 1h;
+     }
+  
+     # 下面是列出了两种解析php的方式：
+     # 第一种是简单的将所有以php结尾的请求都交给本机的8080端口进行处理
+     #location ~ .php$ {
+     #    proxy_pass   http://127.0.0.1:8080;
+     #}
+     # 第二种是将php的请求交给FastCGI进程监听的ip地址及端口，这里转发给PHP_FPM
+     location ~ .php$ {
+         # 设定用于解析php的根目录，通常为网站根目录
+         root          /home/jason/shared/projects/laravel5/public;
+         # 地址和端口与php_fpm中设置的一致
+         fastcgi_pass   127.0.0.1:9000;
+         # 默认首页
+         fastcgi_index  index.php;
+         # 指定防止php动态程序的主目录，也就是$fastcgi_script_name前面指定的路径，建议与网站根目录一致或直接使用$document_root
+         fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+         include        fastcgi_params;
+     }
+  
+     # 防止直接访问 .htaccess 文件，建议开启
+     location ~ /.ht {
+         deny  all;
+     }
+ }

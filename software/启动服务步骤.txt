@@ -4,3 +4,12 @@ sudo service mysqld restart
 sudo service redisd start
 sudo service sphinxd start
 php ~/lifomecom/artisan queue:listen &
+
+
+优化
+php artisan config:cache
+php artisan route:cache
+php artisan optimize
+启动APC等opcode cache
+
+
