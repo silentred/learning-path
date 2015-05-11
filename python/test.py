@@ -242,7 +242,7 @@ def read_file_by_chunks(filename, chunksize=100):
 		yield chunk
 	file_obj.close()
 
-#默认按行遍历文件中的内容
+#默认按行遍历文件中的内容(最常用方法)
 # for line in open('/tmp/python.txt', 'rU'):
 # 	print line.rstrip('\n')
 
