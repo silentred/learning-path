@@ -19,6 +19,29 @@
  
 		$this->app->bind(['dao.user' => 'App\DAO\UserDAO'],'App\DAO\Impl\UserDAOImpl', true);
 
+- Controller的方法默认可以使用IoC
+
+	 	public function showMoneyDashboard(MoneyRepository $money)
+
+- 任意方法都可以使用IoC
+
+例如有以下一个类
+
+		class ThingDoer
+		{
+		    public function doThing($thing_key, ThingRepository $repository)
+		    {
+		        $thing = $repository->getThing($thing_key);
+		        $thing->do();
+		    }
+		}
+App::call()方法可以为某个类的某个方法使用IoC, 第二个数组参数是传入doThing方法参数
+
+		App::call(
+            [$thingDoer, 'doThing'],
+            ['thing_key' => 'awesome-parameter-here']
+        );
+
 
 ## Command Bus
 

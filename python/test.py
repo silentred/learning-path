@@ -243,11 +243,17 @@ def read_file_by_chunks(filename, chunksize=100):
 	file_obj.close()
 
 #默认按行遍历文件中的内容
-for line in open('/tmp/python.txt', 'rU'):
-	print line.rstrip('\n')
+# for line in open('/tmp/python.txt', 'rU'):
+# 	print line.rstrip('\n')
 
 #按chunk遍历文件内容，得益于yield的使用
-for chunk in read_file_by_chunks('/tmp/python.txt'):
-	print chunk.rstrip('\n')
+# for chunk in read_file_by_chunks('/tmp/python.txt'):
+# 	print chunk.rstrip('\n')
 
 #关于logging搜索"python TimedRotatingFileHandler"
+
+def already_converted(url):
+    return '?' in url and 'lqd=' in url and 'lcode=' in url
+
+print  'Test for string contains', already_converted('http://tv.sohu.com/20150510/n412776646.shtml?lcode=AAAASRKIxcEXJgTE8izsN5WNN68rTFA6JHt8IWfMlNKJYRD_pSYV-XynPPgnpx8M_FWOVMBj0TWm_yY5twhLvHT4PFME-YPtilAk_xwcE3GKniMusk5&lqd=14444')
+
