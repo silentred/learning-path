@@ -99,3 +99,5 @@ tar -czf target.tar.gz /source #v是verbose,文件太多不要加
 解压
 tar xf xxx.tar
 
+
+

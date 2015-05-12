@@ -38,3 +38,6 @@ Automatic merge failed; fix conflicts and then commit the result.
 这时候需要手动修复冲突，方法为edit/stage/commit workflow,应该很熟悉了。提交完冲突，这时master就合并完成了。
 
 
+
+windows下，把Git的安装目录下bin文件夹放到PATH下非常有必要，因为bin下包含了很多bash里常用的命令工具，例如ls, mkdir, grep, cp, rm 等
+
