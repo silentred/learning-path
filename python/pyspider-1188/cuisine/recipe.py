@@ -94,8 +94,8 @@ class Handler(BaseHandler):
             index = pq(x).find('.recipeStep_word img').attr.alt
             procedure.append({
                 "i":int(index),
-                "img": img,
-                "method": method
+                "img": img or '',
+                "method": method or ''
             })
 
         tips = response.doc('.recipeTip').html()

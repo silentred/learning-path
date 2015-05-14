@@ -44,9 +44,9 @@ class Handler(BaseHandler):
 
         return {
             "name": name,
-            "cover": pic,
+            "cover": pic, #可能null，但是为null的页面是空页面，不用抓取
             "intro":  intro,
             "nutrition": nutrition,
-            "description": description,
+            "description": description, #可能null
             "material_type": material_type
         }
