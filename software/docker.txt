@@ -1,0 +1,89 @@
+在容器中运行
+sudo docker run centos /bin/echo 'Hello world'
+
+###伪终端
+sudo docker run -t -i centos /bin/bash
+-t标示在心容器内指定一个伪终端或终端，-i标示允许我们对容器内的STDIN进行交互。
+
+###守护进程 -d
+sudo docker run -d ubuntu:14.04 /bin/sh -c "while true; do echo hello world; sleep 1; done"
+
+###查看容器和进程
+sudo docker ps
+可以看到给该容器分配了一个RTS NAME，例如grave_ardinghelli
+
+sudo docker logs grave_ardinghelli
+可以查看该进程的输出
+
+sudo docker stop grave_ardinghelli
+停止该容器
+
+docker ps 列出容器
+docker logs显示容器的标准输出
+docker stop停止正在运行的容器
+
+sudo docker run -d -P training/webapp python app.py
+-P标示通知Docker所需的网络端口映射从主机映射到我们的容器内
+为内部端口随机映射外部端口
+也可以指定  -p 5000:5000
+
+sudo docker port nostalgic_morse 5000
+查看指定容器的端口映射
+
+sudo docker logs -f nostalgic_morse
+查看日志，-f 表示 docker log命令中使用tail -f来查看容器标准输出
+
+docker top来查看容器进程
+
+docker ps -l来查看正在运行的容器
+
+sudo docker inspect nostalgic_morse
+查看Docker的底层信息
+
+sudo docker rm nostalgic_morse
+删除容器
+
+docker search laravel
+命令来搜索镜像(别人上传到Docker Hub的image)
+
+
+##创建自己的容器
+方法一：
+sudo docker run -t -i centos:latest /bin/bash
+[root@d26b012f8ca7 ~]# exit
+yum install .....
+exit
+
+sudo docker commit -m="Added json gem" -a="Kate Smith" d26b012f8ca7 silentred/laravel:latest
+-m标示是允许我们指定提交的信息，就像你提交一个版本控制。-a标示允许对我们的更新指定一个用户
+指定了我们想要创建的新镜像来自(我们先前记录的ID)d26b012f8ca7,注意这里的id是登陆centos后，root@后的那一段id
+
+我们给这个镜像携手一个新用户名字silentred
+镜像名称laravel,最后我们为镜像指定了标签latest
+
+这时docker images会发现已经创建成功
+
+方法二：
+mkdir laravel
+touch Dockerfile
+# This is a comment
+FROM ubuntu:14.04
+MAINTAINER Kate Smith <ksmith@example.com>
+RUN apt-get -qq update
+RUN apt-get -qqy install ruby ruby-dev
+RUN gem install sinatra
+
+第一个指令FROM告诉Docker使用哪个镜像源，在这个案例中我们使用了一个Ubuntu 14.04基础镜像。
+下一步，我们使用MAINTAINER指令指定谁是维护者。
+最后，我们指定三个RUN指令，一个RUN指令在镜像内执行命令。例如安装包。这里我们在Sinatra中更新了APT缓存，安装了Ruby和RubyGems。
+
+sudo docker build --rm -t="ouruser/sinatra:v2" .
+-t来标示我们的新镜像，用户是ouruser、仓库源名称sinatra、标签是v2。
+--rm Remove intermediate containers after a successful build
+如果Dockerfile在我们当前目录下，我们可以使用.来指定Dockerfile
+
+
+##设置镜像标签
+sudo docker tag 5db5f8471261 ouruser/sinatra:devel
+
+
