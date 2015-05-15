@@ -71,6 +71,8 @@ kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
 启动php-fpm
 /usr/local/php/sbin/php-fpm
 /usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf
+测试php-fpm的配置文件
+/usr/local/php/sbin/php-fpm -t
 #重启php-fpm
 kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
 
@@ -98,6 +100,9 @@ TAR的压缩
 tar -czf target.tar.gz /source #v是verbose,文件太多不要加
 解压
 tar xf xxx.tar
+
+Centos的systemd service脚本位置：
+/usr/lib/systemd/system
 
 
 

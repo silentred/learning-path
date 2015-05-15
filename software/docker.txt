@@ -86,4 +86,9 @@ sudo docker build --rm -t="ouruser/sinatra:v2" .
 ##设置镜像标签
 sudo docker tag 5db5f8471261 ouruser/sinatra:devel
 
+#NOTE
+镜像image 是只读的，镜像可以被load进入container，例如 docker run 某个镜像，就会生成一个新的container，可以用docker ps -a查询container id，同时可以看到自动给每个container起了个别名。
+docker run --name db 可以将container命名为db
+一个镜像可以用来生成多个container，如果对某个container进行了一些操作，想保存这个container为镜像，用docker commit。
+
 
