@@ -35,3 +35,33 @@ cut 分割
 windows中的which:
 C:\Users\Jason>for %x in (powershell.exe) do @echo %~$PATH:x
 
+
+
+
+nl /etc/passwd | sed -n '/root/{s/bash/blueshell/;p}'
+查找有 root 的那一行， 执行{}中的内容
+s/bash/replacement/;p 表示把bash替换成replacement，p表示显示相关行
+如果想只执行一次就退出，用 sed -n '/root/{s/bash/blueshell/;p;q}'
+-n 表示只显示相关行，其余没有匹配的不显示，和p配合
+
+sed 's/要被取代的字串/新的字串/g'
+ifconfig | sed -n 's/inet/ip/gp'
+把inet替换为ip，并只展示相关行
+
+nl /etc/passwd | sed -n '/root/d'
+查找有root的行，删除（d）
+nl /etc/passwd | sed -n '/root/a hello'
+在有root行后面添加一行hello， （append）
+i代表在前一行添加内容，c表示替换
+'2,5i hello': 在2-5行每行前面插入一行hello
+'2,5c hello'： 把2-5行替换为一行hello
+
+sed -i 's/\.$/\!/g' regular_express.txt
+-i代表直接输出到文件，而不是标准输出
+
+
+
+
+
+
+

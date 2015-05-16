@@ -92,3 +92,22 @@ docker run --name db 可以将container命名为db
 一个镜像可以用来生成多个container，如果对某个container进行了一些操作，想保存这个container为镜像，用docker commit。
 
 
+停止所有container
+docker stop $(docker ps -a -q)
+
+删除所有container
+sudo docker rm $(sudo docker ps -a -q)
+
+
+sudo docker build --rm -t="silentred/laravel:v2" .
+sudo docker run --name="laravel" -p 8080:80 -d -v /var/www:/var/www/html silentred/laravel:v2 php /var/www/start.php
+sudo docker run -ti --name="laravel2" -P -v /var/www:/var/www/html silentred/laravel:v2 /bin/bash
+
+将主机的/var/www挂在到container的/var/www/html
+
+-v 主机目录:容器目录
+
+单独启动fpm，fpm必须可以访问到php文件，所以必须挂在文件夹
+sudo docker run --name="fpm" -p 9002:9000 -d -v /home/jason/shared/projects/:/home/jason/shared/projects/ silentred/laravel:v2
+
+
