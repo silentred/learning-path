@@ -1,0 +1,156 @@
+
+内置类型：
+int8, uint8 (别名是 byte, 0-255), int16, uint16, int32, uint32, int64, uint64 
+int, unit, uintptr
+float32, float64
+bool
+complex64, complex128
+string
+rune
+error
+
+pointer
+array
+slice
+map
+chan
+struct
+interface
+
+
+遍历字符串：
+str := 'hello, 世界'
+n := len(str)
+for i:=0; i < n ; i++{
+    ch := str[i] //根据下标取字符，类型为byte
+    fmt.Println(i, ch)
+}
+一个中文字符占3个byte，所以n=13
+
+字符有两种类型，一个是byte，一个是rune（代表单个Unicode字符）
+关于rune的操作，在unicode包
+
+
+slice有两种生成方式, 从array中产生：
+array := [5]int{1,2,3,4,5}
+var slice []int = array[:3]
+
+或直接make：
+slice := make([]int, 5) //初始化5个0，容量为5
+slice := make([]int, 5, 10) //初始化5个0， 容量为10
+slice := []int{1,2,3,4,5}
+
+可以发现，slice的声明和数组类似，只是不加长度
+
+cap(), len()对数组和slice都有效
+for range对数组和slice都有效
+
+添加slice元素：
+append直接加入元素
+slice = append(slice, 2,3)
+加入一个slice，要用...将slice2中的内容解包传入参数
+slice2 := []int{2,3}
+slice = append(slice, slice2...)
+
+append会自动解决cap不够的情况，自动扩充cap
+
+copy(slice1, slice2)
+把slice2的内容复制到slice1，复制的长度为两者len的最小值，例如slice1有5个元素，slice2有3个元素，那么就是复制slice2的三个元素到slice1的前三位。cope(slice2, slice1)就是复制slice1的前三个元素到slice2
+
+map的介绍：
+type Person struct{
+	id int
+	name string
+}
+var persons map[string] Person
+persons = make(map[string] Person)
+
+persons["1"] = Person{1, "jason"}
+persons["2"] = Person{2, "LQ"}
+person, result := persons["12"]
+if result {
+	fmt.Println("name is ", person.name)
+}else{
+	fmt.Println("not found person")
+}
+
+声明：
+map[string] Person, string是key的类型，Person是value的类型
+用make来创建一个map， 可以指定初始存储能力 make(map[string] Person, 50)
+创建时初始化：
+persons = map[string] Person{
+	"1" : Person{1, "Jason"},
+	"2" : Person{2, "LQ"}
+}
+赋值：
+person["new"] = Person{1, "SR"}
+删除：
+delete(persons, "new")
+如果key不存在，不会报错。
+如果map为nil，会抛出异常（panic）
+
+有返回值的函数，return不能全部包含在if{}语句中，至少要有一个在函数体中，否则编译报错
+
+fallthrough, switch case 自动break了，如果要继续下漏需要用fallthrough关键词
+
+无限循环
+for{
+...
+}
+
+指定break某个循环
+JLoop:
+for{
+	for{
+		break JLoop
+	}
+}
+
+switch i{
+	case 0:
+	case 1:
+}
+
+switch后面不加内容也可以
+switch{
+	case i>0:
+	case i>2:
+}
+
+跳转语句：
+i := 0
+HERE:
+i++
+if i<10{
+	goto HERE
+}
+
+不定参数
+func PrintArgs(args ...int) {
+    for _, arg := range args {
+        fmt.Println(arg)
+    }
+}
+...int本质是切片（slice）[]int
+
+任意类型的不定参数： interface
+func PrintArgs2(args ...interface{}) {
+    for _, arg:= range args{
+        switch arg.(type) {
+            case int:
+                fmt.Println(arg, "is an int")
+            case string:
+                fmt.Println(arg, "is string")
+            default:
+                fmt.Println("is unknown type")
+        }
+    }
+}
+
+
+
+
+
+
+
+

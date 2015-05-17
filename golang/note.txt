@@ -344,3 +344,14 @@ func main() {
     }
 }
 
+用_可以省略index的赋值
+for _, value := range pow {
+    fmt.Printf("%d\n", value)
+}
+
+
+
+
+
+
+
