@@ -1,0 +1,8 @@
+go get github.com/revel/cmd/revel
+
+安装revel时候会遇到 golang.org/x/net/websocket 无法下载，因为被墙了，解决：
+https://github.com/golang/net 去下载 golang.org/x/net/ 包，解压在 $GOPATH/src/golang.org/x/net/下，这时候，进入 $GOPATH/src/revel/revel下，运行
+
+go install .
+
+继续刚才的安装，就ok了

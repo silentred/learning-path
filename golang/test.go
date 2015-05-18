@@ -76,6 +76,17 @@ func main() {
     PrintArgs([]int{2,3,4}...)
     PrintArgs2("int", 2, 2.0)
 
+    /*fmt.Println("counting")
+    for i := 0; i < 10; i++ {
+        defer fmt.Println(i)
+    }
+    fmt.Println("done")*/
+
+    var a Integer = 1
+    if a.Less(2) {
+        fmt.Println("Integer a < 2 !!!")
+    }
+
 }
 
 func PrintArgs(args ...int) {
@@ -95,4 +106,9 @@ func PrintArgs2(args ...interface{}) {
                 fmt.Println("is unknown type")
         }
     }
+}
+
+type Integer int
+func (a Integer)Less(b Integer) bool {
+    return a < b
 }

@@ -1,6 +1,6 @@
 
-ÄÚÖÃÀàĞÍ£º
-int8, uint8 (±ğÃûÊÇ byte, 0-255), int16, uint16, int32, uint32, int64, uint64 
+å†…ç½®ç±»å‹ï¼š
+int8, uint8 (åˆ«åæ˜¯ byte, 0-255), int16, uint16, int32, uint32, int64, uint64 
 int, unit, uintptr
 float32, float64
 bool
@@ -18,46 +18,46 @@ struct
 interface
 
 
-±éÀú×Ö·û´®£º
-str := 'hello, ÊÀ½ç'
+éå†å­—ç¬¦ä¸²ï¼š
+str := 'hello, ä¸–ç•Œ'
 n := len(str)
 for i:=0; i < n ; i++{
-    ch := str[i] //¸ù¾İÏÂ±êÈ¡×Ö·û£¬ÀàĞÍÎªbyte
+    ch := str[i] //æ ¹æ®ä¸‹æ ‡å–å­—ç¬¦ï¼Œç±»å‹ä¸ºbyte
     fmt.Println(i, ch)
 }
-Ò»¸öÖĞÎÄ×Ö·ûÕ¼3¸öbyte£¬ËùÒÔn=13
+ä¸€ä¸ªä¸­æ–‡å­—ç¬¦å 3ä¸ªbyteï¼Œæ‰€ä»¥n=13
 
-×Ö·ûÓĞÁ½ÖÖÀàĞÍ£¬Ò»¸öÊÇbyte£¬Ò»¸öÊÇrune£¨´ú±íµ¥¸öUnicode×Ö·û£©
-¹ØÓÚruneµÄ²Ù×÷£¬ÔÚunicode°ü
+å­—ç¬¦æœ‰ä¸¤ç§ç±»å‹ï¼Œä¸€ä¸ªæ˜¯byteï¼Œä¸€ä¸ªæ˜¯runeï¼ˆä»£è¡¨å•ä¸ªUnicodeå­—ç¬¦ï¼‰
+å…³äºruneçš„æ“ä½œï¼Œåœ¨unicodeåŒ…
 
 
-sliceÓĞÁ½ÖÖÉú³É·½Ê½, ´ÓarrayÖĞ²úÉú£º
+sliceæœ‰ä¸¤ç§ç”Ÿæˆæ–¹å¼, ä»arrayä¸­äº§ç”Ÿï¼š
 array := [5]int{1,2,3,4,5}
 var slice []int = array[:3]
 
-»òÖ±½Ómake£º
-slice := make([]int, 5) //³õÊ¼»¯5¸ö0£¬ÈİÁ¿Îª5
-slice := make([]int, 5, 10) //³õÊ¼»¯5¸ö0£¬ ÈİÁ¿Îª10
+æˆ–ç›´æ¥makeï¼š
+slice := make([]int, 5) //åˆå§‹åŒ–5ä¸ª0ï¼Œå®¹é‡ä¸º5
+slice := make([]int, 5, 10) //åˆå§‹åŒ–5ä¸ª0ï¼Œ å®¹é‡ä¸º10
 slice := []int{1,2,3,4,5}
 
-¿ÉÒÔ·¢ÏÖ£¬sliceµÄÉùÃ÷ºÍÊı×éÀàËÆ£¬Ö»ÊÇ²»¼Ó³¤¶È
+å¯ä»¥å‘ç°ï¼Œsliceçš„å£°æ˜å’Œæ•°ç»„ç±»ä¼¼ï¼Œåªæ˜¯ä¸åŠ é•¿åº¦
 
-cap(), len()¶ÔÊı×éºÍslice¶¼ÓĞĞ§
-for range¶ÔÊı×éºÍslice¶¼ÓĞĞ§
+cap(), len()å¯¹æ•°ç»„å’Œsliceéƒ½æœ‰æ•ˆ
+for rangeå¯¹æ•°ç»„å’Œsliceéƒ½æœ‰æ•ˆ
 
-Ìí¼ÓsliceÔªËØ£º
-appendÖ±½Ó¼ÓÈëÔªËØ
+æ·»åŠ sliceå…ƒç´ ï¼š
+appendç›´æ¥åŠ å…¥å…ƒç´ 
 slice = append(slice, 2,3)
-¼ÓÈëÒ»¸öslice£¬ÒªÓÃ...½«slice2ÖĞµÄÄÚÈİ½â°ü´«Èë²ÎÊı
+åŠ å…¥ä¸€ä¸ªsliceï¼Œè¦ç”¨...å°†slice2ä¸­çš„å†…å®¹è§£åŒ…ä¼ å…¥å‚æ•°
 slice2 := []int{2,3}
 slice = append(slice, slice2...)
 
-append»á×Ô¶¯½â¾öcap²»¹»µÄÇé¿ö£¬×Ô¶¯À©³äcap
+appendä¼šè‡ªåŠ¨è§£å†³capä¸å¤Ÿçš„æƒ…å†µï¼Œè‡ªåŠ¨æ‰©å……cap
 
 copy(slice1, slice2)
-°Ñslice2µÄÄÚÈİ¸´ÖÆµ½slice1£¬¸´ÖÆµÄ³¤¶ÈÎªÁ½ÕßlenµÄ×îĞ¡Öµ£¬ÀıÈçslice1ÓĞ5¸öÔªËØ£¬slice2ÓĞ3¸öÔªËØ£¬ÄÇÃ´¾ÍÊÇ¸´ÖÆslice2µÄÈı¸öÔªËØµ½slice1µÄÇ°ÈıÎ»¡£cope(slice2, slice1)¾ÍÊÇ¸´ÖÆslice1µÄÇ°Èı¸öÔªËØµ½slice2
+æŠŠslice2çš„å†…å®¹å¤åˆ¶åˆ°slice1ï¼Œå¤åˆ¶çš„é•¿åº¦ä¸ºä¸¤è€…lençš„æœ€å°å€¼ï¼Œä¾‹å¦‚slice1æœ‰5ä¸ªå…ƒç´ ï¼Œslice2æœ‰3ä¸ªå…ƒç´ ï¼Œé‚£ä¹ˆå°±æ˜¯å¤åˆ¶slice2çš„ä¸‰ä¸ªå…ƒç´ åˆ°slice1çš„å‰ä¸‰ä½ã€‚cope(slice2, slice1)å°±æ˜¯å¤åˆ¶slice1çš„å‰ä¸‰ä¸ªå…ƒç´ åˆ°slice2
 
-mapµÄ½éÉÜ£º
+mapçš„ä»‹ç»ï¼š
 type Person struct{
 	id int
 	name string
@@ -74,31 +74,31 @@ if result {
 	fmt.Println("not found person")
 }
 
-ÉùÃ÷£º
-map[string] Person, stringÊÇkeyµÄÀàĞÍ£¬PersonÊÇvalueµÄÀàĞÍ
-ÓÃmakeÀ´´´½¨Ò»¸ömap£¬ ¿ÉÒÔÖ¸¶¨³õÊ¼´æ´¢ÄÜÁ¦ make(map[string] Person, 50)
-´´½¨Ê±³õÊ¼»¯£º
+å£°æ˜ï¼š
+map[string] Person, stringæ˜¯keyçš„ç±»å‹ï¼ŒPersonæ˜¯valueçš„ç±»å‹
+ç”¨makeæ¥åˆ›å»ºä¸€ä¸ªmapï¼Œ å¯ä»¥æŒ‡å®šåˆå§‹å­˜å‚¨èƒ½åŠ› make(map[string] Person, 50)
+åˆ›å»ºæ—¶åˆå§‹åŒ–ï¼š
 persons = map[string] Person{
 	"1" : Person{1, "Jason"},
 	"2" : Person{2, "LQ"}
 }
-¸³Öµ£º
+èµ‹å€¼ï¼š
 person["new"] = Person{1, "SR"}
-É¾³ı£º
+åˆ é™¤ï¼š
 delete(persons, "new")
-Èç¹ûkey²»´æÔÚ£¬²»»á±¨´í¡£
-Èç¹ûmapÎªnil£¬»áÅ×³öÒì³££¨panic£©
+å¦‚æœkeyä¸å­˜åœ¨ï¼Œä¸ä¼šæŠ¥é”™ã€‚
+å¦‚æœmapä¸ºnilï¼Œä¼šæŠ›å‡ºå¼‚å¸¸ï¼ˆpanicï¼‰
 
-ÓĞ·µ»ØÖµµÄº¯Êı£¬return²»ÄÜÈ«²¿°üº¬ÔÚif{}Óï¾äÖĞ£¬ÖÁÉÙÒªÓĞÒ»¸öÔÚº¯ÊıÌåÖĞ£¬·ñÔò±àÒë±¨´í
+æœ‰è¿”å›å€¼çš„å‡½æ•°ï¼Œreturnä¸èƒ½å…¨éƒ¨åŒ…å«åœ¨if{}è¯­å¥ä¸­ï¼Œè‡³å°‘è¦æœ‰ä¸€ä¸ªåœ¨å‡½æ•°ä½“ä¸­ï¼Œå¦åˆ™ç¼–è¯‘æŠ¥é”™
 
-fallthrough, switch case ×Ô¶¯breakÁË£¬Èç¹ûÒª¼ÌĞøÏÂÂ©ĞèÒªÓÃfallthrough¹Ø¼ü´Ê
+fallthrough, switch case è‡ªåŠ¨breakäº†ï¼Œå¦‚æœè¦ç»§ç»­ä¸‹æ¼éœ€è¦ç”¨fallthroughå…³é”®è¯
 
-ÎŞÏŞÑ­»·
+æ— é™å¾ªç¯
 for{
 ...
 }
 
-Ö¸¶¨breakÄ³¸öÑ­»·
+æŒ‡å®šbreakæŸä¸ªå¾ªç¯
 JLoop:
 for{
 	for{
@@ -111,13 +111,13 @@ switch i{
 	case 1:
 }
 
-switchºóÃæ²»¼ÓÄÚÈİÒ²¿ÉÒÔ
+switchåé¢ä¸åŠ å†…å®¹ä¹Ÿå¯ä»¥
 switch{
 	case i>0:
 	case i>2:
 }
 
-Ìø×ªÓï¾ä£º
+è·³è½¬è¯­å¥ï¼š
 i := 0
 HERE:
 i++
@@ -125,15 +125,15 @@ if i<10{
 	goto HERE
 }
 
-²»¶¨²ÎÊı
+ä¸å®šå‚æ•°
 func PrintArgs(args ...int) {
     for _, arg := range args {
         fmt.Println(arg)
     }
 }
-...int±¾ÖÊÊÇÇĞÆ¬£¨slice£©[]int
+...intæœ¬è´¨æ˜¯åˆ‡ç‰‡ï¼ˆsliceï¼‰[]int
 
-ÈÎÒâÀàĞÍµÄ²»¶¨²ÎÊı£º interface
+ä»»æ„ç±»å‹çš„ä¸å®šå‚æ•°ï¼š interface
 func PrintArgs2(args ...interface{}) {
     for _, arg:= range args{
         switch arg.(type) {
@@ -146,6 +146,7 @@ func PrintArgs2(args ...interface{}) {
         }
     }
 }
+
 
 
 
