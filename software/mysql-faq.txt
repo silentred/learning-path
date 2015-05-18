@@ -14,3 +14,17 @@ grant all privileges on *.* to v1188@localhost identified by 'v1188ys';
 
 导入sql
 mysql> source /path/to/sql_file.sql;
+
+删除前100行
+DELETE from table_name where col_name limit 100
+
+横向分表，从A表中复制一部分数据到B表
+INSERT INTO recipe_info(recipe_id,
+picture, intro, main_material, condiment,
+ `procedure`, tips, tool) 
+SELECT id, picture, intro, main_material,
+condiment, `procedure`, tips, tool
+from recipe
+
+删除字段
+alter table `recipe` drop column ()  

@@ -111,3 +111,9 @@ sudo docker run -ti --name="laravel2" -P -v /var/www:/var/www/html silentred/lar
 sudo docker run --name="fpm" -p 9002:9000 -d -v /home/jason/shared/projects/:/home/jason/shared/projects/ silentred/laravel:v2
 
 
+保存镜像为tar:
+docker save -o /tmp/user-name-version.tar.gz user/name:version 
+
+导入镜像
+docker load -i /tmp/user-name-version.tar.gz
+

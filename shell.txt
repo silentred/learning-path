@@ -22,6 +22,7 @@ od -h -N 10 libnss_files-2.17.so
 
 查看当前文件夹和其中子文件夹占用磁盘空间大小
 du -h --max-depth=1 ./
+du -hs ./
 
 该命令将深入子目录内部并列出其文件
 ls -lR | grep “^-” |wc -l
