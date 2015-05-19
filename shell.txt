@@ -62,7 +62,12 @@ sed -i 's/\.$/\!/g' regular_express.txt
 
 
 
+kill -STOP 相当于向进程发送了SIGSTOP信号，
+这时使用ps 查看进程时发现进程状态为"T"状态。
 
+kill -CONT 进程编号
+相当于向进程发送了SIGCONT信号，使暂停的进程恢复到运行状态。
 
-
+vim多行删除
+:1,10d
 
