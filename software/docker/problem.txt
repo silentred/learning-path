@@ -1,0 +1,15 @@
+No input file specified.
+
+2015/05/20 16:47:22 [error] 3972#0: *3776 FastCGI sent in stderr: "Unable to open primary script: /home/www/lumenback/public_admin/index.php (No such file or directory)" while reading response header from upstream, client: 172.16.1.19, server: admin.local.lumen.com, request: "GET /favicon.ico HTTP/1.1", upstream: "fastcgi://127.0.0.1:9002", host: "admin.local.lumen.com"
+
+
+"Volumes": {
+        "/home/www": "/home/www"
+    }
+	
+"9000/tcp": [
+                {
+                    "HostIp": "0.0.0.0",
+                    "HostPort": "9002"
+                }
+            ]

@@ -11,16 +11,14 @@ RUN systemctl stop firewalld; systemctl disable firewalld
 #RUN yum -y install php56w php56w-opcache php56w-cli php56w-common php56w-devel php56w-fpm php56w-gd  php56w-mbstring  php56w-mcrypt php56w-pdo php56w-mysqlnd php56w-pecl-xdebug php56w-pecl-memcache
 
 RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
-    sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php.ini && \
     sed -i "s/display_errors = Off/display_errors = stderr/" /etc/php.ini && \
     sed -i "s/upload_max_filesize = 2M/upload_max_filesize = 30M/" /etc/php.ini && \
     sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php-fpm.conf && \
     sed -i '/^listen = /c listen = 9000' /etc/php-fpm.d/www.conf && \
-    sed -i '/^listen.allowed_clients/c ;listen.allowed_clients =' /etc/php-fpm.d/www.conf && \
-    sed -i '/^;catch_workers_output/c catch_workers_output = yes' /etc/php-fpm.d/www.conf
+    sed -i '/^listen.allowed_clients/c ;listen.allowed_clients =' /etc/php-fpm.d/www.conf
 
-RUN mkdir -p /data
-VOLUME ["/data"]
+RUN mkdir -p /home/www
+VOLUME ["/home/www"]
 
 EXPOSE 9000
 

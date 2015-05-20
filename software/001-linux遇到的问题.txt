@@ -68,6 +68,7 @@ useradd -M -s /sbin/nologin userName
 
 ¹Ø±Õphp-fpm
 kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
+kill -INT `cat /var/run/php-fpm/php-fpm.pid`
 Æô¶¯php-fpm
 /usr/local/php/sbin/php-fpm
 /usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf
