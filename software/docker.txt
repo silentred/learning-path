@@ -98,17 +98,19 @@ docker stop $(docker ps -a -q)
 删除所有container
 sudo docker rm $(sudo docker ps -a -q)
 
-
+构建
 sudo docker build --rm -t="silentred/laravel:v2" .
-sudo docker run --name="laravel" -p 8080:80 -d -v /var/www:/var/www/html silentred/laravel:v2 php /var/www/start.php
-sudo docker run -ti --name="laravel2" -P -v /var/www:/var/www/html silentred/laravel:v2 /bin/bash
-
-将主机的/var/www挂在到container的/var/www/html
 
 -v 主机目录:容器目录
 
 单独启动fpm，fpm必须可以访问到php文件，所以必须挂在文件夹
 sudo docker run --name="fpm" -p 9002:9000 -d -v /home/jason/shared/projects/:/home/jason/shared/projects/ silentred/laravel:v2
+
+-v /src/www:/target/www
+将主机的/src/www挂在到container的/target/www
+
+
+sudo docker run --name="fpm2" -p 9003:9000 -d -v /home/jason/shared/projects/:/home/jason/shared/projects/ jason/php-fpm:v1
 
 
 保存镜像为tar:
