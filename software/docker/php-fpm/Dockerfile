@@ -18,8 +18,8 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = UTC/" /etc/php.ini && \
     sed -i '/^listen = /c listen = 9000' /etc/php-fpm.d/www.conf && \
     sed -i '/^listen.allowed_clients/c ;listen.allowed_clients =' /etc/php-fpm.d/www.conf
 
-RUN mkdir -p /home/www
-VOLUME ["/home/www"]
+RUN mkdir -p /data
+VOLUME ["/data"]
 
 EXPOSE 9000
 
