@@ -1,0 +1,21 @@
+@click.group()
+def cli():
+    print "haha"
+
+@cli.command()
+def initdb():
+    click.echo('Initialized the database')
+
+@cli.command()
+def dropdb():
+    click.echo('Dropped the database')
+
+if __name__ == '__main__':
+    cli()
+	
+运行，initdb作为参数传入
+python test.py initdb 
+
+
+@click.option('--count', default=1, help='number of greetings') 可选的参数
+@click.argument('name') 必须的参数
