@@ -87,6 +87,14 @@ func main() {
         fmt.Println("Integer a < 2 !!!")
     }
 
+    /*rect1 := new(Rect)
+    rect2 := &Rect{}
+    rect3 := &Rect{0,0,10,20}
+    rect4 := &Rect{Width:10, Height:20}*/
+    rect5 := NewRect(1,2,10,13)
+    rect5.Height=15
+    fmt.Println(rect5.Area()) 
+
 }
 
 func PrintArgs(args ...int) {
@@ -111,4 +119,15 @@ func PrintArgs2(args ...interface{}) {
 type Integer int
 func (a Integer)Less(b Integer) bool {
     return a < b
+}
+
+type Rect struct{
+    X, Y int
+    Width, Height float64 
+}
+func (r *Rect)Area() float64 {
+    return r.Width * r.Height
+}
+func NewRect(X, Y int, Width, Height float64) *Rect {
+    return &Rect{X, Y, Width, Height}
 }

@@ -106,4 +106,6 @@ Centos的systemd service脚本位置：
 /usr/lib/systemd/system
 
 
-
+python PIL不支持jpeg的解决办法：（IOError: decoder jpeg not available）
+sudo yum -y install zlib zlib-devel libjpeg libjpeg-devel freetype freetype-devel
+pip install PIL --allow-external PIL --allow-unverified PIL
