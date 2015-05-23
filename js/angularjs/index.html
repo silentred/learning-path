@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en" ng-app="helloApp">
+<head>
+	<script src="angular.js"></script>
+    <script src="angular-route.js"></script>
+</head>
+
+<body>
+    <div ng-controller="HelloCtrl">
+        <input type="text" ng-model="name" />
+        <h1>Hello , {{name}} !</h1>
+        <ul>
+            <li ng-repeat="country in countries">
+                {{country.name}} : population= {{country.pop}}, Percentage= {{getPercentage(country.pop)}}
+            </li>
+        </ul>
+        <div>World pop: {{worldPop}}</div>
+
+        <p>List of Countries with locale:</p>
+        <ol>
+            <li ng-repeat="country in countries |orderBy:'name' ">
+                {{ 'Country: ' + country.name + ', Locale: ' + country.locale }}
+            </li>
+        </ol>
+
+        <input type="checkbox" ng-model="enableDisableButton">Disable Button
+        <button ng-disabled="enableDisableButton">Click Me!</button>
+
+        <input type="checkbox" ng-model="showHide1">Show Button
+        <button ng-show="showHide1">Click Me!</button>
+
+        <input type="checkbox" ng-model="showHide2">Hide Button
+        <button ng-hide="showHide2">Click Me!</button>
+
+        <div class="container" ng-controller="TextCtrl">
+            <span ng-class="{'text-warning':shouldWarn()}">Remaining: {{remaining()}}</span>
+            <div>
+               <textarea ng-model="message">{{message}}</textarea> 
+            </div>
+            <div>
+                <button ng-click="send()">Send</button>
+                <button ng-click="clear()">Clear</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div ng-controller="studentController">
+    <form name="studentForm" novalidate>
+    <table border="0">
+    <tr><td>Enter first name:</td><td><input name="firstname" type="text" ng-model="firstName" required>
+       <span style="color:red" ng-show="studentForm.firstname.$dirty && studentForm.firstname.$invalid">
+          <span ng-show="studentForm.firstname.$error.required">First Name is required.</span>
+       </span>
+    </td></tr>
+    <tr><td>Enter last name: </td><td><input name="lastname"  type="text" ng-model="lastName" required>
+       <span style="color:red" ng-show="studentForm.lastname.$dirty && studentForm.lastname.$invalid">
+          <span ng-show="studentForm.lastname.$error.required">Last Name is required.</span>
+       </span>
+    </td></tr>
+    <tr><td>Email: </td><td><input name="email" type="email" ng-model="email" length="100" required>
+    <span style="color:red" ng-show="studentForm.email.$dirty && studentForm.email.$invalid">
+          <span ng-show="studentForm.email.$error.required">Email is required.</span>
+          <span ng-show="studentForm.email.$error.email">Invalid email address.</span>
+       </span>
+    </td></tr>
+    <tr><td><button ng-click="reset()">Reset</button></td><td><button 
+        ng-disabled="studentForm.firstname.$dirty && studentForm.firstname.$invalid ||
+                  studentForm.lastname.$dirty && studentForm.lastname.$invalid ||
+                  studentForm.email.$dirty && studentForm.email.$invalid"
+        ng-click="submit()">Submit</button></td></tr>
+    </table>
+    </form>
+    </div>
+
+    <a href="/test">Test</a>
+</body>
+
+<script type="text/javascript">
+
+angular.module('helloApp', ['ngRoute'])
+
+/*.config(['$routeProvider',
+     function($routeProvider) {
+        $routeProvider.
+           when('/test', {
+              templateUrl: 'test.html',
+              controller: 'HelloCtrl'
+           }).
+           otherwise({
+              redirectTo: '/'
+           });
+     }])*/
+
+.controller('HelloCtrl', function ($scope, $http) {
+    $scope.name='world';
+    $scope.worldPop = 6000;
+    $scope.countries = [
+        {name:'France', pop:63},
+        {name:'UK', pop: 72}
+    ];
+    $scope.countries = [
+        {name:"China", locale: "汉语", pop:63},
+        {name:"Jpan", locale: "日本语", pop:6},
+        {name:"Australia", locale: "English", pop:3},
+    ]
+    //console.log($http);
+    /*$http.get('/countries.json').success(function(response){
+        console.log('success');
+    })
+    .error(function () {
+        console.log('error');
+    })*/
+
+    $scope.getPercentage = function(countryPop){
+        return (countryPop/ $scope.worldPop)*100;
+    }
+    console.log($scope);
+
+})
+
+.controller('TextCtrl', function ($scope) {
+    var MAX_LEN = 200;
+    var WARN_THRESHOLD = 190;
+    $scope.message="test";
+    $scope.send = function(){
+        console.log("send log");
+    }
+    $scope.clear = function(){
+        console.log("clear log");
+    }
+    $scope.remaining = function(){
+        return MAX_LEN - $scope.message.length;
+    }
+    $scope.shouldWarn = function(){
+        return $scope.remaining() < WARN_THRESHOLD;
+    }
+    console.log($scope);
+})
+
+.controller('studentController', function($scope) {
+   $scope.reset = function(){
+        $scope.firstName = "Mahesh";
+        $scope.lastName = "Parashar";
+        $scope.email = "MaheshParashar@tutorialspoint.com";
+   }   
+   $scope.reset();
+})
+
+</script>
+
+</html>

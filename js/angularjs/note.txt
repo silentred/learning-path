@@ -1,0 +1,37 @@
+data-ng-app和ng-app作用一样，只是HTML5 validator不会报错
+
+ng-app - This directive starts an AngularJS Application.
+
+ng-init - This directive initializes application data.
+
+ng-model - This directive defines the model that is variable to be used in AngularJS.
+
+ng-repeat - This directive repeats html elements for each item in a collection.
+
+Event
+
+ng-click
+
+ng-dbl-click
+
+ng-mousedown
+
+ng-mouseup
+
+ng-mouseenter
+
+ng-mouseleave
+
+ng-mousemove
+
+ng-mouseover
+
+ng-keydown
+
+ng-keyup
+
+ng-keypress
+
+ng-change
+
+<div ng-include="'main.htm'"></div>
