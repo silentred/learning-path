@@ -199,3 +199,5 @@ var_dump($options);
 //如果是optional的标记，需要用=连接
 //php test2.php -f "value for f" -v="vvalue" -abc --required value --optional="optional value" --option --opt
 
+
+var_dump(parse_url('/test/image.jpg'));

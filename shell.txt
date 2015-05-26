@@ -1,4 +1,4 @@
-Q: How do I put an already running process under nohup?
+﻿Q: How do I put an already running process under nohup?
 A: Using the Job Control of bash to send the process into the background:
 1. Ctrl+Z 
 to stop (pause) the program and get back to the shell.
@@ -70,4 +70,8 @@ kill -CONT 进程编号
 
 vim多行删除
 :1,10d
+
+
+查看僵尸进程
+ps -A -ostat,ppid,pid,cmd | grep -e '^[Zz]'
 

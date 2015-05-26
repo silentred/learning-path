@@ -1,0 +1,64 @@
+##HTTP请求和CRUD的对应
+
+GET = Read
+DELETE = Delete
+HEAD = Headers, no body
+
+PUT和POST都可以作为update, create
+
+###PUT
+
+- PUT创建role
+PUT /api/role/:id (这里的id是客户端预知的，服务端不存在)
+{
+    ...
+}
+
+- PUT更新role
+PUT /api/role/:id（已经存在的id）
+{
+    "name":"newName"
+}
+
+PUT的操作是幂等的(Idempotent)，意思是无论PUT多少次，结果都不变
+
+###POST
+
+- POST创建
+POST /api/role
+{
+    ...
+}
+Response:
+201 created
+Location: https://api/role/:id(这里的id是服务器端新创建的)
+
+- POST更新
+POST /api/role/:id
+{
+    ...
+}
+Response:
+200 OK
+
+POST操作是非幂等的。
+
+
+## Media Type
+
+Request: Accept header
+Response: Content-Type header
+
+application/foo+json;appliction （查一下设置类型的作用）
+
+
+## 版本
+
+URL: https://api.com/v1
+
+Media-Type: application/foo+json;appliction&v=2
+application/foo2+json;appliction
+
+## Practice
+- 使用camelCase
+- 时间格式使用 ISO 8601, UTC
