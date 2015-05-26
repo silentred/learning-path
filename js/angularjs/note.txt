@@ -35,3 +35,64 @@ ng-keypress
 ng-change
 
 <div ng-include="'main.htm'"></div>
+
+关于service, factory, provider的区别：
+http://stackoverflow.com/questions/15666048/service-vs-provider-vs-factory
+http://demisx.github.io/angularjs/2014/09/14/angular-what-goes-where.html
+
+三者是app范围的singleton，所有app内的controller都可以注入某个service。
+
+factory会缓存并注入closure的返回值：
+app.factory('factory', function() {
+    var name = '';
+    // Return value **is** the object that will be injected
+    return {
+        name: name;
+    }
+})
+app.controller('ctrl', function($scope, factory) {
+     $scope.name = factory.name;
+});
+
+Service，会new一个实例，缓存并注入。this就是被new的实例。
+
+Example:
+app.service('service', function() {
+     var name = '';
+     this.setName = function(newName) {
+         name = newName;
+     }
+     this.getName = function() {
+         return name;
+     }
+});
+Usage:
+app.controller('ctrl', function($scope, service) {
+   $scope.name = service.getName();
+});
+
+Provider会调用匿名函数的$get方法，对返回值cache并在被需要时注入。provider可以在$get被调用之前进行配置。
+
+Example:
+
+app.provider('provider', function() {
+     var name = '';
+     this.setName = function(newName) {
+          name = newName;
+     }
+     this.$get = function() {
+         return {
+            name: name
+         }
+     }
+})
+Usage (as an injectable in a controller)
+
+app.controller('ctrl', function($scope, provider) {
+    $scope.name = provider.name;
+});
+
+Usage (configuring the provider before $get is called to create the injectable)
+app.config(function(providerProvider) {
+    providerProvider.setName('John');
+});

@@ -148,9 +148,10 @@ func PrintArgs2(args ...interface{}) {
 }
 
 
+查询接口？？？
 
-
-
+任意类型：
+var v1 interfaceP{} = 1
 
 
 
