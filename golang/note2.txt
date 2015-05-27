@@ -154,5 +154,42 @@ func PrintArgs2(args ...interface{}) {
 var v1 interfaceP{} = 1
 
 
+有缓冲的channel：
+make(chan int, 2)
 
+
+
+channel超时死锁问题：
+timeout := make(chan bool, 1) // 长度为1 的channel
+go func(){
+    time.Sleep(1e9) // 1s
+    timeout <- true    
+}
+select{
+    case <- ch:
+    //从ch中读到数据
+    case <- timeout:
+    //长时间没从ch中读到数据，但从timeout中读到了数据
+}
+用select可以避免永久等待的问题
+
+单向channel：
+var ch1 chan int
+var ch2 chan<- float64 //只用于写float64
+var ch3 <-chan int // 只用于读取int
+channel类型转换：
+ch5 := <-chan int(ch1) //单向读
+ch6 := chan<- int(ch1) //单向写
+
+关闭channel：
+close(ch)
+x, ok := <-ch //判断是否关闭
+
+同步锁：
+sync.Mutex // 一个routine获得后，其他routine只能等
+sync.RWMutex // 单写多读模型。读锁会阻止写，不阻止读，多个routine可以同时获得读锁；写锁会阻止读和写
+
+全局唯一操作：
+var once sync.Once
+once.Do(func) // goroutine中，并行操作只执行一次func
 
