@@ -96,3 +96,41 @@ Usage (configuring the provider before $get is called to create the injectable)
 app.config(function(providerProvider) {
     providerProvider.setName('John');
 });
+
+## ngResource
+
+var User = $resource('/user/:userId', {userId:'@id'});
+
+var user = User.get({userId:123}, function() {
+  user.abc = true;
+  user.$save();
+});
+
+It is important to realize that invoking a $resource object method immediately returns an empty reference (object or array depending on isArray).
+
+这里注意，User.get()立即返回的是一个空值，第二个参数的callback是成功的回调。从服务器得到数据后，会再次赋给user, 因为angular是双向绑定，user一旦被重新赋值，页面会立即渲染，从而展现数据。
+
+The action methods on the class object or instance object can be invoked with the following parameters:
+
+HTTP GET "class" actions: Resource.action([parameters], [success], [error])
+non-GET "class" actions: Resource.action([parameters], postData, [success], [error])
+non-GET instance actions: instance.$action([parameters], [success], [error])
+
+action是指http动词，parameters是参数对象，success,error是回调函数. 例如：
+var user = User.get({id:1}, function(value, responseHeaders){}, function(){}) //GET, value是请求得到的resource instance
+User.save({id:1}, {name:"abc", age:24}, function(){}) // POST
+User.delete()
+
+Resource类（User）包含如下方法：
+{ 'get':    {method:'GET'},
+  'save':   {method:'POST'},
+  'query':  {method:'GET', isArray:true},
+  'remove': {method:'DELETE'},
+  'delete': {method:'DELETE'} };
+
+返回的instance实例，默认有如下方法：
+$delete: function (params, success, error) {
+$get: function (params, success, error) {
+$query: function (params, success, error) {
+$remove: function (params, success, error) {
+$save: function (params, success, error) {
