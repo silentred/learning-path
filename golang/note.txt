@@ -355,4 +355,7 @@ fmt.Stringer
 fmt.Error
 
 
+判断channel是否被close
+v, ok := <-ch
 
+The loop for i := range c receives values from the channel repeatedly until it is closed.

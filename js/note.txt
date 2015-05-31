@@ -1,0 +1,72 @@
+Cross-Origin Resource Sharing (CORS)
+Ajax跨域
+
+浏览器发送头：
+Origin: http://example.com
+
+服务器返回头必须包含：
+Access-Control-Allow-Origin: http://example.com 或者 *
+浏览器才会接受返回body
+
+高级浏览器：
+var xhr = new XMLHttpRequest();
+xhr.open("get", "http://www.nczonline.net/some_resource/", true);
+xhr.onload = function(){  //instead of onreadystatechange
+    //do something
+};
+xhr.send(null);
+IE8：
+var xdr = new XDomainRequest();
+xdr.open("get", "http://www.nczonline.net/some_resource/");
+xdr.onload = function(){
+    //do something
+};
+xdr.send();
+
+根据一个withCredentials属性判断应该new哪个跨域请求对象：
+function createCORSRequest(method, url){
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr){
+        xhr.open(method, url, true);
+    } else if (typeof XDomainRequest != "undefined"){
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+    } else {
+        xhr = null;
+    }
+    return xhr;
+}
+
+var request = createCORSRequest("get", "http://www.nczonline.net/");
+if (request){
+    request.onload = function(){
+        //do something with request.responseText
+    };
+    request.send();
+}
+
+常用接口：
+abort() – use to stop a request that’s already in progress.
+onerror – use instead of onreadystatechange to detect errors.
+onload – use instead of onreadystatechange to detect successes.
+responseText – use to get contents of response.
+send() – use to send the request.
+
+Preflighted requests：
+通过 OPTIONS 方法发送以下headers
+Origin – same as in simple requests.
+Access-Control-Request-Method – the method that the request wants to use.
+Access-Control-Request-Headers – (Optional) a comma separated list of the custom headers being used.
+
+返回：
+Access-Control-Allow-Origin – same as in simple requests.
+Access-Control-Allow-Methods – a comma separated list of allowed methods.
+Access-Control-Allow-Headers – a comma separated list of headers that the server will allow.
+Access-Control-Max-Age – the amount of time in seconds that this preflight request should be cached for.
+
+Credentialed requests：
+默认跨域请求不会提供 credentials (cookies, HTTP authentication, and client-side SSL certificates)。把withCredentials设为true就可以发送 credentials。
+返回头包含：
+Access-Control-Allow-Credentials: true
+如果返回不带这个头，那么返回会作为错误处理
+(responseText is an empty string, status is 0, and onerror() is invoked)

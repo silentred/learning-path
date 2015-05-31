@@ -1,0 +1,19 @@
+同域名，不同目录：
+利用apache的alias模块，为某个路径设置对应目录，如下
+<VirtualHost *:80>
+    DocumentRoot "D:/wamp/www/lumen/public_admin"
+    ServerName admin.lumen.com
+	<Directory "D:/wamp/www/lumen/public_admin">
+		Options Indexes FollowSymLinks
+		AllowOverride all
+		Require local
+	</Directory>
+	<Directory "D:/linux-files/projects/angular-back/src">
+		Options Indexes FollowSymLinks
+		AllowOverride all
+		Require local
+	</Directory>
+	<IfModule alias_module>
+		Alias /angular "D:/linux-files/projects/angular-back/src"
+	</IfModule>
+</VirtualHost>
