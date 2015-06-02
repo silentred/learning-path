@@ -121,3 +121,14 @@ Windows下Cache的问题：
 
 需要进一步找原因，需要解决的是为什么忽略了default driver, 而去使用memcache, 线索是请求频繁的时候才发生。
 https://laracasts.com/discuss/channels/lumen/lumen-bug 这里有人遇到了一样的问题
+
+CacheManager::resolve之中
+protected function resolve($name)
+    {
+        $config = $this->getConfig($name);
+        dd($config);
+
+这里打印出来，发现有时候会变为memcached
+
+Dotenv这个类里面，这句话，当$name=='SESSION_DRIVER'时候，会设置失败，所以去读取config/session.php配置文件，里面的默认值为memcached，所以才会去找Memcached类
+putenv("$name=$value"); 这里$value有时候会是false, 看来还是解析.env文件时候出错
