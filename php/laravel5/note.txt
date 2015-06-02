@@ -115,3 +115,9 @@ return ltrim(ob_get_clean());
 
 
 
+Windows下Cache的问题：
+请求过于频繁（按住f5），会出现 Memcached not found。
+把 dd($this->app['config']['cache.default']); 加入 CacheManager 的构造方法，发现没有问题，输出确实是'file'。并且，不会出现 Memcached not found。说明错误发生在这之后。
+
+需要进一步找原因，需要解决的是为什么忽略了default driver, 而去使用memcache, 线索是请求频繁的时候才发生。
+https://laracasts.com/discuss/channels/lumen/lumen-bug 这里有人遇到了一样的问题
