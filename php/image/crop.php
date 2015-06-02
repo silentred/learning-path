@@ -35,6 +35,7 @@ function cropImage($origFile, $destFile, $destWidth, $destHieght, $quality=80){
        $new_width, $new_height,
        $width, $height);
     imagejpeg($thumb, $destFile, 80);
+
 }
 
-cropImage(__DIR__.'/1.jpg', __DIR__.'/1-crop.jpg', 200, 200);
+cropImage(__DIR__.'/2.jpg', __DIR__.'/2-crop.jpg', 200, 200);

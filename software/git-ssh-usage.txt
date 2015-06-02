@@ -48,3 +48,8 @@ git rm --cached file
 --cached表示只删除代码仓库中的，而不改动文件系统中的文件,目录
 
 
+版本回退：
+git log 查看提交的版本
+git reset --hard {commit id} 回退
+git push 会报错，说 current branch is behind
+git push -f 强制提交
