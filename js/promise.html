@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Promise</title>
+</head>
+<style type="text/css">
+    html, body{
+      height: 100%;
+      overflow: hidden;
+      background: black;
+      -webkit-user-select: none;
+    }
+
+    ul {
+      list-style-type:none;
+      padding: 0;
+      margin-left: 12px;
+    }
+
+    ul >li {
+      width: 40px;
+      height: 40px;
+      border-radius:50%;
+      opacity: 0.3;
+      display: inline-block;
+    }
+
+    ul.red >#red, 
+    ul.green >#green,
+    ul.yellow >#yellow{
+      opacity: 1.0;
+    }
+
+    #red {
+      background: red;
+    }
+
+    #yellow {
+      background: yellow;
+    }
+
+    #green {
+      background: green;
+    }
+
+</style>
+
+<body>
+
+<ul id="traffic" class="green">
+  <li id="green"></li>
+  <li id="yellow"></li>
+  <li id="red"></li>
+</ul>
+
+<script type="text/javascript">
+function turnGreen(){
+    return new Promise(function(resolve, reject) {
+        traffic.className = 'green';
+        resolve();
+    })
+}
+function turnRed(){
+    return new Promise(function(resolve, reject) {
+        traffic.className = 'red';
+        resolve();
+    })
+}
+function turnYellow(){
+    return new Promise(function(resolve, reject) {
+        traffic.className = 'yellow';
+        resolve();
+    })
+}
+function wait5000(){
+    return new Promise(function(resolve, reject) {
+        setTimeout(resolve,5000);
+    })
+}
+function wait2000(){
+    return new Promise(function(resolve, reject) {
+        setTimeout(resolve,2000);
+    })
+}
+
+//执行！
+void function (){
+    turnGreen()
+    .then(wait5000)
+    .then(turnYellow)
+    .then(wait2000)
+    .then(turnRed)
+    .then(wait5000)
+    .then(arguments.callee)
+}();
+
+</script>
+</body>
+</html>

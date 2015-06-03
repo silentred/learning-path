@@ -1,0 +1,12 @@
+启动：
+mongod --dbpath /usr/local/mongod/data
+mongod -f /usr/local/mongodb/etc/mongod.conf
+
+关闭：
+mongod --shutdown
+
+查找users：
+show dbs;
+use {dbname}
+show users;
+
