@@ -201,3 +201,8 @@ var_dump($options);
 
 
 var_dump(parse_url('/test/image.jpg'));
+
+echo "\n";
+$date = '2015-06-04';
+echo date('Y-m-d', strtotime('-1 day', strtotime($date)));
+echo "\n";

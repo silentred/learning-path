@@ -1,6 +1,7 @@
 启动：
 mongod --dbpath /usr/local/mongod/data
-mongod -f /usr/local/mongodb/etc/mongod.conf
+mongod -f /usr/local/mongodb/etc/mongod.conf --fork
+fork表示run daemon
 
 关闭：
 mongod --shutdown
@@ -9,4 +10,8 @@ mongod --shutdown
 show dbs;
 use {dbname}
 show users;
+
+
+如何删除Memcache全部数据：
+echo "flush_all" | nc localhost 11211 
 
