@@ -1,5 +1,5 @@
 程序从main包开始
-package main 
+package main
 
 导入包
 import (
@@ -133,7 +133,7 @@ for sum < 1000 {
 
 死循环（while True）
 for {
-    
+
 }
 
 if语句，去除()。{} 不可省略
