@@ -1,8 +1,8 @@
 go get github.com/revel/cmd/revel
 
-°²×°revelÊ±ºò»áÓöµ½ golang.org/x/net/websocket ÎŞ·¨ÏÂÔØ£¬ÒòÎª±»Ç½ÁË£¬½â¾ö£º
-https://github.com/golang/net È¥ÏÂÔØ golang.org/x/net/ °ü£¬½âÑ¹ÔÚ $GOPATH/src/golang.org/x/net/ÏÂ£¬ÕâÊ±ºò£¬½øÈë $GOPATH/src/revel/revelÏÂ£¬ÔËĞĞ
+å®‰è£…revelæ—¶å€™ä¼šé‡åˆ° golang.org/x/net/websocket æ— æ³•ä¸‹è½½ï¼Œå› ä¸ºè¢«å¢™äº†ï¼Œè§£å†³ï¼š
+https://github.com/golang/net å»ä¸‹è½½ golang.org/x/net/ åŒ…ï¼Œè§£å‹åœ¨ $GOPATH/src/golang.org/x/net/ä¸‹ï¼Œè¿™æ—¶å€™ï¼Œè¿›å…¥ $GOPATH/src/revel/revelä¸‹ï¼Œè¿è¡Œ
 
 go install .
 
-¼ÌĞø¸Õ²ÅµÄ°²×°£¬¾ÍokÁË
+ç»§ç»­åˆšæ‰çš„å®‰è£…ï¼Œå°±okäº†
