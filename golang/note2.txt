@@ -1,6 +1,6 @@
 
 内置类型：
-int8, uint8 (别名是 byte, 0-255), int16, uint16, int32, uint32, int64, uint64 
+int8, uint8 (别名是 byte, 0-255), int16, uint16, int32, uint32, int64, uint64
 int, unit, uintptr
 float32, float64
 bool
@@ -163,7 +163,7 @@ channel超时死锁问题：
 timeout := make(chan bool, 1) // 长度为1 的channel
 go func(){
     time.Sleep(1e9) // 1s
-    timeout <- true    
+    timeout <- true
 }
 select{
     case <- ch:
@@ -192,4 +192,3 @@ sync.RWMutex // 单写多读模型。读锁会阻止写，不阻止读，多个r
 全局唯一操作：
 var once sync.Once
 once.Do(func) // goroutine中，并行操作只执行一次func
-
