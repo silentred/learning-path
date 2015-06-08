@@ -15,4 +15,5 @@ func main() {
 
 func print(chanIn chan string)  {
     var chanOut chan string
+    
 }
