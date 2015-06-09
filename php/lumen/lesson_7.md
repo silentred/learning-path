@@ -13,3 +13,8 @@
 - cache
 - queue
 - to be continued
+
+### 整合遗留项目
+- container
+- eloquent
+- serviceProvider
