@@ -1,7 +1,18 @@
-### Lesson 3 - 中间件
+## Lesson 3 - 路由
 
-## 使用
+### 路由使用
+- HTTP方法
+- group
+- 配置参数
 
-## middleware 和 routeMiddleware
+### 中间件
+- middleware
+- routeMiddleware
 
-## 源码
+### 接受到请求后的执行顺序
+- request
+- middleware
+- dispatching
+- routeMiddleware
+- controller
+- response
