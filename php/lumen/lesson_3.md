@@ -5,6 +5,9 @@
 - group
 - 配置参数
 
+### Closure or Controller
+- 建议使用Controller
+
 ### 中间件
 - middleware
 - routeMiddleware
