@@ -7,5 +7,8 @@
 ### config
 - app中加载位置
 - 复制到项目根目录
+- 配置文件包含哪些内容
 
-### 含义
+### 源码
+- Dotenv
+- Application::configure()

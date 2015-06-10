@@ -23,7 +23,7 @@
     {
     	//
     }
-    
+
     $app->detectEnvironment(function()
     {
     	return env('APP_ENV', 'production');
@@ -36,7 +36,7 @@
     public function loadEnvironmentFrom($file)
     {
     	$this->environmentFile = $file;
-    
+
     	return $this;
     }
 
@@ -48,7 +48,7 @@ Dotenv::load方法先判断文件is\_readable 和 is\_file，否则抛出异常�
 
 	file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-读出文件的每一行，然后foreach遍历，然后设置环境变量。可以发现，这里支持NestedVariable，就是说设置过的变量可以用$(VAR_EXISTS)在读取其值，类似shell。
+读出文件的每一行，然后foreach遍历，然后设置环境变量。可以发现，这里支持NestedVariable，就是说设置过的变量可以用{$VAR_EXISTS}在读取其值，类似shell。
 
 设置变量存在于三个位置，putevn(), $\_ENV, $\_SERVER, 并且会判断是否key是否重复，如果重复就跳过。
 
@@ -66,4 +66,3 @@ Dotenv::load方法先判断文件is\_readable 和 is\_file，否则抛出异常�
 `public function afterLoadingEnvironment(Closure $callback)`
 
 `public function detectEnvironment(Closure $callback)`
-
