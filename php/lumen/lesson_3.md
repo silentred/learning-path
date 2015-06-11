@@ -2,8 +2,8 @@
 
 ### 路由使用
 - HTTP方法
-- group
 - 配置参数
+- group
 
 ### Closure or Controller
 - 建议使用Controller
