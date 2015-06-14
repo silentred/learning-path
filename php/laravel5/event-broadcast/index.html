@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test</title>
+    <script src="node_modules/socket.io/node_modules/socket.io-client/socket.io.js"></script>
+</head>
+<body>
+<div>
+    <button id="btn1">Connect</button>
+    <button id="btn2">Send Time</button>
+    <button id="btn3">Close connection</button>
+</div>
+<script>
+// var socket = io();
+// console.log(socket);
+
+var socket = io('http://localhost:6001');
+socket.on('connection', function (data) {
+    console.log(data);
+
+});
+socket.on('test-channel:App\\Events\\SomeEvent', function(message){
+    console.log(message);
+});
+console.log(socket);
+</script>
+</body>
+</html>
