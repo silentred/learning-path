@@ -5,7 +5,7 @@
 - fire
 
 ### 配置文件
-- broadcast.php
+- broadcasting.php
 
 ### ShouldBroadcast接口
 - channel
