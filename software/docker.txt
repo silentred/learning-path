@@ -119,3 +119,7 @@ docker save -o /tmp/user-name-version.tar.gz user/name:version
 导入镜像
 docker load -i /tmp/user-name-version.tar.gz
 
+
+对于已经启动的container，进入其bash
+docker exec -it <container-name> bash
+

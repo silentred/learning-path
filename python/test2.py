@@ -30,3 +30,9 @@ for infile in sys.argv[1:]:
             im.save(outfile, "PNG")
         except IOError:
             print "cannot create thumbnail for '%s'" % infile
+
+
+json_string = 'sdf "img": "http://sdfc.om/sdf.jpg", sdf'
+# 前后零宽断言
+result = re.findall(r'(?<=img": ").+?(?="\})', json_string)
+print result

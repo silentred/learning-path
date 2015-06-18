@@ -52,24 +52,24 @@ def searchAndSaveCategory(session, objs):
         except Exception, e:
             raise e
 
-def convertUnicodeForDic(data):
-    if isinstance(data, dict):
-        return { decodeUnicode(key):decodeUnicode(value) for key,value in data.items() }
-    if isinstance(data, list):
-        newData = []
-        for x in data:
-            decodedDict = convertUnicodeForDic(x)
-            newData.append(decodedDict)
-        return newData
+# def convertUnicodeForDic(data):
+#     if isinstance(data, dict):
+#         return { decodeUnicode(key):decodeUnicode(value) for key,value in data.items() }
+#     if isinstance(data, list):
+#         newData = []
+#         for x in data:
+#             decodedDict = convertUnicodeForDic(x)
+#             newData.append(decodedDict)
+#         return newData
 
-def decodeUnicode(data):
-    if isinstance(data, int ):
-        return data
-    if isinstance(data, str):
-        return data.decode('utf-8')
+# def decodeUnicode(data):
+#     if isinstance(data, int ):
+#         return data
+#     if isinstance(data, str):
+#         return data.decode('utf-8')
 
-def decodeUnicodeKey(dict):
-    return { decodeUnicode(key):value for key,value in dict.items() }
+# def decodeUnicodeKey(dict):
+#     return { decodeUnicode(key):value for key,value in dict.items() }
 
 def start():
     session, engine = initSession()

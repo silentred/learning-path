@@ -31,37 +31,50 @@ recipe_collection = Table('recipe_collection', Base.metadata,
 class Recipe(Base):
     __tablename__ = 'recipe'
     id = Column(INTEGER(unsigned=True), primary_key=True)
-    name = Column(CHAR(40), nullable=False, index=True)
-    picture = Column(String(3096), nullable=False, doc='具体照片： ["xxx.jpg", "xxx2.jpg"], 数组中是大图路径，小图路径可')
+    name = Column(CHAR(100), nullable=False, index=True)
+    #picture = Column(String(4096), nullable=False, doc='具体照片： ["xxx.jpg", "xxx2.jpg"], 数组中是大图路径，小图路径可')
     cover = Column(String(255), nullable=False, doc='一个小图的封面，用于列表展示的时候读取')
-    intro = Column(String(1024), nullable=True, doc='简介')
-    main_material = Column(String(2048), nullable=True, doc='主料，json格式，{"鸡肉": "200克",.....}')
-    condiment = Column(String(1024), nullable=True, doc='辅料,json格式')
-    procedure = Column(Text, nullable=True, doc='过程，json')
-    orig_id = Column(INTEGER, nullable=False)
+    #intro = Column(String(2048), nullable=True, doc='简介')
+    #main_material = Column(String(2048), nullable=True, doc='主料，json格式，{"鸡肉": "200克",.....}')
+    #condiment = Column(String(1024), nullable=True, doc='辅料,json格式')
+    #procedure = Column(Text, nullable=True, doc='过程，json')
+    orig_id = Column(INTEGER, nullable=False, index=True)
     view = Column(INTEGER, nullable=False, default=0)
     like = Column(INTEGER, nullable=False, default=0)
     favor = Column(INTEGER, nullable=False, default=0)
     date_add = Column(DateTime, nullable=True)
     date_upd = Column(DateTime, nullable=True)
-    tips = Column(Text, nullable=True)
-    tool = Column(CHAR(40), nullable=True)
+    #tips = Column(Text, nullable=True)
+    #tool = Column(CHAR(40), nullable=True)
     # many to many 
     categories = relationship("Category", secondary=recipe_category, backref="recipes")
     materials = relationship("Material", secondary=recipe_material, backref="recipes")
     collections = relationship("Collection", secondary=recipe_collection, backref="recipes")
 
+class RecipeInfo(Base):
+    __tablename__ = 'recipe_info'
+    id = Column(INTEGER(unsigned=True), primary_key=True)
+    recipe_id = Column(INTEGER(unsigned=True), ForeignKey('recipe.id'), index=True)
+    picture = Column(String(4096), nullable=False, doc='具体照片： ["xxx.jpg", "xxx2.jpg"], 数组中是大图路径，小图路径可')
+    intro = Column(String(2048), nullable=True, doc='简介')
+    main_material = Column(String(2048), nullable=True, doc='主料，json格式，{"鸡肉": "200克",.....}')
+    condiment = Column(String(1024), nullable=True, doc='辅料,json格式')
+    procedure = Column(Text, nullable=True, doc='过程，json')
+    tips = Column(Text, nullable=True)
+    tool = Column(CHAR(40), nullable=True)
+    recipe = relationship("Recipe", backref=backref("recipe_info", uselist=False))
+
 class Category(Base):
     __tablename__ = 'category'
     id = Column(INTEGER(unsigned=True), primary_key=True)
-    name = Column(CHAR(20), nullable=False)
+    name = Column(CHAR(20), nullable=False, index=True)
     cat_type = Column(CHAR(20), nullable=False, index=True, doc="主食，甜品等类别，比较固定，可以写死配置")
     url_rewrite = Column(CHAR(50), nullable=False, default='', index=True)
 
 class Material(Base):
     __tablename__ = 'material'
     id = Column(INTEGER(unsigned=True), primary_key=True)
-    name = Column(CHAR(20), nullable=False)
+    name = Column(CHAR(20), nullable=False, index=True)
     nutrition = Column(String(2048), nullable=True)
     intro = Column(String(1024), nullable=True, doc="短描述")
     description = Column(Text, nullable=True, doc="营养价值长描述")
@@ -77,8 +90,8 @@ class Material(Base):
 class Collection(Base):
     __tablename__ = 'collection'
     id = Column(INTEGER(unsigned=True), primary_key=True)
-    name = Column(CHAR(40), nullable=False)
-    orig_id = Column(INTEGER, nullable=False)
+    name = Column(CHAR(40), nullable=False, index=True)
+    orig_id = Column(INTEGER, nullable=False, index=True)
     intro = Column(Text, nullable=False)
     view = Column(INTEGER, nullable=False, default=0)
     like = Column(INTEGER, nullable=False, default=0)
