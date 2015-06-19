@@ -244,21 +244,5 @@ with open('a.txt') as file:
   do sth
 这样文件在结束后，就会自动close(),不用手动close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+filter(function, iterable) 和 [item for item in iterable if function(item)]
+是相等的 
