@@ -7,6 +7,7 @@
 ### Command Bus
 - dispatch()
 - SelfHandling
+- Pipeline
 
 ### Response
 - 返回string, View 或者 Response
