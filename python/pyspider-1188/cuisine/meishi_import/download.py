@@ -1,6 +1,6 @@
 #!/usr/bin/python
 ## -*- encoding: utf-8 -*-
-import re, datetime, urllib, os, threading, time, random, errno, MySQLdb, math, logger, logging, sys, json
+import re, datetime, urllib, os, threading, time, random, errno, MySQLdb, math, logger, logging, sys, json, sys, traceback
 from urlparse import urljoin, urlparse, urlunparse, urlsplit, urlunsplit
 
 # class Downloader():
@@ -22,7 +22,7 @@ def mkdir_p(path):
 
 def downloadImage(url):
     #start_time = time.time()
-    baseDir = "/root/1188meishi_image"
+    baseDir = "/home/1188meishi_image"
     #baseDir = "/root/image"
     parsed = urlparse(url)
     path = parsed[2]
@@ -35,7 +35,7 @@ def downloadImage(url):
     try:
         if not fileExists:
             result = urllib.urlretrieve(url, fullPath)
-            #print "execution time: %f s" % (time.time()-start_time)
+            #print "execution time: %f s" % (time.time()-start_time) 
     except IOError, e:
         myLogger.error("io error: %s - url: %s" % (e,url))
     except Exception, e:
@@ -43,35 +43,34 @@ def downloadImage(url):
 
 def partitionDownload(fetchResult):
     for x in fetchResult:
-        id = x[1]
-        pics = json.loads(x[0])
-
-        # procedure_pics = json.loads(x[2])
-        # for each in procedure_pics:
-        #     if each['img'] is not None:
-        #         downloadImage(each['img'])
-        procedure_pics = getAllProcedurePics(x[2])
-        for each in procedure_pics:
-            downloadImage(each)
-
+    	id = x[1]
+    	#pics = json.loads(x[0])
+        pics = getAllPics(x[0])
         for each in pics:
-            if each is not None:
-                downloadImage(each)
-                #取得小图url
-                #small_pic = re.sub(r'/p800_', '/c180_', each)
-                #downloadImage(small_pic)
+            downloadImage(each)
+        
+    	#procedure_pics = getAllProcedurePics(x[2])
+    	#for each in procedure_pics:
+        #    downloadImage(each)
 
-        if id%10000 == 0:
-            myLogger.info("dowloading id %d" % (id))
+    	if id%10000 == 0:
+        	myLogger.info("downloading id %d" % (id))
+
+	
 
 def getAllProcedurePics(json_string):
-    return re.findall(r'(?<=img": ").+?(?="\})', json_string);
+    results = re.findall(r'(?<=img": ").*?(?="\})', json_string);
+    return filter(None, results);
+
+def getAllPics(json_string):
+    results = re.findall(r'(?<=")[^,\s]*?(?=")', json_string);
+    return filter(lambda x: len(x)>0 and x.startswith('http'), results);
 
 def start():
     start_time = time.time()
     threads = []
-    limit  =1000.0
-    workerNum = 1
+    limit  =200.0
+    workerNum = 80
     try:
         db = MySQLdb.connect('172.16.1.248', 'qiye_dev', 'qiye..dev', '1188meishi')
         cursor = db.cursor()
@@ -84,7 +83,7 @@ def start():
                 for t in threads:
                     if not t.isAlive():
                         threads.remove(t)
-                # if <10, then go to get more from DB
+                # if <10, then go to get more from DB 
                 if len(threads) < workerNum:
                     #print 'current threads num is %d' % (len(threads),)
                     break
@@ -98,13 +97,13 @@ def start():
             #if result is empty?
             if len(result) == 0:
                 #print 'result is empty, ready to exit main process'
-                break
+                break 
             t1 = threading.Thread(target = partitionDownload, args=(result,) )
             threads.append(t1)
             t1.start()
     except Exception, e:
-        #traceback.print_exc(file=sys.stdout)
-        #sys.exit()
+	traceback.print_exc(file=sys.stdout)
+        sys.exit()
         myLogger.error(e)
 
 if __name__ == '__main__':
