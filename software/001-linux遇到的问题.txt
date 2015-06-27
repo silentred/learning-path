@@ -119,3 +119,10 @@ PID为processid,进程标识符
 PPID为 parent processid，父进程标识符2，
 LWP为light weight process orthread， 轻量级进程，即线程标识符
 NLWP为，number oflwps(threads) in the process, 线程的数量
+
+
+CentOS 7 安装 mysql
+wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
+sudo yum install mysql-server
+sudo systemctl start mysqld

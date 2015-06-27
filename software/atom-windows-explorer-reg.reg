@@ -6,7 +6,7 @@ Windows Registry Editor Version 5.00
 ; Based on https://github.com/Zren/atom-windows-context-menu. It didn't work
 ; https://github.com/Zren/atom-windows-context-menu/issues/1.
 ;
-; Save this file to disk with a .reg extension. Replace D:\\Program Files\Atom.exe with
+; Save this file to disk with a .reg extension. Replace D:\\Program Files\\Atom\\atom.exe with
 ; the path to the atom executable on your machine.
 ;
 ; Make sure you are running as administrator.
@@ -25,31 +25,31 @@ Windows Registry Editor Version 5.00
 ; when you right click a file
 [HKEY_CLASSES_ROOT\*\shell\Atom KI ext]
 ""="Open File in Atom"
-"Icon"="D:\\Program Files\Atom.exe"
+"Icon"="D:\\Program Files\\Atom\\atom.exe"
 
 [HKEY_CLASSES_ROOT\*\shell\Atom KI ext\command]
-""="D:\\Program Files\Atom.exe \"%1\""
+""="D:\\Program Files\\Atom\\atom.exe \"%1\""
 
 ; when you right click a folder
 [HKEY_CLASSES_ROOT\Directory\shell\Atom KI ext]
 ""="Open Folder in Atom"
-"Icon"="D:\\Program Files\Atom.exe"
+"Icon"="D:\\Program Files\\Atom\\atom.exe"
 
 [HKEY_CLASSES_ROOT\Directory\shell\Atom KI ext\command]
-""="D:\\Program Files\Atom.exe \"%1\""
+""="D:\\Program Files\\Atom\\atom.exe \"%1\""
 
 ; when you right click a folder while holding shift
 [HKEY_CLASSES_ROOT\Directory\Background\shell\Atom KI ext]
 ""="Open Folder in Atom"
-"Icon"="D:\\Program Files\Atom.exe"
+"Icon"="D:\\Program Files\\Atom\\atom.exe"
 
 [HKEY_CLASSES_ROOT\Directory\Background\shell\Atom KI ext\command]
-""="D:\\Program Files\Atom.exe \"%V\""
+""="D:\\Program Files\\Atom\\atom.exe \"%V\""
 
 ; when you right click the background, not on a particular file or folder.
 [HKEY_CLASSES_ROOT\LibraryFolder\Background\shell\Atom KI ext]
 ""="Open Folder in Atom"
-"Icon"="D:\\Program Files\Atom.exe"
+"Icon"="D:\\Program Files\\Atom\\atom.exe"
 
 [HKEY_CLASSES_ROOT\LibraryFolder\Background\shell\Atom KI ext\command]
-""="D:\\Program Files\Atom.exe \"%V\""
+""="D:\\Program Files\\Atom\\atom.exe \"%V\""
