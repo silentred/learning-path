@@ -1,111 +1,121 @@
-/Ä¿Â¼ºÍ/usr¿ÉÒÔ½Ï´ó¡£
+/ç›®å½•å’Œ/usrå¯ä»¥è¾ƒå¤§ã€‚
 / --- 10G
 /uar --- 8G
 /home --- 4G
 /boot --- 100M
 
-Ê£ÓàµÄ¿Õ¼ä¿ÉÒÔ¶¼·Ö¸ø / ºÍ /usr
+å‰©ä½™çš„ç©ºé—´å¯ä»¥éƒ½åˆ†ç»™ / å’Œ /usr
 
 
-¹ÒÔØ¹âÇı
+æŒ‚è½½å…‰é©±
 mount /dev/cdrom ~/cdrom
 
-ifconfigÃ»ÕÒµ½
+ifconfigæ²¡æ‰¾åˆ°
 yum install net-tools
-ÆäËû³£ÓÃÈí¼ş£º
+å…¶ä»–å¸¸ç”¨è½¯ä»¶ï¼š
 yum groupinstall "Development Tools"
 yum install java vim python
-yum grouplist ²é¿´ÓĞÄÄĞ©group¿ÉÒÔ°²×°
+yum grouplist æŸ¥çœ‹æœ‰å“ªäº›groupå¯ä»¥å®‰è£…
 
-ÉèÖÃ¹Ì¶¨ip
-sudo vim /etc/sysconfig/network-scripts/ifcfg-eth0 #¸ù¾İÍø¿¨Ãû×Ö²»Í¬
-BOOTPROTO=static #ÉèÖÃÍø¿¨»ñµÃipµØÖ·µÄ·½Ê½£¬¿ÉÄÜµÄÑ¡ÏîÎªstatic£¬dhcp»òbootp£¬·Ö±ğ¶ÔÓ¦¾²Ì¬Ö¸¶¨µÄ ipµØÖ·£¬Í¨¹ıdhcpĞ­Òé»ñµÃµÄipµØÖ·£¬Í¨¹ıbootpĞ­Òé»ñµÃµÄipµØÖ·
-IPADDR=192.168.1.105 #Èç¹ûÉèÖÃÍø¿¨»ñµÃ ipµØÖ·µÄ·½Ê½Îª¾²Ì¬Ö¸¶¨£¬´Ë×Ö¶Î¾ÍÖ¸¶¨ÁËÍø¿¨¶ÔÓ¦µÄipµØÖ·
-NETMASK=255.255.255.0 #Íø¿¨¶ÔÓ¦µÄÍøÂçÑÚÂë
-±¾À´Ä¬ÈÏµÄÊÇdhcp£¬¸ÄÎªstatic£¬ÅäÖÃÏÂip£¬ÑÚÂë¾ÍĞĞ£»
-IPV6INIT=no ¹Ø±Õipv6
-#DNS1=114.114.114.114 ÉèÖÃDNS,²»È·¶¨£¬ÔÙ²é²é
+è®¾ç½®å›ºå®šip
+sudo vim /etc/sysconfig/network-scripts/ifcfg-eth0 #æ ¹æ®ç½‘å¡åå­—ä¸åŒ
+BOOTPROTO=static #è®¾ç½®ç½‘å¡è·å¾—ipåœ°å€çš„æ–¹å¼ï¼Œå¯èƒ½çš„é€‰é¡¹ä¸ºstaticï¼Œdhcpæˆ–bootpï¼Œåˆ†åˆ«å¯¹åº”é™æ€æŒ‡å®šçš„ ipåœ°å€ï¼Œé€šè¿‡dhcpåè®®è·å¾—çš„ipåœ°å€ï¼Œé€šè¿‡bootpåè®®è·å¾—çš„ipåœ°å€
+IPADDR=192.168.1.105 #å¦‚æœè®¾ç½®ç½‘å¡è·å¾— ipåœ°å€çš„æ–¹å¼ä¸ºé™æ€æŒ‡å®šï¼Œæ­¤å­—æ®µå°±æŒ‡å®šäº†ç½‘å¡å¯¹åº”çš„ipåœ°å€
+NETMASK=255.255.255.0 #ç½‘å¡å¯¹åº”çš„ç½‘ç»œæ©ç 
+æœ¬æ¥é»˜è®¤çš„æ˜¯dhcpï¼Œæ”¹ä¸ºstaticï¼Œé…ç½®ä¸‹ipï¼Œæ©ç å°±è¡Œï¼›
+IPV6INIT=no å…³é—­ipv6
+#DNS1=114.114.114.114 è®¾ç½®DNS,ä¸ç¡®å®šï¼Œå†æŸ¥æŸ¥
 #DNS2=8.8.4.4
-ÖØÆô£ºsudo service network restart
+é‡å¯ï¼šsudo service network restart
 
 
-rpmÃüÁîµÄ½âÊÍ
-£­ivh£º°²×°ÏÔÊ¾°²×°½ø¶È--install--verbose--hash
-£­Uvh£ºÉı¼¶Èí¼ş°ü--Update£»
-£­qpl£ºÁĞ³öRPMÈí¼ş°üÄÚµÄÎÄ¼şĞÅÏ¢[Query Package list]£»
-£­qpi£ºÁĞ³öRPMÈí¼ş°üµÄÃèÊöĞÅÏ¢[Query Package install package(s)]£»
-£­qf£º²éÕÒÖ¸¶¨ÎÄ¼şÊôÓÚÄÄ¸öRPMÈí¼ş°ü[Query File]£»
-£­Va£ºĞ£ÑéËùÓĞµÄRPMÈí¼ş°ü£¬²éÕÒ¶ªÊ§µÄÎÄ¼ş[View Lost]£»
-£­e£ºÉ¾³ı°ü
+rpmå‘½ä»¤çš„è§£é‡Š
+ï¼ivhï¼šå®‰è£…æ˜¾ç¤ºå®‰è£…è¿›åº¦--install--verbose--hash
+ï¼Uvhï¼šå‡çº§è½¯ä»¶åŒ…--Updateï¼›
+ï¼qplï¼šåˆ—å‡ºRPMè½¯ä»¶åŒ…å†…çš„æ–‡ä»¶ä¿¡æ¯[Query Package list]ï¼›
+ï¼qpiï¼šåˆ—å‡ºRPMè½¯ä»¶åŒ…çš„æè¿°ä¿¡æ¯[Query Package install package(s)]ï¼›
+ï¼qfï¼šæŸ¥æ‰¾æŒ‡å®šæ–‡ä»¶å±äºå“ªä¸ªRPMè½¯ä»¶åŒ…[Query File]ï¼›
+ï¼Vaï¼šæ ¡éªŒæ‰€æœ‰çš„RPMè½¯ä»¶åŒ…ï¼ŒæŸ¥æ‰¾ä¸¢å¤±çš„æ–‡ä»¶[View Lost]ï¼›
+ï¼eï¼šåˆ é™¤åŒ…
 
 
-°²×°sphinx RPM°üÊ±£¬È±ÉÙlibodbc.so.2µÄ½â¾ö·½·¨£º
+å®‰è£…sphinx RPMåŒ…æ—¶ï¼Œç¼ºå°‘libodbc.so.2çš„è§£å†³æ–¹æ³•ï¼š
 yum -y install unixODBC
 
-°²×°php
+å®‰è£…php
 #wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 #sudo rpm -Uvh epel-release-latest-7*.rpm
 #yum install php php-fpm php-mysqli php-gd php-pear php-mcrypt php-devel
 
-°²×°php for centos 7
+å®‰è£…php for centos 7
 sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 sudo yum install php56w php56w-opcache php56w-cli php56w-common php56w-devel php56w-fpm php56w-gd  php56w-mbstring  php56w-mcrypt php56w-pdo php56w-mysqlnd php56w-pecl-xdebug php56w-pecl-memcache php56w-phpdbg
 
-#php56w-pecl-xdebug.x86_64 ÉÏÃæµÄÒÑ¾­°üº¬ÁË
-²é¿´ÓĞÄÄĞ©phpÏà¹ØµÄÈí¼ş¿ÉÒÔ°´ÕÕ
+#php56w-pecl-xdebug.x86_64 ä¸Šé¢çš„å·²ç»åŒ…å«äº†
+æŸ¥çœ‹æœ‰å“ªäº›phpç›¸å…³çš„è½¯ä»¶å¯ä»¥æŒ‰ç…§
 yum list php56w*
 
-¹Ø±Õcentos7µÄ·À»ğÇ½£º
+å…³é—­centos7çš„é˜²ç«å¢™ï¼š
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
-systemctl status firewalld # ²é¿´×´Ì¬
+systemctl status firewalld # æŸ¥çœ‹çŠ¶æ€
 
-ĞÂ½¨ÎŞhomeÄ¿Â¼£¬²»¿ÉµÇÂ¼shellµÄÓÃ»§¡£-M´ú±í²»´´½¨homeÄ¿Â¼
+æ–°å»ºæ— homeç›®å½•ï¼Œä¸å¯ç™»å½•shellçš„ç”¨æˆ·ã€‚-Mä»£è¡¨ä¸åˆ›å»ºhomeç›®å½•
 useradd -M -s /sbin/nologin userName 
-#--shell /bin/falseÃ²ËÆÒ²¿ÉÒÔ
+#--shell /bin/falseè²Œä¼¼ä¹Ÿå¯ä»¥
 
 
-¹Ø±Õphp-fpm
+å…³é—­php-fpm
 kill -INT `cat /usr/local/php/var/run/php-fpm.pid`
 kill -INT `cat /var/run/php-fpm/php-fpm.pid`
-Æô¶¯php-fpm
+å¯åŠ¨php-fpm
 /usr/local/php/sbin/php-fpm
 /usr/local/php/sbin/php-fpm -c /usr/local/php/etc/php.ini -y /usr/local/php/etc/php-fpm.conf
-²âÊÔphp-fpmµÄÅäÖÃÎÄ¼ş
+æµ‹è¯•php-fpmçš„é…ç½®æ–‡ä»¶
 /usr/local/php/sbin/php-fpm -t
-#ÖØÆôphp-fpm
+#é‡å¯php-fpm
 kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
+kill -USR2 `cat /var/run/php-fpm/php-fpm.pid` # é’ˆå¯¹yumå®‰è£…çš„
 
-nginx²âÊÔÅäÖÃ
+nginxæµ‹è¯•é…ç½®
 /usr/local/nginx/sbin/nginx -t
-nginxÖØÆô
+nginxé‡å¯
 /usr/local/nginx/sbin/nginx -s reload
 
-ÉèÖÃssh private keyµÇÂ½
-ÓÃ¹¤¾ß£¨ÀıÈçssh-keygen,xshellµÈ£©Éú³ÉÒ»¶ÔÃØÔ¿£¬°ÑÉú³ÉµÄid_rsa_2048.pub¸´ÖÆµ½Ô¶³ÌµÄ/home/user/.ssh/ÏÂ£¬ÖØÃüÃûÎªauthorized_keys, ±£Ö¤.sshÄ¿Â¼ºÍÆäÖĞÎÄ¼şÈ¨ÏŞ700£¬ÖØÆôssh·şÎñ¡£
-ÔÚ±¾µØÓÃË½Ô¿µÇÂ½¡£
-½«Ë½Ô¿¼ÓÈëµ½list
+è®¾ç½®ssh private keyç™»é™†
+ç”¨å·¥å…·ï¼ˆä¾‹å¦‚ssh-keygen,xshellç­‰ï¼‰ç”Ÿæˆä¸€å¯¹ç§˜é’¥ï¼ŒæŠŠç”Ÿæˆçš„id_rsa_2048.pubå¤åˆ¶åˆ°è¿œç¨‹çš„/home/user/.ssh/ä¸‹ï¼Œé‡å‘½åä¸ºauthorized_keys, ä¿è¯.sshç›®å½•å’Œå…¶ä¸­æ–‡ä»¶æƒé™700ï¼Œé‡å¯sshæœåŠ¡ã€‚
+åœ¨æœ¬åœ°ç”¨ç§é’¥ç™»é™†ã€‚
+å°†ç§é’¥åŠ å…¥åˆ°list
 eval `ssh-agent`
 ssh-add ~/.ssh/id_rsa_2048
 
-windowsÏÂµÄ²Ù×÷£º
-#ssh-agent bash #½øÈëbash
+windowsä¸‹çš„æ“ä½œï¼š
+#ssh-agent bash #è¿›å…¥bash
 #eval `ssh-agent`
-#ssh-add /.ssh/id_rsa_2048 #Õâ¸öÎÄ¼şÊÇÔÚGitµÄ°²×°Ä¿Â¼ÏÂµÄ.sshÄ¿Â¼ÏÂµÄ£¬ºÜ±äÌ¬£¬ÒòÎª´æÔÚÒ»¸öuser/.ssh£¬Ò»¿ªÊ¼ÎóÒÔÎª°ÑË½Ô¿·ÅÔÚÕâÀï
-new result:·¢ÏÖÊÇÈ±ÉÙ»·¾³±äÁ¿HOME,ssh -T git@github.comµÄÊ±ºò£¬Ä¬ÈÏÈ¥ÕÒprivate keyµÄÎ»ÖÃÊÇ%HOME%/.ssh, Ö»ÒªÉèÖÃ»·¾³±äÁ¿
-set HOME=%USERPROFILE%, USERPROFILE¾ÍÊÇC:\Users\usernameÕâ¸öÄ¿Â¼£¬ÔÚÆäÖĞ mkdir .ssh£¬ÔÙ°Ñkey·Å½øÈ¥¾Í¿ÉÒÔÁË.µ«ÊÇkeyµÄÃû×ÖÄ¿Ç°»¹ÊÇ¸ù¾İÄ¬ÈÏµÄÈ¥²éÕÒ£¬¿´¿´ÄÜ·ñ¸Ä±äÄ¬ÈÏÃû³Æ.ºÃÏñÊÇĞŞ¸Ä.ssh/configÖĞµÄÄÚÈİ£¬http://stackoverflow.com/questions/9672975/switching-between-multiple-ssh-keys-in-git-on-windows
+#ssh-add /.ssh/id_rsa_2048 #è¿™ä¸ªæ–‡ä»¶æ˜¯åœ¨Gitçš„å®‰è£…ç›®å½•ä¸‹çš„.sshç›®å½•ä¸‹çš„ï¼Œå¾ˆå˜æ€ï¼Œå› ä¸ºå­˜åœ¨ä¸€ä¸ªuser/.sshï¼Œä¸€å¼€å§‹è¯¯ä»¥ä¸ºæŠŠç§é’¥æ”¾åœ¨è¿™é‡Œ
+new result:å‘ç°æ˜¯ç¼ºå°‘ç¯å¢ƒå˜é‡HOME,ssh -T git@github.comçš„æ—¶å€™ï¼Œé»˜è®¤å»æ‰¾private keyçš„ä½ç½®æ˜¯%HOME%/.ssh, åªè¦è®¾ç½®ç¯å¢ƒå˜é‡
+set HOME=%USERPROFILE%, USERPROFILEå°±æ˜¯C:\Users\usernameè¿™ä¸ªç›®å½•ï¼Œåœ¨å…¶ä¸­ mkdir .sshï¼Œå†æŠŠkeyæ”¾è¿›å»å°±å¯ä»¥äº†.ä½†æ˜¯keyçš„åå­—ç›®å‰è¿˜æ˜¯æ ¹æ®é»˜è®¤çš„å»æŸ¥æ‰¾ï¼Œçœ‹çœ‹èƒ½å¦æ”¹å˜é»˜è®¤åç§°.å¥½åƒæ˜¯ä¿®æ”¹.ssh/configä¸­çš„å†…å®¹ï¼Œhttp://stackoverflow.com/questions/9672975/switching-between-multiple-ssh-keys-in-git-on-windows
 
 
-TARµÄÑ¹Ëõ
-tar -czf target.tar.gz /source #vÊÇverbose,ÎÄ¼şÌ«¶à²»Òª¼Ó
-½âÑ¹
+TARçš„å‹ç¼©
+tar -czf target.tar.gz /source #væ˜¯verbose,æ–‡ä»¶å¤ªå¤šä¸è¦åŠ 
+è§£å‹
 tar xf xxx.tar
 
-CentosµÄsystemd service½Å±¾Î»ÖÃ£º
+Centosçš„systemd serviceè„šæœ¬ä½ç½®ï¼š
 /usr/lib/systemd/system
 
 
-python PIL²»Ö§³ÖjpegµÄ½â¾ö°ì·¨£º£¨IOError: decoder jpeg not available£©
+python PILä¸æ”¯æŒjpegçš„è§£å†³åŠæ³•ï¼šï¼ˆIOError: decoder jpeg not availableï¼‰
 sudo yum -y install zlib zlib-devel libjpeg libjpeg-devel freetype freetype-devel
 pip install PIL --allow-external PIL --allow-unverified PIL
+
+
+æŸ¥çœ‹çº¿ç¨‹
+ps -eLf | grep xxx
+UIDä¸ºUser ID.
+PIDä¸ºprocessid,è¿›ç¨‹æ ‡è¯†ç¬¦
+PPIDä¸º parent processidï¼Œçˆ¶è¿›ç¨‹æ ‡è¯†ç¬¦2ï¼Œ
+LWPä¸ºlight weight process orthreadï¼Œ è½»é‡çº§è¿›ç¨‹ï¼Œå³çº¿ç¨‹æ ‡è¯†ç¬¦
+NLWPä¸ºï¼Œnumber oflwps(threads) in the process, çº¿ç¨‹çš„æ•°é‡
