@@ -22,3 +22,8 @@ cordova serve android 8080 默认端口为8000
 ## phonegap create
 
 在%HOME%中使用phonegap create 可以成功创建，在D:\下就会提示失败
+
+
+## 指定usb device
+adb devices 查看连接的设备代号
+phonegap run android --device=G6YHSCNFFAFMYPJZ
