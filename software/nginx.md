@@ -11,3 +11,11 @@ location ~* ^/simg/(\d+)_(\d+)/attachment/.*$ {
 			expires 3d;
 		}
 ```
+
+#### 关于image_filter_buffer
+
+默认为 1M
+可出现的位置: http, server, location
+
+原图最大2M，要裁剪的图片超过2M返回415错误，需要调节参数image_filter_buffer 
+image_filter_buffer 2M;        

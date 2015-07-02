@@ -3,7 +3,7 @@
 
 import click
 
-@click.group(invoke_without_command=True)
+@click.group(invoke_without_command=False)
 @click.option('--count', default=1, help='number of greetings')
 @click.argument('name')
 @click.pass_context
@@ -15,9 +15,9 @@ def cli(ctx, **kwargs):
     print ctx.invoked_subcommand
     print ctx.args
     ctx.obj = {"myObj": "awsome"}
-    ctx.invoke(hello2)
+    #ctx.invoke(hello2)
     print "after invoking"
-    #return ctx
+    return ctx
 
 @cli.command()
 @click.pass_context
@@ -26,7 +26,8 @@ def hello2(ctx):
     print "hello2!!!"
 
 @cli.command()
-def initdb():
+@click.pass_context
+def initdb(ctx):
     click.echo('Initialized the database')
 
 @cli.command()
