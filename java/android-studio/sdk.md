@@ -10,4 +10,6 @@ PATH = %JAVA_HOME%\bin; \
 	%ANT_HOME%\bin; \
 	%ANDROID_HOME%\platform-tools; \
 	%ANDROID_HOME%\tools; \
-	
+
+如果Android studio 显示 no debugable application, 点击
+Tools->Android->Enable ADB Integration
