@@ -23,3 +23,6 @@ Tools->Android->Enable ADB Integration
 `adb shell` 进入android shell
 `su` 进入root权限
 `cd /data/data/com.example.jason.myapplication`进入项目文件夹
+
+## 添加 external lib
+Project Structure -> Dependencies -> + lib Dependency
