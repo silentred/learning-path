@@ -12,7 +12,7 @@ public static < E > void printArray( E[] inputArray )
          System.out.println();
     }
 ```
-传入的数组可以为任意类型
+传入的数组可以为任意类型。`<E>` 表示使用泛型。使用该方法时和普通方法没有差别。
 
 ### 方法绑定类型参数 (Bounded Type Parameters)
 ```java
