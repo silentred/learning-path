@@ -28,3 +28,7 @@ Host aws
 
 ### 上传public key
 `cat ~/.ssh/id_rsa.pub | ssh myUser@remoteHost.com '>> .ssh/authorized_keys'`
+
+### 禁用密码登陆ssh
+1. 编辑sshd_config文件 `vim /etc/ssh/sshd_config`
+2. 禁用密码验证 `PasswordAuthentication no`

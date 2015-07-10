@@ -47,6 +47,10 @@ yum -y install unixODBC
 #sudo rpm -Uvh epel-release-latest-7*.rpm
 #yum install php php-fpm php-mysqli php-gd php-pear php-mcrypt php-devel
 
+如果安装rpm出现错误：Cannot retrieve metalink for repository: epel.
+执行以下命令：sudo yum upgrade ca-certificates --disablerepo=epel
+更新完成后问题修复。
+
 安装php for centos 7
 sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 sudo rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
@@ -128,3 +132,19 @@ sudo yum install mysql-server
 sudo systemctl start mysqld
 
 
+服务端安装shadowsocks
+yum install python-setuptools && easy_install pip
+pip install shadowsocks
+配置文件
+{
+    "server":"50.117.7.122",
+    "server_port":8388,
+    "local_address": "127.0.0.1",
+    "local_port":1080,
+    "password":"789456123",
+    "timeout":300,
+    "method":"aes-256-cfb",
+    "fast_open": false
+}
+在后台运行
+ssserver -c config.json -d start
