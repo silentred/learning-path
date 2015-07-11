@@ -148,3 +148,14 @@ pip install shadowsocks
 }
 在后台运行
 ssserver -c config.json -d start
+
+下载运行nodejs版本, SAM IP: 50.62.213.12
+nohup /home/stanford/test/nodejs/bin/node /home/stanford/test/shadowsocks-nodejs-1.4.3/bin/ssserver -c /home/stanford/test/shadowsocks-nodejs-1.4.3/bin/config.json > /dev/null 2>&1 &
+
+
+升级GCC
+$ sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -P /etc/yum.repos.d
+$ sudo sh -c 'echo "enabled=1" >> /etc/yum.repos.d/devtools-2.repo'
+$ sudo yum install devtoolset-2
+$ scl enable devtoolset-2 bash
+$ gcc --version
