@@ -132,26 +132,6 @@ sudo yum install mysql-server
 sudo systemctl start mysqld
 
 
-服务端安装shadowsocks
-yum install python-setuptools && easy_install pip
-pip install shadowsocks
-配置文件
-{
-    "server":"50.117.7.122",
-    "server_port":8388,
-    "local_address": "127.0.0.1",
-    "local_port":1080,
-    "password":"789456123",
-    "timeout":300,
-    "method":"aes-256-cfb",
-    "fast_open": false
-}
-在后台运行
-ssserver -c config.json -d start
-
-下载运行nodejs版本, SAM IP: 50.62.213.12
-nohup /home/stanford/test/nodejs/bin/node /home/stanford/test/shadowsocks-nodejs-1.4.3/bin/ssserver -c /home/stanford/test/shadowsocks-nodejs-1.4.3/bin/config.json > /dev/null 2>&1 &
-
 
 升级GCC
 $ sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -P /etc/yum.repos.d
