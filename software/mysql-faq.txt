@@ -27,4 +27,14 @@ condiment, `procedure`, tips, tool
 from recipe
 
 删除字段
-alter table `recipe` drop column ()  
+alter table `recipe` drop column ()
+
+
+查看当前连接状态
+show full processlist;
+
+
+
+
+
+

@@ -30,8 +30,10 @@ tcpdump默认只会读取每个包前96byte的数据，如果想要
 
 
 
-`tcpdump -nXSvv -i venet0 host 50.117.7.122 and dst port 80`
-表示host为50.117.7.122并且发向80端口的包
+`tcpdump -nSvv -i eth0 host 52.5.178.38 and dst port 80`
+表示host（双向任意一向）包含52.5.178.38并且 发向80端口的包
+
+
 
 `tcpdump -nXSvv -i venet0 src port 80 or dst port 80`
 表示从80端口来或者到80端口去的包
