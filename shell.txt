@@ -83,5 +83,12 @@ tcpdump -nvvv -i any -c 1 -XX 'port 80 and host 61.147.82.76'
 curl仅仅打印返回头
 curl -s -D - http://dd.99kk.com -o /dev/null
 
+curl post文件
+curl -F "userid=1"  -F "image=@/root/test.txt" www.samaterials.com
 
+curl 打印请求详细内容
+curl www.samaterials.com -d "image=@/home/jason/test.txt" --trace-ascii /dev/stdout
+
+curl multipart上传
+curl -v -F key1=value1 -F upload=@/home/jason/test.txt www.samaterials.com
 
