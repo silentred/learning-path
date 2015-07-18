@@ -1,0 +1,11 @@
+07:16:56.909695 IP 50.117.7.122.50427 > 61.147.82.76.http: Flags [S], seq 3945029695, win 14600, options [mss 1460,sackOK,TS val 4077482577 ecr 0,nop,wscale 7], length 0
+07:16:57.202473 IP 61.147.82.76.http > 50.117.7.122.50427: Flags [S.], seq 3578193026, ack 3945029696, win 5792, options [mss 1460,sackOK,TS val 320497323 ecr 4077482577,nop,wscale 7], length 0
+07:16:57.202526 IP 50.117.7.122.50427 > 61.147.82.76.http: Flags [.], ack 1, win 115, options [nop,nop,TS val 4077482870 ecr 320497323], length 0
+07:16:57.202692 IP 50.117.7.122.50427 > 61.147.82.76.http: Flags [P.], seq 1:176, ack 1, win 115, options [nop,nop,TS val 4077482870 ecr 320497323], length 175
+07:16:57.381606 IP 61.147.82.76.http > 50.117.7.122.50427: Flags [R.], seq 1, ack 176, win 818, length 0
+07:16:57.381617 IP 61.147.82.76.http > 50.117.7.122.50427: Flags [R.], seq 1461, ack 176, win 819, length 0
+07:16:57.381625 IP 61.147.82.76.http > 50.117.7.122.50427: Flags [R.], seq 4381, ack 176, win 820, length 0
+curl: (56) Failure when receiving data from the peer
+[root@vps ~]# 07:16:57.490913 IP 61.147.82.76.http > 50.117.7.122.50427: Flags [.], ack 176, win 54, options [nop,nop,TS val 320497610 ecr 4077482870], length 0
+07:16:57.490938 IP 50.117.7.122.50427 > 61.147.82.76.http: Flags [R], seq 3945029871, win 0, length 0
+07:16:57.494433 IP 61.147.82.76.http > 50.117.7.122.50427: Flags [R.], seq 1, ack 176, win 835, length 0
