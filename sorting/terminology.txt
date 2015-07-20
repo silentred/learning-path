@@ -1,0 +1,10 @@
+arithmetic series
+等差数列
+
+asymtotic notation
+渐进符号
+
+theta notation is a weak notation
+
+Leibniz notation is a strong notation
+
