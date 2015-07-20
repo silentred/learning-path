@@ -53,3 +53,23 @@ git log 查看提交的版本
 git reset --hard {commit id} 回退
 git push 会报错，说 current branch is behind
 git push -f 强制提交
+
+
+
+Git 小技巧
+有时为了保存多个工作状态，会使用多次commit （4次），将状态提交到本地仓库，但是在完成编码后，本想git push 最后的状态给时，本地的每次提交都会在远程仓库也有一个对应的提交（也有4次），造成服务器上出现不必要的版本， 如何处理此问题？使得本地4次，远程1次？
+思路： git似乎没有直接方法处理这个问题，不过可以考虑在本地建立多分支。 即：
+
+为本地的四次提交建立一个分支名，以保证其状态得以记录。
+然后，git reset --soft commit-id 将远程Head指向到4次提交前的状态。
+本地再次提交，此时由于Head指向四次前，而working Directory是四次修改提交之后的，此时git commit 就可以完成一次完成四次的提交。 这样既保证了本地有个分支记录了四次历史，同时保证服务器上只更新了一次，且状态一致。
+命令如下：
+
+git checkout -b branch_name 先命名新分支，保证当前分支的四次提交以后即使不记得commit id任然可以查找到。
+git reset --soft commit-id指定四次前的id，回退HEAD， 而index和working directory 都是最新的。此时可以进行commit。
+git diff查看下状态
+git log 确认git 提交历史
+git commit -m "4 in one"
+git push remote-name local_branch:/refs/for/remote_branch
+以上错误。
+应该是这样：首先git log查看最后一次的commit id， 然后 数一下要退回的commit 次数，直接git reset --mixed HEAD~N， 让头部退回， 但是index 和 working dir 保持最新。再次直接commit 即可。
