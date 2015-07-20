@@ -1,6 +1,8 @@
 通过控制dump的缓冲，提高source导入的效率
 mysqldump -uroot -p'123' --all-database --max_allowed_packet=1047552 --net_buffer_length=16384 >all.sql
 
+导出某一张表
+mysqldump -uroot -pdbpasswd dbname test>db.sql;
 
 查看所有用户：
 SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
@@ -34,7 +36,21 @@ alter table `recipe` drop column ()
 show full processlist;
 
 
+优化笔记：
+更新表（代替where in的做法，用join）
+子查询：
+update picture_infos set tag_ids = "0en"
+where picture_id in (select picture_id from tag_en_pic)
+用where in太慢了，会对picture_infos中的id取出来去和子查询里的每一条对比
+
+JOIN查询：（如果p.tag_ids加索引会更快，避免了picture_infos的全表扫描）
+UPDATE picture_infos as p
+INNER JOIN tag_en_pic as t 
+ON p.picture_id = t.picture_id AND p.tag_ids="0" 
+SET p.tag_ids = "0en"
 
 
-
-
+关于where not in,一样用join去解决, 左连表之后，右表连接字段为NULL的，就是我们需要的
+SELECT * FROM customers 
+LEFT JOIN orders ON customers.customers_id = orders.customers_id
+WHERE orders.customers_id IS NULL
