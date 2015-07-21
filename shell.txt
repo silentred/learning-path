@@ -77,6 +77,8 @@ ps -A -ostat,ppid,pid,cmd | grep -e '^[Zz]'
 
 使用tcpdump (客户端为50开头的)
 tcpdump -n -i eth0 host 50.62.213.12 and 61.147.82.76
+tcpdump -n -i venet0 host 50.117.7.122 and 61.147.82.76
+tcpdump -nvvv -i any -c 1 -XX 'port 80 and host 61.147.82.76'
 
 curl仅仅打印返回头
 curl -s -D - http://dd.99kk.com -o /dev/null
