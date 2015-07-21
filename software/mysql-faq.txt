@@ -35,6 +35,10 @@ alter table `recipe` drop column ()
 查看当前连接状态
 show full processlist;
 
+函数：
+GROUP_CONCAT() 用逗号把group聚合的值连接
+SUBSTRING_INDEX('www.abc.com', ',', 2) 根据分隔符，取n个值, n可以为负数,代表从右往左计算,结果为'www.abc'
+
 
 优化笔记：
 更新表（代替where in的做法，用join）
@@ -54,3 +58,5 @@ SET p.tag_ids = "0en"
 SELECT * FROM customers 
 LEFT JOIN orders ON customers.customers_id = orders.customers_id
 WHERE orders.customers_id IS NULL
+
+

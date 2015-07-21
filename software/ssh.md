@@ -32,3 +32,9 @@ Host aws
 ### 禁用密码登陆ssh
 1. 编辑sshd_config文件 `vim /etc/ssh/sshd_config`
 2. 禁用密码验证 `PasswordAuthentication no`
+
+### 无法使用key验证的问题
+1. 检查权限，`.ssh`为700, `authorized_keys`为600
+2. 检查SeLinux，getenforce ； 暂时关闭 setenforce 0
+
+ 

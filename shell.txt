@@ -90,3 +90,17 @@ curl www.samaterials.com -d "image=@/home/jason/test.txt" --trace-ascii /dev/std
 curl multipart上传
 curl -v -F key1=value1 -F upload=@/home/jason/test.txt www.samaterials.com
 
+
+
+strace查看系统底层操作：
+strace -ttT executable -o strace.log
+-tt with usecs 
+-T print time spent in each syscall
+-o 表示输出到文件而不是stderr
+
+
+修改时间：
+tzselect 修改时区
+date -s 15:40:00 修改时间
+date -s 06/18/14 2014年6月18日
+
