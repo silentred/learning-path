@@ -71,6 +71,14 @@ kill -CONT 进程编号
 vim多行删除
 :1,10d
 
+vim多行替换
+:1,$s/from/to/g 
+从第一行到最后一行替换所有from为to；
+g表示global,不只是每一行第一次出现的from；
+s表示substitute;
+$表示最后一行，如果想表示当前行，用"."表示。这是可选项;
+
+
 
 查看僵尸进程
 ps -A -ostat,ppid,pid,cmd | grep -e '^[Zz]'

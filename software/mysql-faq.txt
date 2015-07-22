@@ -15,6 +15,7 @@ grant all privileges on *.* to v1188;
 grant all privileges on *.* to v1188@localhost identified by 'v1188ys';
 
 导入sql
+mysql -u -p database < sql_file.sql;
 mysql> source /path/to/sql_file.sql;
 
 删除前100行
