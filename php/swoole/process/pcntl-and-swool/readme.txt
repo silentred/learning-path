@@ -1,0 +1,1 @@
+两个文件，一个使用了pcntl多进程，一个使用了swoole_process多进程, swoole的回调更整洁，底层接触的更少。
