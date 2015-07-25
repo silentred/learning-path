@@ -280,3 +280,106 @@ println(triangle.perimeter)
 triangle.perimeter = 9.9
 println(triangle.sideLength)
 ```
+
+- `willSet` and `didSet` 在property设置的前后运行
+```
+var square: Square {
+    willSet {
+        triangle.sideLength = newValue.sideLength
+    }
+}
+```
+
+- 可以为方法参数定义外部变量名, 默认的外部变量名就是参数变量名
+```
+class Counter {
+    var count: Int = 0
+    func incrementBy(amount: Int, numberOfTimes times: Int) {
+        count += amount * times
+    }
+}
+var counter = Counter()
+counter.incrementBy(2, numberOfTimes: 7)
+```
+
+- 对于可选值，`?`可以置于方法，属性之前，如果可选值为nil，`?`后面的表达式会被忽略，否则`?`后的值会被解包(unwrapped)
+```
+let optionalSquare: Square? = Square(sideLength: 2.5, name: "optional square")
+let sideLength = optionalSquare?.sideLength
+```
+
+
+### 枚举和结构
+
+- `enum`关键词创建枚举类型
+```
+enum Rank: Int {
+    case Ace = 1
+    case Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten
+    case Jack, Queen, King
+    func simpleDescription() -> String {
+        switch self {
+        case .Ace:
+            return "ace"
+        case .Jack:
+            return "jack"
+        case .Queen:
+            return "queen"
+        case .King:
+            return "king"
+        default:
+            return String(self.rawValue)
+        }
+    }
+}
+let ace = Rank.Ace
+let aceRawValue = ace.rawValue
+```
+
+- 用`rawValue`构造一个枚举值
+```
+if let convertedRank = Rank(rawValue: 3) {
+    let threeDescription = convertedRank.simpleDescription()
+}
+```
+
+- 枚举之中的member可以不提供rawValue，他们本身就是一个值。在switch中当枚举类型可以被得知时，
+在case中可以用简写表示member。下面的例子中self已经可以得知时Suit，所以case中可以用`.Spades`这样的写法。
+```
+enum Suit {
+    case Spades, Hearts, Diamonds, Clubs
+    func simpleDescription() -> String {
+        switch self {
+        case .Spades:
+            return "spades"
+        case .Hearts:
+            return "hearts"
+        case .Diamonds:
+            return "diamonds"
+        case .Clubs:
+            return "clubs"
+        }
+    }
+}
+let hearts = Suit.Hearts
+let heartsDescription = hearts.simpleDescription()
+```
+
+- `struct`结构体，和class很像，都有构造和方法，重要区别是：class按引用传递，struct
+按值传递
+```
+struct Card {
+    var rank: Rank
+    var suit: Suit
+    func simpleDescription() -> String {
+        return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
+    }
+}
+let threeOfSpades = Card(rank: .Three, suit: .Spades)
+let threeOfSpadesDescription = threeOfSpades.simpleDescription()
+```
+
+- Protocol 类似接口？
+`mutating`, `extension`
+
+- Generics 泛型

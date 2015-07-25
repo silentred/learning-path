@@ -1,0 +1,56 @@
+# 如何在Lumen中使用Elasticsearch
+
+## 前言
+Lumen是基于Laravel核心组件的微框架，随着Laravel5的发布，目前版本也已经到5了。之前受到这篇[为你的站点插上ElasticSearch的翅膀](http://segmentfault.com/a/1190000003010186)的启发, 就尝试在lumen中引入ES，并完成中文索引。
+
+谷歌一下“Laravel Elasticsearch”, 会发现很多插件，本文使用的是上面文章中提到的`Fadion/Bouncy`，其实各个插件都大同小异，主要功能都是ES提供的library完成的。
+
+## 下载运行Elasticsearch
+关于运行就不多说了，大家直接看[官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-service-win.html)就行。
+
+## 引入第三方包
+- 在lumen项目的composer.json中添加如下内容
+```json
+"require": {
+        "fadion/bouncy": "dev-l5"
+    },
+```
+
+- 运行`composer update "fadion/bouncy"`, 开始下载依赖。
+- 把`\Fadion\Bouncy\BouncyServiceProvider`加入到`bootstrap/app.php`中，如下
+```php
+$app->register(Fadion\Bouncy\BouncyServiceProvider::class);
+```
+- 把"fadion/bouncy"包中的`config`文件夹中的文件复制到自己的config文件夹中，并把`config.php`重命名为`bouncy.php`
+
+## 为Lumen适配
+由于这个包是为Laravel5提供的，有一些函数需要补充。首先打开 `\Fadion\Bouncy\BouncyServiceProvider`这个文件，看看哪些方法需要添加。
+
+- `config_path`函数，Lumen中没有提供这个方法，需要自己补充下，非常简单的方法，记得用composer加载文件。
+```php
+function config_path(){
+    return app()->basePath('config');
+}
+```
+- Lumen中加载配置文件的方式和Larvel不同，需要在`\App\Providers\AppServiceProvider`中添加如下方法,并在`register`方法中调用。注意`\App\Providers\AppServiceProvider`必须在`\Fadion\Bouncy\BouncyServiceProvider`之前被注册。
+```php
+protected function loadConfigFile(){
+    $this->app->configure('elasticsearch');
+}
+```
+
+至此，Lumen已经能够和ES互动了。
+
+## 如何使用
+简单使用的话，只需要在`Eloquent Model`中添加一个Trait即可，请参照github上的[文档](https://github.com/fadion/Bouncy) 或者 [为你的站点插上ElasticSearch的翅膀](http://segmentfault.com/a/1190000003010186)文中的介绍。毕竟接下来都是ES的内容，官方文档一大堆，要一下完全搞清楚那些名词也不现实，google配合文档是个好方法。
+
+
+## 关于中文索引
+谷歌上关于ES中文搜索的文章有很多，例如[这篇](http://www.sitepoint.com/efficient-chinese-search-elasticsearch/)。文中比较了5个不同分词插件。我挑选了`smartcn`和`icu`使用了以下，发现简单的词汇是没问题的，但是有一些词还是不能很好的分出来，例如"谷歌",两个插件都变为了"谷","歌"；“薪酬”在smartcn下被拆分为“薪”，“酬”，icu效果倒是很好。
+
+关于如何精确设置索引，请关注ES官方文档中的 [mapping -> core type](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-core-types.html)。中文索引中涉及的ES内容比较多，下次再用一个篇幅来分析。
+
+
+
+
+
