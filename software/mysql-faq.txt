@@ -3,6 +3,7 @@ mysqldump -uroot -p'123' --all-database --max_allowed_packet=1047552 --net_buffe
 
 导出某一张表
 mysqldump -uroot -pdbpasswd dbname test>db.sql;
+mysqldump -uroot -pFXRTNVMfBhdQTRnc 99kk tags > tags.sql;
 
 查看所有用户：
 SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
@@ -17,6 +18,21 @@ grant all privileges on *.* to v1188@localhost identified by 'v1188ys';
 导入sql
 mysql -u -p database < sql_file.sql;
 mysql> source /path/to/sql_file.sql;
+
+添加字段：
+alter table t_name add new_id int unsigned not null default 0;
+
+改变字段varchar长度：
+ALTER TABLE <table_name> MODIFY <col_name> VARCHAR(65536);
+
+查看当前AUTO_INCREMENT的值
+SELECT `AUTO_INCREMENT`
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = '99kk'
+AND   TABLE_NAME   = 'tags';
+
+设置AUTO_INCREMENT
+ALTER TABLE tbl AUTO_INCREMENT = 5;
 
 删除前100行
 DELETE from table_name where col_name limit 100

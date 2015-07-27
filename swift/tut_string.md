@@ -122,3 +122,14 @@ let range = advance(welcome.endIndex, -6)..<welcome.endIndex
 welcome.removeRange(range)
 // welcome now equals "hello"
 ```
+
+- 字符串比较，用`==`, `!=`,并且比较的是extended grapheme cluster。字符比较也一样，所以即便两个字符串或者字符的
+unicode scalar不同，结果也能是true。下面举了正反两个例子，外表相似不一定相同，重要的是extended grapheme cluster中是否相等。
+
+>For example, LATIN SMALL LETTER E WITH ACUTE (U+00E9) is canonically equivalent to LATIN SMALL LETTER E (U+0065) followed by COMBINING ACUTE ACCENT (U+0301). Both of these extended grapheme clusters are valid ways to represent the character é, and so they are considered to be canonically equivalent:
+
+>Conversely, LATIN CAPITAL LETTER A (U+0041, or "A"), as used in English, is not equivalent to CYRILLIC CAPITAL LETTER A (U+0410, or "А"), as used in Russian. The characters are visually similar, but do not have the same linguistic meaning:
+
+
+- 前缀后缀的查询 `hasPrefix(_:)` 和 `hasSuffix(_:)`
+- 字符串的Unicode表示， string有三个属性`utf8`, `utf16`, `unicodeScalars`;需要细读
