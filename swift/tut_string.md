@@ -75,3 +75,50 @@ word += "\u{301}"    // COMBINING ACUTE ACCENT, U+0301
 println("the number of characters in \(word) is \(count(word))")
 // prints "the number of characters in café is 4"
 ```
+
+注意，由于在swift中一个字符所占内存不固定，所以`count(_:)`方法必须遍历字符串中所有字符来判断
+extended grapheme cluster的边界.
+`count(_:)`和`NSString`的length属性的值不一定一致。length属性是基于UTF16代表的16-bit代码单位。
+为表明区别，在swift中访问NSString的length属性时，使用utf16Count。
+
+- String indexes; `startIndex`, `endIndex`属性.
+上一个index内容，下一个index内容，`predecessor()`, `successor()`.
+ `advance(start:n:)` 从index向后数n的index
+ `indicies(_:)` 创建一个index的Range
+
+```
+let greeting = "Guten Tag"
+println(greeting.startIndex) // 0
+println(greeting.endIndex)  // 9
+greeting[greeting.startIndex] // G
+
+greeting[greeting.startIndex.successor()]  // u
+greeting[greeting.endIndex.predecessor()]  // g
+let index = advance(greeting.startIndex, 7)
+greeting[index]  // a
+greeting.endIndex.successor() // fatal error: can not increment endIndex
+
+for index in indices(greeting) {
+    print("\(greeting[index]) ")
+}
+// prints "G u t e n   T a g"
+```
+
+- Inserting and Removing. `insert(_:atIndex:)`, `splice(_:atIndex:)`,
+`removeAtIndex(_:)`, `removeRange(_:)`
+
+```
+var welcome = "hello"
+welcome.insert("!", atIndex: welcome.endIndex)
+// welcome now equals "hello!"
+
+welcome.splice(" there", atIndex: welcome.endIndex.predecessor())
+// welcome now equals "hello there!"
+
+welcome.removeAtIndex(welcome.endIndex.predecessor())
+// welcome now equals "hello there"
+
+let range = advance(welcome.endIndex, -6)..<welcome.endIndex
+welcome.removeRange(range)
+// welcome now equals "hello"
+```
