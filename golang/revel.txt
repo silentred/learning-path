@@ -6,3 +6,21 @@ https://github.com/golang/net 去下载 golang.org/x/net/ 包，解压在 $GOPAT
 go install .
 
 继续刚才的安装，就ok了
+
+关于GDB
+http://golang.org/doc/gdb
+
+关于Template
+http://golang.org/pkg/text/template/
+
+关于url.Values, string 对应 []string
+http://golang.org/pkg/net/url/#Values
+
+ORM for golang：
+https://github.com/go-gorp/gorp
+
+关于init的官方解释：
+https://golang.org/doc/effective_go.html#init
+
+关于 go install, go build, go test的官方视频：
+https://www.youtube.com/watch?v=XCsL89YtqCs
