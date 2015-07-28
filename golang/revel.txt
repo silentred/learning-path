@@ -6,3 +6,11 @@ https://github.com/golang/net 去下载 golang.org/x/net/ 包，解压在 $GOPAT
 go install .
 
 继续刚才的安装，就ok了
+
+查看是否安装成功：
+revel help
+
+新建一个项目,项目的目录位于$GOPATH/src/myApp
+revel new myApp
+
+
