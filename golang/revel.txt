@@ -33,3 +33,9 @@ https://golang.org/doc/effective_go.html#init
 关于 go install, go build, go test的官方视频：
 https://www.youtube.com/watch?v=XCsL89YtqCs
 
+一个SQL相关库
+http://jmoiron.github.io/sqlx/
+
+关于golang sql包的介绍
+http://go-database-sql.org/overview.html
+

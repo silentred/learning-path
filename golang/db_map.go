@@ -13,12 +13,26 @@ func main()  {
 
     //选择多行
     var posts []Post
+    // var posts []struct{
+    //     Id      int64  `db:"id"`
+    //     Title   string `db:"title"`
+    //     Content    string `db:"content"`
+    // }
     _, err := dbmap.Select(&posts, "select * from post_test order by id")
     checkErr(err, "select failed")
     // 这里的_为index,忽略
     for _ , post := range posts {
-        fmt.Printf("Post Id:%d, Title: %s \n", post.Id, post.Title)
+        fmt.Printf("Post Id:%d, Title: %s, Created At: %s \n", post.Id, post.Title, post.CreatedAt)
     }
+
+    // var post2 struct{
+    //     Id      int64
+    //     Title   string
+    //     Content    string
+    // }
+    // err = dbmap.SelectOne(&post2, "select * from post_test where id=?", 2)
+    // checkErr(err, "no result")
+    // fmt.Printf("Post Id:%d, Title: %s \n", post2.Id, post2.Title)
 
     //根据id取单行； 这里_为err，忽略
     // obj, _ := dbmap.Get(Post{}, 1)
@@ -43,6 +57,7 @@ type Post struct {
     Id      int64  `db:"id"`
     Title   string `db:"title"`               // Column size set to 50
     Content    string `db:"content"` // Set both column name and size
+    CreatedAt   string `db:"created_at"`
     IgnoreMe   string    `db:"-"`
 }
 
