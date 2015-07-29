@@ -66,4 +66,26 @@ letters = []
 // letters is now an empty set, but is still of type Set<Character>
 
 var favoriteGenres: Set<String> = ["Rock", "Classical", "Hip hop"]
+var favoriteGenres: Set = ["Rock", "Classical", "Hip hop"]
 ```
+
+- `count`, `isEmpty`, `insert(_:)`, `remove(_:)`, `contains(_:)`
+- 遍历Set
+
+```
+for genre in favoriteGenres {
+    println("\(genre)")
+}
+for genre in sorted(favoriteGenres) {
+    println("\(genre)")
+}
+```
+
+- 集合操作：`union(_:)`并集, `subtract(_:)`相对补集,`intersect(_:)`交集，`exclusiveOr(_:)`
+
+- 比较集合, `==`, `isSubsetOf(_:)`, `isSupersetOf(_:)`, `isStrictSubsetOf(_:)`,
+`isStrictSupersetOf(_:)`strict表示比较的两个集合不能完全相等,
+ `isDisjointWith(_:)`判断两集合是否有共同存在的值
+
+ - 集合的类型必须能提供hash value，swift的基本类型，枚举类型都是hashable的。
+ `Hashable`, `Equatable`,
