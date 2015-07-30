@@ -17,6 +17,7 @@ func main()  {
     //     Id      int64  `db:"id"`
     //     Title   string `db:"title"`
     //     Content    string `db:"content"`
+    // 结构可以包含结果中没有的字段
     // }
     _, err := dbmap.Select(&posts, "select * from post_test order by id")
     checkErr(err, "select failed")
