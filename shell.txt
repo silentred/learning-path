@@ -114,3 +114,5 @@ tzselect 修改时区
 date -s 15:40:00 修改时间
 date -s 06/18/14 2014年6月18日
 
+wget的提示文件名太长无法创建问题：
+-O filename
