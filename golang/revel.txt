@@ -39,3 +39,22 @@ http://jmoiron.github.io/sqlx/
 关于golang sql包的介绍
 http://go-database-sql.org/overview.html
 
+关于如何建一个web app的官方教程，
+https://golang.org/doc/articles/wiki/#tmp_0
+
+net/http的教程
+http://soryy.com/blog/2014/not-another-go-net-http-tutorial/
+
+net/http包的doc
+http://golang.org/pkg/net/http/#pkg-overview
+
+官方的语言建议
+https://golang.org/doc/effective_go.html
+
+
+一个用go写的分布式文件系统
+https://github.com/michaelmaltese/golang-distributed-filesystem
+
+Quora分布式文件系统:
+http://www.quora.com/This-morning-I-had-a-whim-of-building-a-Distributed-File-System-from-scratch-to-learn-the-intricacies-of-building-such-a-system-what-would-be-your-timeline-if-you-were-to-work-on-such-project/answer/Jeff-Darcy
+http://www.quora.com/Distributed-Systems/How-is-a-cloud-file-storage-system-distributed

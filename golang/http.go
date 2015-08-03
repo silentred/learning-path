@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
+	"fmt"
 )
 
 func handlerA(w http.ResponseWriter, r *http.Request) {
