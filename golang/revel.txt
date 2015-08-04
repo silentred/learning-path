@@ -58,3 +58,13 @@ https://github.com/michaelmaltese/golang-distributed-filesystem
 Quora分布式文件系统:
 http://www.quora.com/This-morning-I-had-a-whim-of-building-a-Distributed-File-System-from-scratch-to-learn-the-intricacies-of-building-such-a-system-what-would-be-your-timeline-if-you-were-to-work-on-such-project/answer/Jeff-Darcy
 http://www.quora.com/Distributed-Systems/How-is-a-cloud-file-storage-system-distributed
+
+关于encoding/json
+https://gobyexample.com/json
+
+shadowsocks-go, 学习下shadowsocks协议
+https://github.com/shadowsocks/shadowsocks-go
+
+struct匿名字段
+http://golangtutorials.blogspot.com/2011/06/anonymous-fields-in-structs-like-object.html
+

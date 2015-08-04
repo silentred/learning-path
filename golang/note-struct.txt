@@ -1,0 +1,56 @@
+## 匿名成员
+
+```
+package main
+
+import "fmt"
+
+type Kitchen struct {
+    numOfPlates int 
+}
+
+type House struct {
+    Kitchen //anonymous field
+    numOfRooms int 
+}
+
+func main() {
+    h := House{Kitchen{10}, 3} //to initialize you have to use composed type name.
+    fmt.Println("House h has this many rooms:", h.numOfRooms) //numOfRooms is a field of House
+    fmt.Println("House h has this many plates:", h.numOfPlates) //numOfPlates is a field of anonymous field Kitchen, so it can be referred to like a field of House
+    fmt.Println("The Kitchen contents of this house are:", h.Kitchen) //we can refer to the embedded struct in its entirety by referring to the name of the struct type
+}
+```
+
+注意点：
+
+1. House可以直接访问Kitchen的成员
+2. House可以访问成员Kitchen，但是必须通过其类型名称,即 `h.Kichen.numOfPlates`
+3. House初始化时，`House{Kitchen{10}, 3}` 必须指明嵌套的type名称，"Kitchen"不能省略
+4. 如果匿名变量的成员和外部成员命名冲突，则`h.numOfPlates`默认为外部变量，`h.Kichen.numOfPlates`用来访问内部变量
+5. 嵌套层级相同的成员命名冲突，必须显示指明使用哪个变量，`h.numOfPlates`这种形式会抛出错误, 如下
+
+```
+type Kitchen struct {
+    numOfLamps int
+}
+
+type Bedroom struct {
+    numOfLamps int
+}
+
+type House struct {
+    Kitchen
+    Bedroom
+}
+
+func main() {
+    h := House{Kitchen{2}, Bedroom{3}} //kitchen has 2 lamps, Bedroom has 3 lamps
+    fmt.Println("Ambiguous number of lamps:", h.numOfLamps) //this is an error due to ambiguousness - is it Kitchen.numOfLamps or Bedroom.numOfLamps
+
+    fmt.Println("House h has this many lamps:", h.Kitchen.numOfLamps + h.Bedroom.numOfLamps) //refer to fields via type name
+}
+
+```
+
+
