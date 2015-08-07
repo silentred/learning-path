@@ -100,7 +100,8 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
  
 ### Mask规则
 masking-key是客户端随意指定的32bit长度值。
-从原始数据到masked数据的方式为：`原始数据第i个字节 XOR masking-key的第(i%4)个字节`。XOR表示异或，%表示取模。
+从原始数据到masked数据的方式为：`原始数据第i个字节的值 XOR masking-key的第(i%4)个字节的值`。XOR表示异或，%表示取模。
+
 
 
 接着写：https://tools.ietf.org/html/rfc6455#section-1.3
