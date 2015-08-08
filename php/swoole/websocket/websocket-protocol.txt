@@ -1,3 +1,5 @@
+> 服务端的开发离不开协议，swoole的出现对于学习通信来说，无疑是非常好的教材。非常推荐大家下载 [Swoole Framework](https://github.com/swoole/framework)，其中包含了多种协议的php实现，例如FTP，HTTP，Websocket等。本文大部分代码都是受这个项目的启发，当然学习的同时别忘了star一下这个项目。笔者本身计算机基础较弱，写这篇文章的同时也查了不少资料，如果有错误欢迎提出批评。
+
 ## websocket协议学习
 
 ### 概述
@@ -16,7 +18,7 @@ Sec-WebSocket-Protocol: chat, superchat
 Sec-WebSocket-Version: 13
 ```
 
-服务器发出的握手信息类似：
+服务器返回的握手信息类似：
 
 ```
 HTTP/1.1 101 Switching Protocols
@@ -28,7 +30,7 @@ Sec-WebSocket-Version: 13
 ```
 
 两段信息的第一行大家应该都比较熟悉，是HTTP协议中的Request-Line和Status-Line，[RFC2616](https://tools.ietf.org/html/rfc2616)。下面接着出现的是无序的头信息，这和HTTP协议相同。 一旦握手成功，一个双向连接通道就建立了。
-连接传输`message`, `message`由一个或多个`frame`组成。每个frame有一个类型，属于同一个message的frame的类型都相同。类型包括：文本，二进制，control frame(协议层信号)等。目前一共有6种类型，10种保留类型。
+连接用于传输`message`, `message`由一个或多个`frame`组成。每个frame有一个类型，属于同一个message的frame的类型都相同。类型包括：文本，二进制，control frame(协议层信号)等。目前一共有6种类型，10种保留类型。
 
 ### 握手
 
@@ -46,7 +48,7 @@ Sec-WebSocket-Version: 13
 
 ### 验证握手
 
-取`Sec-WebSocket-Key `字段的值，连接一个GUID字符串,"258EAFA5-E914-47DA-95CA-C5AB0DC85B11", sha1 hash一下，再base64_encode，得到的值作为字段`Sec-WebSocket-Accept`的值返回给客户端。用php代码表示
+取`Sec-WebSocket-Key `字段的值，连接一个GUID字符串,"258EAFA5-E914-47DA-95CA-C5AB0DC85B11", sha1 hash一下，再base64_encode，得到的值作为字段`Sec-WebSocket-Accept`的值返回给客户端。用php代码表示:
 
 ```
 'Sec-WebSocket-Accept' => base64_encode(sha1($key . static::GUID, true))
@@ -62,6 +64,7 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 ```
 
 ### Frame(帧)的结构如下：
+```
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-------+-+-------------+-------------------------------+
@@ -80,10 +83,11 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
  + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
  |                     Payload Data continued ...                |
  +---------------------------------------------------------------+
+```
 
-- FIN: 1 bit, 标记是否是最后一个message的最后一个片段
-- RSV1, RSV2, RSV3： 各 1 bit, 保留标记，都为0
-- Opcode：4 bits， 是对payload data的说明，指明这个帧的类型。
+- `FIN`: 1 bit, 标记是否是最后一个message的最后一个片段
+- `RSV1`, `RSV2`, `RSV3`： 各 1 bit, 保留标记，都为0
+- `Opcode`：4 bits， 是对payload data的说明，指明这个帧的类型。
 1. 0x0 表明为接着上一帧的连续帧
 2. 0x1 表明为text frame
 3. 0x2 表明为binary frame
@@ -92,30 +96,95 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 6. 0x9 为ping
 7. 0xA 为pong
 8. 0xB-F 保留 
-
-- Mask: 1 bit, 指明Payload data是否被mask，如果为1，那么数据需要根据masking-key来unmask。客户端发送的帧都是mask的。
-- Payload length： 7 bits 或 7+16 bits 或 7+64 bits. 如果值为0-125，那么该值就是payload的长度；如果为126，那么接下来的2个byte表示payload长度(16bit, unsigned)； 如果为127，那么接下来的8个bytes表示payload的长度(64bit, unsigned)。
-- Masking-key: 0 或 4 bytes, 用于unmask payload data。
-- Payload data: 长度为 Payload length, 可以分为 extension data + application data, 扩展数据的长度计算方法是是事先商议好的，剩余的就是应用数据。
+- `Mask`: 1 bit, 指明Payload data是否被mask，如果为1，那么数据需要根据masking-key来unmask。客户端发送的帧都是mask的。
+- `Payload length`： 7 bits 或 7+16 bits 或 7+64 bits. 如果值为0-125，那么该值就是payload的长度；如果为126，那么接下来的2个byte表示payload长度(16bit, unsigned)； 如果为127，那么接下来的8个bytes表示payload的长度(64bit, unsigned)。
+- `Masking-key`: 0 或 4 bytes, 用于unmask payload data。
+- `Payload data`: 长度为 Payload length, 可以分为 extension data + application data, 扩展数据的长度计算方法是是事先商议好的，剩余的就是应用数据。
  
 ### Mask规则
-masking-key是客户端随意指定的32bit长度值。
-从原始数据到masked数据的方式为：`原始数据第i个字节的值 XOR masking-key的第(i%4)个字节的值`。XOR表示异或，%表示取模。
+
+`masking-key`是客户端随意指定的32bit长度值。从原始数据到masked数据的方式为：`原始数据第i个字节的值 XOR masking-key的第(i%4)个字节的值`。XOR表示异或，%表示取模。
 
 
+### 片段化的作用
+
+当传递一个未知长度的数据时，可以不用一下子buffer全部的数据。尤其当数据非常大时，可以分多次buffer，包装为frame来发送。
+
+### 尝试解析一个frame
+
+看到这里，我们已经了解了frame的结构，是否想尝试解析一个frame，官方文档提供了几段[二进制数据](https://tools.ietf.org/html/rfc6455#page-38)，我们可以用来练习一下。我挑选了其中两段, 代码如下：
+
+```php
+<?php
+
+//A single-frame unmasked text message
+$data = array(0x81, 0x05, 0x48, 0x65, 0x6c, 0x6c, 0x6f);
+//A single-frame masked text message
+$data2 = array(0x81, 0x85, 0x37, 0xfa, 0x21, 0x3d, 0x7f, 0x9f, 0x4d, 0x51, 0x58);
 
 
+handleData(toString($data));
+handleData(toString($data2));
 
-o  A fragmented unmasked text message
+function toString(array $data) {
+    return array_reduce($data, function($carry, $item){
+        return $carry .= chr($item);
+    });
+}
 
-*  0x01 0x03 0x48 0x65 0x6c (contains "Hel")
+function handleData($data){
+	$offset = 0;
 
-*  0x80 0x02 0x6c 0x6f (contains "lo")
-	  
-接着写：https://tools.ietf.org/html/rfc6455#section-1.3
-$string = "1abc123";
-var_dump($string);
-var_dump($string[0]);
-var_dump(ord($string[0]));
-var_dump(base_convert("95", 10, 16));
-var_dump(pack("H*", base_convert("70", 10, 16)));
+	$temp = ord($data[$offset++]);
+	$FIN = ($temp >> 7) & 0x1;
+	$RSV1 = ($temp >> 6) & 0x1;
+	$RSV2 = ($temp >> 5) & 0x1;
+	$RSV3 = ($temp >> 4) & 0x1;
+	$opcode = $temp & 0xf;
+
+	echo "First byte: FIN is $FIN, RSV1-3 are $RSV1, $RSV2, $RSV3; Opcode is $opcode \n";
+
+	$temp = ord($data[$offset++]);
+	$mask = ($temp >> 7) & 0x1;
+	$payload_length = $temp & 0x7f;
+	if($payload_length == 126){
+		$temp = substr($data, $offset, 2);
+		$offset += 2;
+		$temp = unpack('nl', $temp);
+		$payload_length = $temp['l'];
+	}elseif($payload_length == 127){
+		$temp = substr($data, $offset, 8);
+		$offset += 8;
+		$temp = unpack('nl', $temp);
+		$payload_length = $temp['l'];
+	}
+	echo "mask is $mask, payload_length is $payload_length \n";
+
+	if($mask ==0){
+		$temp = substr($data, $offset);
+		$content = '';
+        for ($i=0; $i < $payload_length; $i++) { 
+            $content .= $temp[$i];
+        }
+	}else{
+		$masking_key = substr($data, $offset, 4);
+		$offset += 4;
+		
+		$temp = substr($data, $offset);
+		$content = '';
+        for ($i=0; $i < $payload_length; $i++) { 
+            $content .= chr(ord($temp[$i]) ^ ord($masking_key[$i%4]));
+        }
+	}
+
+	echo "content is $content \n";
+}
+```
+结果输出如下图：
+
+![output result][1]
+
+> 到这里其实并不算完，ws协议还有很多很多规则，RFC文档实在是太长了。比如，如何应对每一种control frame，有详细的说明；如何关闭连接；协议扩展；错误处理；安全相关；一些基本的内容都能在swoole framework中找到对应的代码。
+
+
+  [1]: /img/bVm1yL
