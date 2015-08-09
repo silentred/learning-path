@@ -24,6 +24,7 @@
 - `RENAME key newkey`
 - `SORT key [BY pattern] [LIMIT offset count] [GET pattern [GET pattern ...]] [ASC|DESC] [ALPHA] [STORE destination]` , 连表排序`SORT mylist BY weight_*`, `SORT mylist BY weight_* GET object_* GET #`,
 `#`表示get the element itself. 连Hash表`SORT mylist BY weight_*->fieldname GET object_*->fieldname`
+- 迭代 `SCAN `
 
 
 
