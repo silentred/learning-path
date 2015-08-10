@@ -26,6 +26,10 @@ class DBServer
         //$serv->on('Close', array($this, 'onClose'));
         $serv->start();
     }
+	
+	function onClose($serv, $fd){
+		$serv->close($fd);
+	}
 
     function onStart($serv)
     {
@@ -78,21 +82,21 @@ class DBServer
 
     function onReceive($serv, $fd, $from_id, $data)
     {
-	echo "Received: $data\n";
-        //没有空闲的数据库连接
-        
-	if (count($this->idle_pool) == 0) {
-            //等待队列未满
+    	echo "Received: $data\n";
+            //没有空闲的数据库连接
+            
+    	if (count($this->idle_pool) == 0) {
+                //等待队列未满
             if (count($this->wait_queue) < $this->wait_queue_max) {
-                $this->wait_queue[] = array(
-                    'fd' => $fd,
-                    'sql' => $data,
-                );
+                    $this->wait_queue[] = array(
+                        'fd' => $fd,
+                        'sql' => $data,
+                    );
             } else {
-                $this->serv->send($fd, "request too many, Please try again later.");
+                    $this->serv->send($fd, "request too many, Please try again later.");
             }
         } else {
-            $this->doQuery($fd, $data);
+                $this->doQuery($fd, $data);
         }
     }
 

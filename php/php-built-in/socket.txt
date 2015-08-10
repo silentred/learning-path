@@ -1,0 +1,3 @@
+// fsockopen 和 socket_create的区别
+// fsockopen creates a connection to a host, not a listening socket. 
+// fsockopen($address) ~== socket_connect(socket_create(), $address)
