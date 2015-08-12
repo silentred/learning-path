@@ -88,4 +88,82 @@ for genre in sorted(favoriteGenres) {
  `isDisjointWith(_:)`判断两集合是否有共同存在的值
 
  - 集合的类型必须能提供hash value，swift的基本类型，枚举类型都是hashable的。
- `Hashable`, `Equatable`,
+ `Hashable`, `Equatable`. Hashable接口需要Type有一个Int类型的名为hashValue的属性。
+ 
+ 
+- 字典 Dictionary
+类型写作Dictionary<Key, Value> ， key必须是Hashable的。创建空的Dict：
+```
+var namesOfIntegers = [Int: String]()
+namesOfIntegers[16] = "sixteen"
+// namesOfIntegers now contains 1 key-value pair
+namesOfIntegers = [:]
+// namesOfIntegers is once again an empty dictionary of type [Int: String]
+```
+
+- Dict字面量： `[key 1: value 1, key 2: value 2, key 3: value 3]`
+
+```
+var airports: [String: String] = ["YYZ": "Toronto Pearson", "DUB": "Dublin"]
+//也可以这样初始化
+var airports = ["YYZ": "Toronto Pearson", "DUB": "Dublin"]
+```
+
+- 字典的存取
+
+`airports.count`, `airports.isEmpty`
+```
+//设置新key/value, 修改value也是一样的语法
+airports["LHR"] = "London"
+// 修改也可以用 updateValue(_:forKey:) 这个方法，区别是该方法返回旧的值
+if let oldValue = airports.updateValue("Dublin Airport", forKey: "DUB") {
+    println("The old value for DUB was \(oldValue).")
+}
+
+// 直接取值，返回的是optional。如果key不存在，则返回nil。下面的unpack操作很实用
+if let airportName = airports["DUB"] {
+}
+
+//删除key有两种方式：
+airports["APL"] = nil // APL has now been removed from the dictionary
+if let removedValue = airports.removeValueForKey("DUB") {
+}
+```
+
+- 迭代
+
+```
+for (airportCode, airportName) in airports {
+    println("\(airportCode): \(airportName)")
+}
+
+// 迭代keys属性，values属性
+for airportCode in airports.keys {
+    println("Airport code: \(airportCode)")
+}
+for airportName in airports.values {
+    println("Airport name: \(airportName)")
+}
+
+// keys属性转为数组，需要查一下keys的类型
+let airportCodes = [String](airports.keys)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
