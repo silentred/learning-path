@@ -71,6 +71,7 @@ Both the closed range operator (...) and half-open range operator (..<) function
 range operator（区间操作符）返回`IntervalType` 或 `Range`类型，switch中返回IntervalType；for-in中返回Range.
 
 - 可以用switch比较tuple，`_`表示任意值，tuple中甚至可以包含interval
+
 ```
 let somePoint = (1, 1)
 switch somePoint {
