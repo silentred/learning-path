@@ -1,48 +1,48 @@
 
-## Èí¼ş°²×°
+## è½¯ä»¶å®‰è£…
 
-### °²×°Brew
+### å®‰è£…Brew
 ```
 ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
 brew doctor
 
-brew update                        #¸üĞÂbrew¿É°²×°°ü£¬½¨ÒéÃ¿´ÎÖ´ĞĞÒ»ÏÂ
-brew search php55                  #ËÑË÷php5.5
-brew tap josegonzalez/php          #°²×°À©Õ¹<gihhub_user/repo>   
-brew tap                           #²é¿´°²×°µÄÀ©Õ¹ÁĞ±í
-brew install php55                 #°²×°php5.5
-brew remove  php55                 #Ğ¶ÔØphp5.5
-brew upgrade php55                 #Éı¼¶php5.5
-brew options php55                 #²é¿´php5.5°²×°Ñ¡Ïî
-brew info    php55                 #²é¿´php5.5Ïà¹ØĞÅÏ¢
-brew home    php55                 #·ÃÎÊphp5.5¹Ù·½ÍøÕ¾
-brew services list                 #²é¿´ÏµÍ³Í¨¹ı brew °²×°µÄ·şÎñ
-brew services cleanup              #Çå³ıÒÑĞ¶ÔØÎŞÓÃµÄÆô¶¯ÅäÖÃÎÄ¼ş
-brew services restart php55        #ÖØÆôphp-fpm
+brew update                        #æ›´æ–°brewå¯å®‰è£…åŒ…ï¼Œå»ºè®®æ¯æ¬¡æ‰§è¡Œä¸€ä¸‹
+brew search php55                  #æœç´¢php5.5
+brew tap josegonzalez/php          #å®‰è£…æ‰©å±•<gihhub_user/repo>   
+brew tap                           #æŸ¥çœ‹å®‰è£…çš„æ‰©å±•åˆ—è¡¨
+brew install php55                 #å®‰è£…php5.5
+brew remove  php55                 #å¸è½½php5.5
+brew upgrade php55                 #å‡çº§php5.5
+brew options php55                 #æŸ¥çœ‹php5.5å®‰è£…é€‰é¡¹
+brew info    php55                 #æŸ¥çœ‹php5.5ç›¸å…³ä¿¡æ¯
+brew home    php55                 #è®¿é—®php5.5å®˜æ–¹ç½‘ç«™
+brew services list                 #æŸ¥çœ‹ç³»ç»Ÿé€šè¿‡ brew å®‰è£…çš„æœåŠ¡
+brew services cleanup              #æ¸…é™¤å·²å¸è½½æ— ç”¨çš„å¯åŠ¨é…ç½®æ–‡ä»¶
+brew services restart php55        #é‡å¯php-fpm
 ```
 
-### Yosemite×Ô´øÁËzsh
+### Yosemiteè‡ªå¸¦äº†zsh
 zsh --version
 
 ### Cask
 ```
 brew tap phinze/homebrew-cask && brew install brew-cask 
 
-brew cask search        #ÁĞ³öËùÓĞ¿ÉÒÔ±»°²×°µÄÈí¼ş
-brew cask search php    #²éÕÒËùÓĞºÍphpÏà¹ØµÄÓ¦ÓÃ
-brew cask list          #ÁĞ³öËùÓĞÍ¨¹ıcask°²×°µÄÈí¼ş
-brew cask info phpstorm #²é¿´ phpstorm µÄĞÅÏ¢
-brew cask uninstall qq  #Ğ¶ÔØ QQ
+brew cask search        #åˆ—å‡ºæ‰€æœ‰å¯ä»¥è¢«å®‰è£…çš„è½¯ä»¶
+brew cask search php    #æŸ¥æ‰¾æ‰€æœ‰å’Œphpç›¸å…³çš„åº”ç”¨
+brew cask list          #åˆ—å‡ºæ‰€æœ‰é€šè¿‡caskå®‰è£…çš„è½¯ä»¶
+brew cask info phpstorm #æŸ¥çœ‹ phpstorm çš„ä¿¡æ¯
+brew cask uninstall qq  #å¸è½½ QQ
 ```
 
 ### iTerm2
 ```
 brew cask install iterm2
 
-¿ª·¢°ü£¬ÔİÊ±²»°²×°
+å¼€å‘åŒ…ï¼Œæš‚æ—¶ä¸å®‰è£…
 brew install wget watch tmux cmake openssl imagemagick graphicsmagick gearman geoip readline autoconf multitail source-highlight autojump zsh-completions sshfs 
 
-³£ÓÃÈí¼ş£¬°²×°ÁËsublime£¬phpstorm¿ÉÒÔ°²×°£¬µ÷²éÏÂmplayerx£¬qq£¬ thunder£¬atom£¬appcleaner£»
+å¸¸ç”¨è½¯ä»¶ï¼Œå®‰è£…äº†sublimeï¼Œphpstormå¯ä»¥å®‰è£…ï¼Œè°ƒæŸ¥ä¸‹mplayerxï¼Œqqï¼Œ thunderï¼Œatomï¼Œappcleanerï¼›
 brew cask install alfred appcleaner firefox google-chrome phpstorm sublime-text sequel-pro sketch mplayerx thunder qq
 ```
 
@@ -50,14 +50,14 @@ brew cask install alfred appcleaner firefox google-chrome phpstorm sublime-text 
 ```
 brew install mysql
 
-¿ª»úÆô¶¯£¬²»ÓÃ¡£
+å¼€æœºå¯åŠ¨ï¼Œä¸ç”¨ã€‚
 ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 
-ÅäÖÃ½Å±¾
+é…ç½®è„šæœ¬
 /usr/local/opt/mysql/bin/mysql_secure_installation
 
-°²×°phpadmin£¬ÔİÊ±²»ÓÃ
+å®‰è£…phpadminï¼Œæš‚æ—¶ä¸ç”¨
 brew install phpmyadmin
 ```
 
@@ -67,16 +67,17 @@ brew update
 brew tap homebrew/dupes
 brew tap josegonzalez/homebrew-php
 
-²é¿´°²×°Ñ¡Ïî
+æŸ¥çœ‹å®‰è£…é€‰é¡¹
 brew options php55
-brew install php55 --with-fpm --with-gmp --with-imap --with-tidy --with-debug --with-mysql --with-libmysql
+brew install php55 --with-debug
 
-°²×°À©Õ¹£¬¿´Çé¿ö¡£
+å®‰è£…æ‰©å±•ï¼Œçœ‹æƒ…å†µã€‚
 brew install php55-apcu php55-gearman php55-geoip php55-gmagick php55-imagick php55-intl php55-mcrypt php55-memcache php55-memcached php55-mongo php55-opcache php55-pdo-pgsql php55-phalcon php55-redis php55-sphinx php55-swoole php55-uuid php55-xdebug;
 
-brew install php55-swoole php55-redis php55-xdebug php55-mongo php55-mcrypt php55-sphinx
+brew install php55-swoole php55-xdebug php55-mongo php55-mcrypt
+rediséœ€è¦è‡ªå·±ä¸‹æºç ç¼–è¯‘
 
-ĞŞ¸ÄPATH
+ä¿®æ”¹PATH
 echo 'export PATH="$(brew --prefix php55)/bin:$PATH"' >> ~/.bash_profile  #for php
 echo 'export PATH="$(brew --prefix php55)/sbin:$PATH"' >> ~/.bash_profile  #for php-fpm
 echo 'export PATH="/usr/local/bin:/usr/local/sbib:$PATH"' >> ~/.bash_profile #for other brew install soft
@@ -85,54 +86,54 @@ source ~/.bash_profile
 php -v 
 php-fpm -v
 
-ĞŞ¸Äphp-fpmÅäÖÃÎÄ¼ş£¬vim /usr/local/etc/php/5.5/php-fpm.conf£¬ÕÒµ½pidÏà¹Ø´ó¸ÅÔÚ25ĞĞ£¬È¥µô×¢ÊÍ pid = run/php-fpm.pid, ÄÇÃ´php-fpmµÄpidÎÄ¼ş¾Í»á×Ô¶¯²úÉúÔÚ/usr/local/var/run/php-fpm.pid£¬ÏÂÃæÒª°²×°µÄNginx pidÎÄ¼şÒ²·ÅÔÚÕâÀï¡£
+ä¿®æ”¹php-fpmé…ç½®æ–‡ä»¶ï¼Œvim /usr/local/etc/php/5.5/php-fpm.confï¼Œæ‰¾åˆ°pidç›¸å…³å¤§æ¦‚åœ¨25è¡Œï¼Œå»æ‰æ³¨é‡Š pid = run/php-fpm.pid, é‚£ä¹ˆphp-fpmçš„pidæ–‡ä»¶å°±ä¼šè‡ªåŠ¨äº§ç”Ÿåœ¨/usr/local/var/run/php-fpm.pidï¼Œä¸‹é¢è¦å®‰è£…çš„Nginx pidæ–‡ä»¶ä¹Ÿæ”¾åœ¨è¿™é‡Œã€‚
 
-#²âÊÔphp-fpmÅäÖÃ
+#æµ‹è¯•php-fpmé…ç½®
 php-fpm -t
 php-fpm -c /usr/local/etc/php/5.5/php.ini -y /usr/local/etc/php/5.5/php-fpm.conf -t
 
-#Æô¶¯php-fpm
+#å¯åŠ¨php-fpm
 php-fpm -D
 php-fpm -c /usr/local/etc/php/5.5/php.ini -y /usr/local/etc/php/5.5/php-fpm.conf -D
 
-#¹Ø±Õphp-fpm
+#å…³é—­php-fpm
 kill -INT `cat /usr/local/var/run/php-fpm.pid`
 
-#ÖØÆôphp-fpm
+#é‡å¯php-fpm
 kill -USR2 `cat /usr/local/var/run/php-fpm.pid`
 
-#Ò²¿ÉÒÔÓÃÉÏÎÄÌáµ½µÄbrewÃüÁîÀ´ÖØÆôphp-fpm£¬²»¹ıËû¹Ù·½²»ÍÆ¼öÓÃÕâ¸öÃüÁîÁË
+#ä¹Ÿå¯ä»¥ç”¨ä¸Šæ–‡æåˆ°çš„brewå‘½ä»¤æ¥é‡å¯php-fpmï¼Œä¸è¿‡ä»–å®˜æ–¹ä¸æ¨èç”¨è¿™ä¸ªå‘½ä»¤äº†
 brew services restart php55
 
-#»¹¿ÉÒÔÓÃÕâ¸öÃüÁîÀ´Æô¶¯php-fpm
+#è¿˜å¯ä»¥ç”¨è¿™ä¸ªå‘½ä»¤æ¥å¯åŠ¨php-fpm
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php55.plist
 
 
-°²×°composer
+å®‰è£…composer
 brew install composer
-#¼ì²éÒ»ÏÂÇé¿ö
+#æ£€æŸ¥ä¸€ä¸‹æƒ…å†µ
 composer --version
 ```
 
-### °²×°nginx
+### å®‰è£…nginx
 ```
 brew install nginx --with-http_geoip_module
 
-#²âÊÔÅäÖÃÊÇ·ñÓĞÓï·¨´íÎó
+#æµ‹è¯•é…ç½®æ˜¯å¦æœ‰è¯­æ³•é”™è¯¯
 nginx -t
 
-#´ò¿ª nginx
+#æ‰“å¼€ nginx
 sudo nginx
 
-#ÖØĞÂ¼ÓÔØÅäÖÃ|ÖØÆô|Í£Ö¹|ÍË³ö nginx
+#é‡æ–°åŠ è½½é…ç½®|é‡å¯|åœæ­¢|é€€å‡º nginx
 nginx -s reload|reopen|stop|quit
 
-#Ò²¿ÉÒÔÊ¹ÓÃMacµÄlaunchctlÀ´Æô¶¯|Í£Ö¹
+#ä¹Ÿå¯ä»¥ä½¿ç”¨Macçš„launchctlæ¥å¯åŠ¨|åœæ­¢
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 
 
-Nginx¿ª»úÆô¶¯
+Nginxå¼€æœºå¯åŠ¨
 ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 
@@ -140,7 +141,7 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 ```
 
 
-## ÉèÖÃ¿ì½İ·şÎñ¿ØÖÆÃüÁî
+## è®¾ç½®å¿«æ·æœåŠ¡æ§åˆ¶å‘½ä»¤
 ```
 alias nginx.start='launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'
 alias nginx.stop='launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'
@@ -159,16 +160,16 @@ alias memcached.stop="launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.m
 alias memcached.restart='memcached.stop && memcached.start'
 ```
 
-## ÖÆ×÷Yosemite°²×°ÅÌ
-×¼±¸Ò»¸ö8GB µÄ UÅÌ£¬ÓÃ¡¸Ó¦ÓÃ³ÌĞò ¨C ÊµÓÃ¹¤¾ß ¨C ´ÅÅÌ¹¤¾ß¡¹¸ñÊ½»¯³É¡¸Mac OS X À©Õ¹£¨ÈÕÖ¾Ê½£©¡¹¸ñÊ½£¬²¢½«ÅÌ·ûÃüÃûÎª¡¸Untitled¡¹
+## åˆ¶ä½œYosemiteå®‰è£…ç›˜
+å‡†å¤‡ä¸€ä¸ª8GB çš„ Uç›˜ï¼Œç”¨ã€Œåº”ç”¨ç¨‹åº â€“ å®ç”¨å·¥å…· â€“ ç£ç›˜å·¥å…·ã€æ ¼å¼åŒ–æˆã€ŒMac OS X æ‰©å±•ï¼ˆæ—¥å¿—å¼ï¼‰ã€æ ¼å¼ï¼Œå¹¶å°†ç›˜ç¬¦å‘½åä¸ºã€ŒUntitledã€
 ```
 sudo /Applications/Install/\ OS/\ X/\ Yosemite.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath /Applications/Install/\ OS/\ X/\ Yosemite.app --nointeraction
 ```
-Ê¹ÓÃUÅÌÒıµ¼»úÆ÷µÄ·½·¨£ºÖØÆô»úÆ÷³öÏÖ»Ò°×É«µÄÆ»¹û½çÃæ£¬Ìıµ½¡¸µ±¡¹µÄÒ»Éùºó°´ÏÂ¡¸option¡¹¼ü¾Í½øÈëÁËÒıµ¼Éè±¸µÄÑ¡Ôñ½çÃæ£¬½«Ö¸ÕëÒÆ¶¯µ½»ÆÉ«µÄ UÅÌÑ¡ÔñÆô¶¯¼´¿É¡£
+ä½¿ç”¨Uç›˜å¼•å¯¼æœºå™¨çš„æ–¹æ³•ï¼šé‡å¯æœºå™¨å‡ºç°ç°ç™½è‰²çš„è‹¹æœç•Œé¢ï¼Œå¬åˆ°ã€Œå½“ã€çš„ä¸€å£°åæŒ‰ä¸‹ã€Œoptionã€é”®å°±è¿›å…¥äº†å¼•å¯¼è®¾å¤‡çš„é€‰æ‹©ç•Œé¢ï¼Œå°†æŒ‡é’ˆç§»åŠ¨åˆ°é»„è‰²çš„ Uç›˜é€‰æ‹©å¯åŠ¨å³å¯ã€‚
 
-## ÆÆ½âsublimeµÄ·½·¨£º
-½øÈëApplicationÄ¿Â¼£¬ÓÒ¼üsublime£¬show package contents£¬½øÈë contents->MacOS, ¸´ÖÆÒ»·İsublime text±¸·İ¡£ÓÒ¼üget info»ñÈ¡¾ø¶ÔÂ·¾¶£¬terminalÖĞÓÃvim´ò¿ª£¬:%!xxd£¬´ò¿ª16½øÖÆÏÔÊ¾£¬ËÑË÷¡°3342 3032¡±£¬ĞŞ¸ÄÎª¡°3242 3032¡±¡£ :%!xxd -r »Ö¸´×Ö·ûÏÔÊ¾£¬:wqÍË³ö¡£
-´ò¿ªsublime£¬ÔÚ Help -> Enter License ÖĞÊäÈë
+## ç ´è§£sublimeçš„æ–¹æ³•ï¼š
+è¿›å…¥Applicationç›®å½•ï¼Œå³é”®sublimeï¼Œshow package contentsï¼Œè¿›å…¥ contents->MacOS, å¤åˆ¶ä¸€ä»½sublime textå¤‡ä»½ã€‚å³é”®get infoè·å–ç»å¯¹è·¯å¾„ï¼Œterminalä¸­ç”¨vimæ‰“å¼€ï¼Œ:%!xxdï¼Œæ‰“å¼€16è¿›åˆ¶æ˜¾ç¤ºï¼Œæœç´¢â€œ3342 3032â€ï¼Œä¿®æ”¹ä¸ºâ€œ3242 3032â€ã€‚ :%!xxd -r æ¢å¤å­—ç¬¦æ˜¾ç¤ºï¼Œ:wqé€€å‡ºã€‚
+æ‰“å¼€sublimeï¼Œåœ¨ Help -> Enter License ä¸­è¾“å…¥
 ```
 -----BEGIN LICENSE-----
 cyrus.chan
@@ -185,7 +186,9 @@ DAA77D9D63859982268E67B21CF8D412
 -----END LICENSE-----
 ```
 
+## convert encoding to UTF8
 
+iconv -f GBK -t UTF8 inputfile > outputfile
 
 
 

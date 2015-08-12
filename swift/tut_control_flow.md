@@ -7,7 +7,7 @@ for index in 1...5 {
     println("\(index) times 5 is \(index * 5)")
 }
 
-// Array , Dictionary, String¶¼¿ÉÒÔÓÃfor-inÑ­»·
+// Array , Dictionary, Stringéƒ½å¯ä»¥ç”¨for-inå¾ªç¯
 for character in "Hello" {
     println(character)
 }
@@ -24,7 +24,7 @@ for var index = 0; index < 3; ++index {
     println("index is \(index)")
 }
 
-// forÑ­»·ÖĞµÄ±äÁ¿Ö»´æÔÚÓÚÑ­»·ÖĞ£»Èç¹ûÏëµÃµ½indexµÄ×îÖÕÖµ£¬ĞèÒª°Ñindex¶¨ÒåÔÚÑ­»·Ö®Íâ¡£
+// forå¾ªç¯ä¸­çš„å˜é‡åªå­˜åœ¨äºå¾ªç¯ä¸­ï¼›å¦‚æœæƒ³å¾—åˆ°indexçš„æœ€ç»ˆå€¼ï¼Œéœ€è¦æŠŠindexå®šä¹‰åœ¨å¾ªç¯ä¹‹å¤–ã€‚
 var index: Int
 for index = 0; index < 3; ++index {
     println("index is \(index)")
@@ -57,7 +57,7 @@ default:
 
 //Explicit Fallthrough
 
-// case¿ÉÒÔÅĞ¶Ïinterval£¨¼ä¸ô£©
+// caseå¯ä»¥åˆ¤æ–­intervalï¼ˆé—´éš”ï¼‰
 switch count {
 case 0:
     naturalCount = "no"
@@ -68,9 +68,9 @@ case 1...3:
 ```
 Both the closed range operator (...) and half-open range operator (..<) functions are overloaded to return either an `IntervalType` or `Range`. An interval can determine whether it contains a particular element, such as when matching a switch statement case. A range is a collection of consecutive values, which can be iterated on in a for-in statement.
 
-range operator£¨Çø¼ä²Ù×÷·û£©·µ»Ø`IntervalType` »ò `Range`ÀàĞÍ£¬switchÖĞ·µ»ØIntervalType£»for-inÖĞ·µ»ØRange.
+range operatorï¼ˆåŒºé—´æ“ä½œç¬¦ï¼‰è¿”å›`IntervalType` æˆ– `Range`ç±»å‹ï¼Œswitchä¸­è¿”å›IntervalTypeï¼›for-inä¸­è¿”å›Range.
 
-- ¿ÉÒÔÓÃswitch±È½Ïtuple£¬`_`±íÊ¾ÈÎÒâÖµ£¬tupleÖĞÉõÖÁ¿ÉÒÔ°üº¬interval
+- å¯ä»¥ç”¨switchæ¯”è¾ƒtupleï¼Œ`_`è¡¨ç¤ºä»»æ„å€¼ï¼Œtupleä¸­ç”šè‡³å¯ä»¥åŒ…å«interval
 ```
 let somePoint = (1, 1)
 switch somePoint {
@@ -87,7 +87,7 @@ default:
 }
 ```
 
-- Öµ°ó¶¨
+- å€¼ç»‘å®š
 
 ```
 let anotherPoint = (2, 0)
