@@ -62,6 +62,7 @@ function resize($originalFile, $outputFile) {
 
 }
 
+
 $fileDir = '/home/jason/projects/product-img/';
 $outDir = '/home/jason/projects/product-img/resized/';
 $files = scandir($fileDir);
