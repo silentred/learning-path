@@ -117,13 +117,17 @@ case let (x, y):
 ```
 
 - Control Transfer Statements
-continue
-break
+continue, 对loop有效
+break，对loop和switch都有效
 fallthrough
 return
 
-
-
+标记，就可以这样使用continue label, break label
+```
+label name: while condition {
+    statements
+}
+```
 
 
 
