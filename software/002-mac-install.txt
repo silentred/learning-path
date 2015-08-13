@@ -194,6 +194,8 @@ import urllib2,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a309809
 ```
 Emmet, Bracket Highlighter, DocBlockr, Tag, Alignment, Git, GoSublime, Sublime Tmpl, (Glue) AllAutocomplete, SublimeREPL, MarkdownEditing, PlainTasks
 
+Bracket Highlighter -> user preference -> bracket_styles -> default -> style: solid
+
 
 ## convert encoding to UTF8
 iconv -f GBK -t UTF8 inputfile > outputfile
