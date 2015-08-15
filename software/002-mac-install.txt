@@ -1,3 +1,15 @@
+## System Preference
+
+### 切换输入法快捷键设置
+在 Preference -> shortcut -> keyboard and input 设置为 ctrl＋down arrow 比较好，这样不影响 ctrl + space 打开insight，或者 option＋ctrl＋space打开finder。
+
+
+### .bash_profile
+alias ll=“ls -Glah”
+
+### Turn off Dictation
+正确的关闭方法：关闭enhanced ， shortcut选择位为off，dictation选off，microphone选择internal。这样重启就不会出现speechRecognition的进程了。该进程占用内存900MB。
+
 
 ## 软件安装
 
@@ -49,6 +61,24 @@ brew cask install alfred appcleaner firefox google-chrome phpstorm sublime-text 
 ### Mysql
 ```
 brew install mysql
+
+// finally print the folowing message
+
+==> Pouring mysql-5.6.26.yosemite.bottle.tar.gz
+==> /usr/local/Cellar/mysql/5.6.26/bin/mysql_install_db --verbose --user=jason --basedir=/usr/local/Cellar/mysql/5.6.26 --datadir=/usr/
+==> Caveats
+A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+server starting up correctly.
+
+To connect:
+    mysql -uroot
+
+To have launchd start mysql at login:
+  ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
+Then to load mysql now:
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+Or, if you don't want/need launchctl, you can just run:
+  mysql.server start
 
 开机启动，不用。
 ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
@@ -195,6 +225,29 @@ import urllib2,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a309809
 Emmet, Bracket Highlighter, DocBlockr, Tag, Alignment, Git, GoSublime, Sublime Tmpl, (Glue) AllAutocomplete, SublimeREPL, MarkdownEditing, PlainTasks
 
 Bracket Highlighter -> user preference -> bracket_styles -> default -> style: solid
+
+### Shortcut for sublime
+Already created a soft link to /usr/local/bin/subl, therefore we can use `subl ./` to open current dir with Sublime. If not created by brew, you could create the link by yourself. The subl file is proberbly in ~/Applications/Sublime2.app/Content/SharedSupport/bin/
+
+### User preference of Sublime
+
+```
+{
+    "color_scheme": "Packages/Colorsublime-Theme/Dracula.tmTheme",
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "font_size": 14,
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "word_wrap": true,
+    "highlight_line": true,
+    "highlight_modified_tabs": true,
+    "bold_folder_labels": true
+}
+```
+
 
 
 ## convert encoding to UTF8
