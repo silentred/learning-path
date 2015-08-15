@@ -254,10 +254,42 @@ Already created a soft link to /usr/local/bin/subl, therefore we can use `subl .
 iconv -f GBK -t UTF8 inputfile > outputfile
 
 
+## 如何利用日文键盘上的“英数”和"KANA"键盘
+- Download the software named "Karabiner"
+- Grant the Accessibility, open the Preference
+- "Misc & Uninstall" -> "Open private.xml" -> input following -> save
 
+```
+<?xml version="1.0"?>
+<root>
+    <item>
+        <name>Swap Language</name>
+        <identifier>default.swaplang</identifier>
+        <autogen>__KeyToKey__ KeyCode::JIS_EISUU, KeyCode::VK_CHANGE_INPUTSOURCE_ENGLISH</autogen>
+        <autogen>__KeyToKey__ KeyCode::JIS_KANA, KeyCode::VK_CHANGE_INPUTSOURCE_CHINESE_SIMPLIFIED</autogen>
+    </item>
+</root>
+```
+- Back to "Change key", Enable the private setting by checking the checkbox
+- Press KANA and 英数 to test.
 
+### 默认加入的按键组合
+```
+Fn-Up Arrow PageUp
+Fn-Down Arrow   PageDown
+Fn-Left Arrow   Home
+Fn-Right Arrow  End
+Fn-Delete   Forward Delete
 
+```
 
+## 如何在iTerm中使用Option＋左右 来跳过单词
+- `Command + ,` to open preferene of iTerm
+- Profile -> Keys -> double click to edit the `option ->`
+- change it to `Send Escaped Character`, `f`.
+这相当于是快捷键 `Esc + f`, forward; `option <-` 设为 `Esc + b`, back
+
+ 
 
 
 
