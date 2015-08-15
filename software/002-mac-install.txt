@@ -92,22 +92,23 @@ brew install phpmyadmin
 ```
 
 ### PHP
-```
+
+```shell
 brew update
 brew tap homebrew/dupes
 brew tap josegonzalez/homebrew-php
 
-查看安装选项
+#查看安装选项
 brew options php55
 brew install php55 --with-debug
 
-安装扩展，看情况。
+#安装扩展，看情况。
 brew install php55-apcu php55-gearman php55-geoip php55-gmagick php55-imagick php55-intl php55-mcrypt php55-memcache php55-memcached php55-mongo php55-opcache php55-pdo-pgsql php55-phalcon php55-redis php55-sphinx php55-swoole php55-uuid php55-xdebug;
 
 brew install php55-swoole php55-xdebug php55-mongo php55-mcrypt
-redis需要自己下源码编译
+#redis需要自己下源码编译
 
-修改PATH
+#修改PATH
 echo 'export PATH="$(brew --prefix php55)/bin:$PATH"' >> ~/.bash_profile  #for php
 echo 'export PATH="$(brew --prefix php55)/sbin:$PATH"' >> ~/.bash_profile  #for php-fpm
 echo 'export PATH="/usr/local/bin:/usr/local/sbib:$PATH"' >> ~/.bash_profile #for other brew install soft
@@ -116,7 +117,7 @@ source ~/.bash_profile
 php -v 
 php-fpm -v
 
-修改php-fpm配置文件，vim /usr/local/etc/php/5.5/php-fpm.conf，找到pid相关大概在25行，去掉注释 pid = run/php-fpm.pid, 那么php-fpm的pid文件就会自动产生在/usr/local/var/run/php-fpm.pid，下面要安装的Nginx pid文件也放在这里。
+#修改php-fpm配置文件，vim /usr/local/etc/php/5.5/php-fpm.conf，找到pid相关大概在25行，去掉注释 pid = run/php-fpm.pid, 那么php-fpm的pid文件就会自动产生在/usr/local/var/run/php-fpm.pid，下面要安装的Nginx pid文件也放在这里。
 
 #测试php-fpm配置
 php-fpm -t
@@ -139,14 +140,14 @@ brew services restart php55
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.php55.plist
 
 
-安装composer
+#安装composer
 brew install composer
 #检查一下情况
 composer --version
 ```
 
 ### 安装nginx
-```
+```shell
 brew install nginx --with-http_geoip_module
 
 #测试配置是否有语法错误
@@ -163,7 +164,7 @@ launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 
 
-Nginx开机启动
+#Nginx开机启动
 ln -sfv /usr/local/opt/nginx/*.plist ~/Library/LaunchAgents
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 
@@ -172,7 +173,7 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
 
 
 ## 设置快捷服务控制命令
-```
+```shell
 alias nginx.start='launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'
 alias nginx.stop='launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist'
 alias nginx.restart='nginx.stop && nginx.start'
@@ -192,14 +193,18 @@ alias memcached.restart='memcached.stop && memcached.start'
 
 ## 制作Yosemite安装盘
 准备一个8GB 的 U盘，用「应用程序 – 实用工具 – 磁盘工具」格式化成「Mac OS X 扩展（日志式）」格式，并将盘符命名为「Untitled」
-```
+
+```shell
 sudo /Applications/Install/\ OS/\ X/\ Yosemite.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath /Applications/Install/\ OS/\ X/\ Yosemite.app --nointeraction
 ```
+
 使用U盘引导机器的方法：重启机器出现灰白色的苹果界面，听到「当」的一声后按下「option」键就进入了引导设备的选择界面，将指针移动到黄色的 U盘选择启动即可。
 
 ## 破解sublime的方法：
+
 进入Application目录，右键sublime，show package contents，进入 contents->MacOS, 复制一份sublime text备份。右键get info获取绝对路径，terminal中用vim打开，:%!xxd，打开16进制显示，搜索“3342 3032”，修改为“3242 3032”。 :%!xxd -r 恢复字符显示，:wq退出。
 打开sublime，在 Help -> Enter License 中输入
+
 ```
 -----BEGIN LICENSE-----
 cyrus.chan
@@ -219,9 +224,10 @@ DAA77D9D63859982268E67B21CF8D412
 
 ### sublime2 插件安装
 
-```
+```python
 import urllib2,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')
 ```
+
 Emmet, Bracket Highlighter, DocBlockr, Tag, Alignment, Git, GoSublime, Sublime Tmpl, (Glue) AllAutocomplete, SublimeREPL, MarkdownEditing, PlainTasks
 
 Bracket Highlighter -> user preference -> bracket_styles -> default -> style: solid
@@ -231,7 +237,7 @@ Already created a soft link to /usr/local/bin/subl, therefore we can use `subl .
 
 ### User preference of Sublime
 
-```
+```json
 {
     "color_scheme": "Packages/Colorsublime-Theme/Dracula.tmTheme",
     "ignored_packages":
@@ -248,6 +254,11 @@ Already created a soft link to /usr/local/bin/subl, therefore we can use `subl .
 }
 ```
 
+### Great Themes for sublime
+- Monokai Extended (with markdown syntax)
+- Markdown Extended
+open a .md file, call out the console, input "markdown extended" to set the current file as markdown syntax. View -> Syntax -> open all with current extension as "markdown extended"
+
 
 
 ## convert encoding to UTF8
@@ -259,7 +270,7 @@ iconv -f GBK -t UTF8 inputfile > outputfile
 - Grant the Accessibility, open the Preference
 - "Misc & Uninstall" -> "Open private.xml" -> input following -> save
 
-```
+```xml
 <?xml version="1.0"?>
 <root>
     <item>
@@ -274,6 +285,7 @@ iconv -f GBK -t UTF8 inputfile > outputfile
 - Press KANA and 英数 to test.
 
 ### 默认加入的按键组合
+
 ```
 Fn-Up Arrow PageUp
 Fn-Down Arrow   PageDown
@@ -284,9 +296,11 @@ Fn-Delete   Forward Delete
 ```
 
 ## 如何在iTerm中使用Option＋左右 来跳过单词
+
 - `Command + ,` to open preferene of iTerm
 - Profile -> Keys -> double click to edit the `option ->`
 - change it to `Send Escaped Character`, `f`.
+
 这相当于是快捷键 `Esc + f`, forward; `option <-` 设为 `Esc + b`, back
 
  
