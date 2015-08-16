@@ -228,7 +228,8 @@ DAA77D9D63859982268E67B21CF8D412
 import urllib2,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')
 ```
 
-Emmet, Bracket Highlighter, DocBlockr, Tag, Alignment, Git, GoSublime, Sublime Tmpl, (Glue) AllAutocomplete, SublimeREPL, MarkdownEditing, PlainTasks
+Emmet, Bracket Highlighter, DocBlockr, Tag, Alignment, Git, GoSublime, Sublime Tmpl, (Glue) AllAutocomplete (, SublimeREPL, MarkdownEditing, PlainTasks)括号里的可以不装
+Swift, Monokai Extended, Markdown Extended (用于markdown高亮)
 
 Bracket Highlighter -> user preference -> bracket_styles -> default -> style: solid
 
@@ -244,6 +245,7 @@ Already created a soft link to /usr/local/bin/subl, therefore we can use `subl .
     [
         "Vintage"
     ],
+    "font_face": "Menlo Regular",
     "font_size": 14,
     "tab_size": 4,
     "translate_tabs_to_spaces": true,
@@ -281,6 +283,24 @@ iconv -f GBK -t UTF8 inputfile > outputfile
     </item>
 </root>
 ```
+```xml
+<!--> 绑定 英数 到 ctrl+down, 事先在系统里设置ctrl＋down为切换到下一个输入法；
+绑定KANA到 fn+delete, 系统默认该组合为delete forward。
+这样可以方便的切换输入法，也有了del键。
+<-->
+<?xml version="1.0"?>
+<root>
+    <item>
+        <name>Swap Language</name>
+        <identifier>default.swaplang</identifier>
+        <autogen>__KeyToKey__ KeyCode::JIS_EISUU, 
+            KeyCode::CURSOR_DOWN, ModifierFlag::COMMAND_L </autogen>
+        <autogen>__KeyToKey__ KeyCode::JIS_KANA, 
+            KeyCode::DELETE, ModifierFlag::FN</autogen>
+    </item>
+</root>
+```
+
 - Back to "Change key", Enable the private setting by checking the checkbox
 - Press KANA and 英数 to test.
 
