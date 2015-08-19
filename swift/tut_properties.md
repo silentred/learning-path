@@ -172,13 +172,52 @@ stepCounter.totalSteps = 896
 
 ## Type Properties
 
+类型属性用于定义特定类型所有实例共享的数据，比如所有实例都能用的一个常量（就像 C 语言中的静态常量），或者所有实例都能访问的一个变量（就像 C 语言中的`静态变量`）。
 
+值类型的存储型类型属性可以是变量或常量，计算型类型属性跟实例的计算属性一样只能定义成变量属性。
 
+注意：
+跟实例的存储属性不同，必须给存储型类型属性指定默认值，因为类型本身无法在初始化过程中使用构造器给类型属性赋值。
 
+### 类型属性语法
 
+在 C 或 Objective-C 中，与某个类型关联的静态常量和静态变量，是作为全局（global）静态变量定义的。但是在 Swift 编程语言中，类型属性是作为类型定义的一部分写在类型最外层的花括号内，因此它的作用范围也就在类型支持的范围内。
 
+使用关键字static来定义类型属性。在为类（class）定义计算型类型属性时，可以使用关键字class来支持子类对父类的实现进行重写。
 
+```swift
+struct SomeStructure {
+    static var storedTypeProperty = "Some value."
+    static var computedTypeProperty: Int {
+        return 1
+    }
+}
+enum SomeEnumeration {
+    static var storedTypeProperty = "Some value."
+    static var computedTypeProperty: Int {
+        return 6
+    }
+}
+class SomeClass {
+    static var storedTypeProperty = "Some value."
+    static var computedTypeProperty: Int {
+        return 27
+    }
+    class var overrideableComputedTypeProperty: Int {
+        return 107
+    }
+}
 
+print(SomeStructure.storedTypeProperty)
+// 输出 "Some value."
+SomeStructure.storedTypeProperty = "Another value."
+print(SomeStructure.storedTypeProperty)
+// 输出 "Another value.”
+print(SomeEnumeration.computedTypeProperty)
+// 输出 "6"
+print(SomeClass.computedTypeProperty)
+// 输出 "27"
+```
 
 
 

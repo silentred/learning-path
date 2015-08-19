@@ -261,6 +261,17 @@ Already created a soft link to /usr/local/bin/subl, therefore we can use `subl .
 - Markdown Extended
 open a .md file, call out the console, input "markdown extended" to set the current file as markdown syntax. View -> Syntax -> open all with current extension as "markdown extended"
 
+### sublime2 加入Typescript Highlight
+[stackoverflow](http://stackoverflow.com/questions/12785583/add-ts-language-files-to-sublime-text-to-support-additional-syntax-coloring)
+To add TypeScript syntax highlighting support to Sublime Text on Mac:
+
+- Unzip the downloaded file. It contains a file named typescript.tmlanguage
+- Create a subfolder in your sublime Package folder called TypeScript. 
+- Drop `typescript.tmlanguage` into your newly created TypeScript folder.
+文件在下面的链接下载
+[MS blog](http://blogs.msdn.com/b/interoperability/archive/2012/10/01/sublime-text-vi-emacs-typescript-enabled.aspx)
+
+
 
 
 ## convert encoding to UTF8
@@ -284,7 +295,7 @@ iconv -f GBK -t UTF8 inputfile > outputfile
 </root>
 ```
 ```xml
-<!--> 绑定 英数 到 ctrl+down, 事先在系统里设置ctrl＋down为切换到下一个输入法；
+<!--> 绑定 英数 到 ctrl+down, 事先在系统里设置ctrl＋up为切换到下一个输入法, iTerm下只能使用ctrl + up, down不起作用；
 绑定KANA到 fn+delete, 系统默认该组合为delete forward。
 这样可以方便的切换输入法，也有了del键。
 <-->
@@ -294,7 +305,7 @@ iconv -f GBK -t UTF8 inputfile > outputfile
         <name>Swap Language</name>
         <identifier>default.swaplang</identifier>
         <autogen>__KeyToKey__ KeyCode::JIS_EISUU, 
-            KeyCode::CURSOR_DOWN, ModifierFlag::COMMAND_L </autogen>
+            KeyCode::CURSOR_UP, ModifierFlag::COMMAND_L </autogen>
         <autogen>__KeyToKey__ KeyCode::JIS_KANA, 
             KeyCode::DELETE, ModifierFlag::FN</autogen>
     </item>
@@ -324,6 +335,19 @@ Fn-Delete   Forward Delete
 这相当于是快捷键 `Esc + f`, forward; `option <-` 设为 `Esc + b`, back
 
  
+## JetBrain
+
+```
+Username: EMBRACE
+===== LICENSE BEGIN =====
+43136-12042010
+00002UsvSON704l"dILe1PVx3y4"B3
+49AU6oSDJrsjE8nMOQh"8HTDJHIUUh
+gd1BebYc5U"6OxDbVsALB4Eb10PW8"
+===== LICENSE END =====
+```
+
+
 
 
 
