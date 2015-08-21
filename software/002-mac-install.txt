@@ -87,9 +87,59 @@ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 配置脚本
 /usr/local/opt/mysql/bin/mysql_secure_installation
 
-安装phpadmin，暂时不用
-brew install phpmyadmin
+Add new user
+grant all privileges on *.* to 'test'@'%' identified by 'test' with grant option;
+flush privileges;
+
 ```
+
+### 安装phpadmin
+下载 phpmyadmin, 放在web root下，nginx配置文件如下
+
+```
+server {
+    listen       8080;
+    server_name  local.phpadmin.com;
+    root    /Users/jason/Downloads/phpMyAdmin;
+    #access_log  logs/host.access.log  main;
+    index index.html index.php;
+
+    location / {
+         index  index.html index.php;
+     }
+
+    location ~ \.php$ {
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+}
+```
+配置 phpmyadmin: 把 config.ini.php 放到目录下。
+
+```
+<?php
+
+/* Servers configuration */
+$i = 0;
+
+/* Server: localhost [1] */
+$i++;
+$cfg['Servers'][$i]['verbose'] = 'localhost';
+$cfg['Servers'][$i]['host'] = '127.0.0.1';
+$cfg['Servers'][$i]['port'] = '3306';
+$cfg['Servers'][$i]['socket'] = '';
+$cfg['Servers'][$i]['connect_type'] = 'tcp';
+$cfg['Servers'][$i]['auth_type'] = 'config';
+$cfg['Servers'][$i]['user'] = 'test';
+$cfg['Servers'][$i]['password'] = 'test';
+$cfg['Servers'][$i]['AllowNoPassword'] = true;
+
+/* End of servers configuration */
+```
+
+
 
 ### PHP
 
