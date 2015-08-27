@@ -63,3 +63,16 @@
          deny  all;
      }
  }
+
+# mp4 streaming server
+server {
+    listen 80;
+    server_name test.video.com;
+    root /User/jason/Download/video;
+
+    location ~ .mp4$ {
+        mp4;
+        mp4_buffer_size 1m;
+        mp4_max_buffer_size 5m;
+    }    
+}
