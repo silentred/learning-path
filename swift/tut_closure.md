@@ -2,7 +2,7 @@
 
 - Closure Expression Syntax
 
-```
+```swift
 { (parameters) -> return type in
     statements
 }
