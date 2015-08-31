@@ -83,6 +83,15 @@ override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 ## UITableView: Delegate and DataSource
 代理类需要实现 `UITableViewDataSource`, `UITableViewDelegate`才能渲染Table. 还需要右键TableView, 把`dataSource`, `delegate`连接到代理类. `UITableViewController`貌似不需要连接，可能是已经连接了父类。
 
+### table appearance
+`tableView.backgroundColor`, `tableView.tableFooterView`, `tableView.separatorColor`
+
+### NavigationBar Appearance
+在`AppDelegate.swift`中的application方法中全局修改。 `UINavigationBar.appearance().barTintColor`等。
+
+在 `TableViewController`中修改`self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)`，在`DetailView`中显示导航栏中back按钮的效果.
+
+相对的是，在`DetailViewController` 中修改`title`属性，detail视图中导航栏title得到改变。
 
 
 
