@@ -93,6 +93,45 @@ override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
 相对的是，在`DetailViewController` 中修改`title`属性，detail视图中导航栏title得到改变。
 
+checkbox `Hide Bars on Swipe`, in Attributes section of NavigationController. 这是全局的设置，所有的NavigationBar都会隐藏。
+如果只想某个scene的Bar隐藏，用`navigationController?.hidesBarsOnSwipe = true`. 不能放在 viewDidLoad() 里，因为 viewDidLoad() 只在第一次加载view的时候运行一次。
+有两个方法是view每次展现都会调用的方法，`viewWillAppear()`, `viewDidAppear()`, 所以我们可以在其中一个方法里面toggle `hidesBarsOnSwipe`属性，使得不同的scene中NavigationBar 隐藏或者显示。
+
+### Status Bar Style
+
+- First method: 
+
+```swift
+override func preferredStatusBarStyle() -> UIStatusBarStyle {
+     return .LightContent
+}
+```
+in any ViewController.
+
+- Second method:
+
+Add and set `View controller-based status bar appearance` to `NO` in Project Navigator, under info tab.
+Add `UIApplication.sharedApplication().statusBarStyle = .LightContent` to `application(_:didFinishLaunchingWithOptions:)`
+
+
+## Self Sizing Cell
+
+cell height需要依赖auto layout, 例如垂直居中（上下margin constraint设为0）等。label -> line 默认为1，要设为0，表示自动判断行数.
+最后`viewDidLoad()`中设置属性
+
+```swift
+self.tableView.estimatedRowHeight = 36.0
+self.tableView.rowHeight = UITableViewAutomaticDimension
+```
+
+## Basic Animation and Effects
+
+
+
+
+
+
+
 
 
 
