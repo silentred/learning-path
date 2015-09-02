@@ -6,8 +6,12 @@ Constraints可以用于解决屏幕尺寸带来的布局问题，例如`居中`,
 ## UITableView
 
 ### Radius Corner
-UIImage.layer.cornerRadius = UIImage.frame.width/2
-UIImage.clipsToBounds = true
+
+```swift
+image.layer.cornerRadius = image.frame.width/2
+image.clipsToBounds = true
+```
+除了在code中定义，还可以用`User Defined Runtime Attributes`, 下文介绍。
 
 ### Protocol
 `UITableViewDataSource`, `UITableViewDelegate`等。
@@ -113,6 +117,8 @@ in any ViewController.
 Add and set `View controller-based status bar appearance` to `NO` in Project Navigator, under info tab.
 Add `UIApplication.sharedApplication().statusBarStyle = .LightContent` to `application(_:didFinishLaunchingWithOptions:)`
 
+Problem: with second methed, there are messages coming out of Debug log, saying "<Error>: CGContextSaveGState: invalid context 0x0. If you want to see the backtrace, please set CG\_CONTEXT\_SHOW\_BACKTRACE environmental variable."  It maybe caused by a bug in xcode, according to google.
+
 
 ## Self Sizing Cell
 
@@ -126,6 +132,86 @@ self.tableView.rowHeight = UITableViewAutomaticDimension
 
 ## Basic Animation and Effects
 
+### add toolbar
+Toolbar, Bar Button Item. `Bar Button`中的`System Item`可以有很多种选择，有自带的图标。
+Button左右可以加上`Flexable Space Bar Button Item`, 用于控制margin.
+
+### set button background as image
+如果想改图标的颜色，可以设置`Tint`, 注意要把图片的`Type`设置为`System`, 默认为`Custom`
+
+### Another way to make round corner button
+Select a button, in Attribute Inspector, find `User Defined Runtime Attributes`. Add a key named `layer.cornerRadius`, set type as `Number`, value as 32 which is half of the button's width.
+
+### Create a unwind segue
+需要在dstController中加一个方法，用来告知系统，这个controller可以被`unwound`, 方法名可以随意定义，但参数和`@IBAction`必须确定。
+
+```swift
+@IBAction func close(segue:UIStoryboardSegue){}
+```
+
+### Image Blurring Effect
+In `viewDidLoad()`, add the following
+
+```swift
+let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+let blurEffectView = UIVisualEffectView(effect: blurEffect)
+blurEffectView.frame = self.view.bounds
+blurEffectView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+self.backImage.addSubview(blurEffectView)
+```
+
+### Animation
+
+in `viewDidiLoad`, predefine the offset position(start status) of buttons. In `viewDidApprear`, set the final status of each button, which is in the `animation` closure. `UIView.animateWithDuration()` can set the time, delay, options...of the animation.
+
+```swift
+override func viewDidLoad() {
+    // animation
+    
+    self.fbBtn.transform = CGAffineTransformMakeTranslation(0, 500)
+    self.twBtn.transform = CGAffineTransformMakeTranslation(0, -500)
+    
+    self.msgBtn.transform = CGAffineTransformMakeTranslation(0, 500)
+    self.emailBtn.transform = CGAffineTransformMakeTranslation(0, -500)
+    
+    // background image blurring effect
+    let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
+    let blurEffectView = UIVisualEffectView(effect: blurEffect)
+    blurEffectView.frame = self.view.bounds
+    blurEffectView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+    self.backImage.addSubview(blurEffectView)
+    
+    super.viewDidLoad()
+    
+    // Do any additional setup after loading the view.
+    
+}
+
+override func viewDidAppear(animated: Bool) {
+    let offset:CGFloat = 30
+    // animation
+    UIView.animateWithDuration(0.7, delay: 0.0, options: [], animations: {
+            ()->Void in
+            self.fbBtn.transform = CGAffineTransformMakeTranslation(0, offset)
+            self.emailBtn.transform = CGAffineTransformMakeTranslation(0, -1*offset)
+        }, completion: nil)
+    
+    UIView.animateWithDuration(0.7, delay: 0.3, options: [], animations: {
+        ()->Void in
+        self.msgBtn.transform = CGAffineTransformMakeTranslation(0, offset)
+        self.twBtn.transform = CGAffineTransformMakeTranslation(0, -1*offset)
+        }, completion: nil)
+    
+    UIView.animateWithDuration(0.3, delay: 1, options: [], animations: {
+        ()->Void in
+        self.msgBtn.transform = CGAffineTransformMakeTranslation(0, 0)
+        self.twBtn.transform = CGAffineTransformMakeTranslation(0, 0)
+        self.fbBtn.transform = CGAffineTransformMakeTranslation(0, 0)
+        self.emailBtn.transform = CGAffineTransformMakeTranslation(0, 0)
+        }, completion: nil)
+    
+}
+```
 
 
 
