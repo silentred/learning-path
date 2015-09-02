@@ -13,7 +13,11 @@ CREATE USER 'v1188'@'localhost' IDENTIFIED BY 'v1188ys';
 
 分配权限
 grant all privileges on *.* to v1188;
-grant all privileges on *.* to v1188@localhost identified by 'v1188ys';
+grant all privileges on *.* to v1188@localhost identified by 'v1188ys' with grant option;
+flush privileges;
+
+创建数据库
+CREATE DATABASE `test2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
 
 导入sql
 mysql -u -p database < sql_file.sql;
