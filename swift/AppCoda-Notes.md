@@ -213,11 +213,78 @@ override func viewDidAppear(animated: Bool) {
 }
 ```
 
+组合动画
 
+```swift
+// combined
+let scale = CGAffineTransformMakeScale(1, 1)
+let translation = CGAffineTransformMakeTranslation(0, 0)
+self.dialogVIew.transform = CGAffineTransformConcat(scale, translation)
+```
 
+## Map
 
+drag a `MapView` to a new `ViewController`. Import `MapKit`.
+Use Segue to pass the address info to the MapViewController. Use `CLGeocoder` to do forward-geocoding to get coordinate of location. 
 
+In `viewDidLoad()`:
 
+```swift
+let geoCoder = CLGeocoder()
+//print(self.restaurant.location!)
+geoCoder.geocodeAddressString(self.restaurant.location!, completionHandler: {
+    placemarks, error in
+    if error != nil {
+        print(error)
+        return
+    }
+    if placemarks != nil && placemarks!.count > 0 {
+        
+//                for var i=0; i<placemarks!.count ; i++ {
+//                    print(placemarks![i].location!.coordinate.longitude)
+//                }
+        
+        let placemark = placemarks![0] as CLPlacemark
+        // Add Annotation
+        let annotation = MKPointAnnotation()
+        annotation.title = self.restaurant.name
+        annotation.subtitle = self.restaurant.type
+        annotation.coordinate = placemark.location!.coordinate
+        self.mapView.showAnnotations([annotation], animated: true)
+        self.mapView.selectAnnotation(annotation, animated: true)
+    }
+})
+
+```
+
+### Show thumbnail of pic on map
+
+`MKMapViewDelegate`, `mapView.delegate = self;`, implement `func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView!` to show the AnnotationView on map pin
+
+```swift
+func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    let identifier = "MyPin"
+
+    if annotation.isKindOfClass(MKUserLocation) {
+        return nil
+    }
+        // Reuse the annotation if possible
+    var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+
+    if annotationView == nil {
+        annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        annotationView.canShowCallout = true
+    }
+
+    let leftIconView = UIImageView(frame: CGRectMake(0, 0, 53, 53))
+    leftIconView.image = UIImage(named: restaurant.image)
+    annotationView.leftCalloutAccessoryView = leftIconView
+
+￼   return annotationView
+}
+```
+
+## Static Table View and Photo Library
 
 
 
