@@ -286,7 +286,13 @@ func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -
 
 ## Static Table View and Photo Library
 
+In Attribute Inspector -> Content, choose `Static Cells`. So you could set the number of sections and cells in each section.
 
+### picking a photo
+
+Use `UIImagePickerController` to pick image.
+
+Use `UIImagePickerControllerDelegate` and `UINavigationControllerDelegate` to interact with iamge picker interface.
 
 
 
