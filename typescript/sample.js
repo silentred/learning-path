@@ -1,3 +1,31 @@
+// playground
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var Student = (function () {
+    function Student(firstname, middleinitial, lastname) {
+        this.firstname = firstname;
+        this.middleinitial = middleinitial;
+        this.lastname = lastname;
+        this.fullname = firstname + " " + middleinitial + " " + lastname;
+    }
+    return Student;
+})();
+var SuperStudent = (function (_super) {
+    __extends(SuperStudent, _super);
+    function SuperStudent() {
+        _super.apply(this, arguments);
+    }
+    SuperStudent.prototype.shout = function () {
+        return "hello world";
+    };
+    return SuperStudent;
+})(Student);
+var user = new Student("Jane", "M.", "User");
+/// <reference path="playground.ts"/>
 // handbook
 // Type
 var boolType = false;
@@ -81,4 +109,3 @@ var Grid = (function () {
     return Grid;
 })();
 // modules
-/// <reference path="playground.ts"/>

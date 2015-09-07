@@ -294,5 +294,16 @@ Use `UIImagePickerController` to pick image.
 
 Use `UIImagePickerControllerDelegate` and `UINavigationControllerDelegate` to interact with iamge picker interface.
 
+### unwind segue
+
+1. 从按钮或其他obj ctrl+drag 到 exit，则点击按钮时，先`shouldPerformSegueWithIdentifier()`, 再运行`prepareForSegue()`. `should...`方法用于验证是否接着运行 prepareForSegue.
+
+2. 代码启动unwind segue的方法： 从 黄色 controller ctrl+drag 到 exit，创建一个segue. 为其命名 Identifier. 声明 `@IBAction`关联到按钮点击事件。 使用 `performSegueWithIdentifier(identifier, sender)`来启动某个segue
+
+## CoreData
+
+
+
+
 
 

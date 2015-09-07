@@ -58,6 +58,14 @@ class Train: Vehicle {
 
 > 你可以将一个继承来的只读属性重写为一个读写属性，只需要你在重写版本的属性里提供 getter 和 setter 即可。但是，你不可以将一个继承来的读写属性重写为一个只读属性。
 
+> 如果你在重写属性中提供了 setter，那么你也一定要提供 getter。如果你不想在重写版本中的 getter 里修改继承来的属性值，你可以直接通过super.someProperty来返回继承来的值，其中someProperty是你要重写的属性的名字。
+
+### Overriding Property Observers
+> 只读属性或者常量无法设置observers, 因为无法被赋值或修改。
+
+### Preventing Overrides
+
+use `final` keyword
 
 
 

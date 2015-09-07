@@ -12,10 +12,14 @@ interface Person {
     lastname: string;
 }
 
-function greeter(person : Person) {
-    return "Hello, " + person.firstname + " " + person.lastname;
+class SuperStudent extends Student {
+    title: string;
+    level: number;
+
+    shout() :string {
+        return "hello world";
+    }
 }
 
-var user = new Student("Jane", "M.", "User");
 
-document.body.innerHTML = greeter(user);
+var user = new Student("Jane", "M.", "User");

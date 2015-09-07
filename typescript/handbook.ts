@@ -1,3 +1,5 @@
+/// <reference path="playground.ts"/>
+
 // handbook
 
 // Type
@@ -115,6 +117,17 @@ class Grid {
     }
     constructor (public scale: number) { }
 }
+
+// modules
+// <reference /> must at first line
+module Validation {
+    export interface StringValidator {
+        isAcceptable(s: string): boolean;
+    }
+}
+
+
+
 
 
 
