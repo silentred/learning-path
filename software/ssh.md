@@ -37,4 +37,6 @@ Host aws
 1. 检查权限，`.ssh`为700, `authorized_keys`为600
 2. 检查SeLinux，getenforce ； 暂时关闭 setenforce 0
 
- 
+### 动态端口转发
+`ssh -N -f -D 8000 root@50.117.7.122`，监听8000端口，转发到50.117.7.122机器上。
+服务器代理设置为 127.0.0.1:8000, SOCK4
