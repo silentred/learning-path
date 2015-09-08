@@ -27,6 +27,18 @@ let freezingPointOfWater = Celsius(fromKelvin: 273.15)
 
 如果你不希望为构造器的某个参数提供外部名字，你可以使用下划线(_)来显示描述它的外部名，以此重写上面所说的默认行为。
 
+### Optional Property Types
+default value is nil
+
+### Assigning Constant Properties During Initialization
+不能再子类中设定const
+
+### Designated Initializers and Convenience Initializers
+Desinated: vertical
+Convenience: horizental
+
+
+skip for now... toooo god damn complicated
 
 
 
