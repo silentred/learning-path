@@ -53,5 +53,9 @@ do {
 
 ## Extensions
 
+## Protocol
+
+协议中的通常用var来声明属性，在类型声明后加上{ set get }来表示属性是可读可写的，只读属性则用{ get }来表示。
+
 
 
