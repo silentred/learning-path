@@ -83,8 +83,19 @@ func wishHappyBirthday(celebrator: protocol<Named, Aged>) {
 }
 ```
 
+> 可选协议只能在含有`@objc`前缀的协议中生效。且@objc的协议只能被类遵循
+这个前缀表示协议将暴露给Objective-C代码，详情参见Using Swift with Cocoa and Objective-C。即使你不打算和Objective-C有什么交互，如果你想要指明协议包含可选属性，那么还是要加上@obj前缀
 
 
+## Generics
 
+### Type Constraints
 
+```swift
+func someFunction<T: SomeClass, U: SomeProtocol>(someT: T, someU: U) {
+    // 这里是函数主体
+}
+```
+
+### `where` keyword
 

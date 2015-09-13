@@ -85,7 +85,7 @@ arithmeticMean(1, 2, 3, 4, 5)
 - In-Out Parameters; `inout`关键词，不能用于可变参数，不能var或let，不能传入字面量或者常量。
 调用时需要在参数前加`&`; 文档解释为，参数值传入，修改后，值传出，替换原来的变量值。
 
-```
+```swift
 func swapTwoInts(inout a: Int, inout b: Int) {
     let temporaryA = a
     a = b
