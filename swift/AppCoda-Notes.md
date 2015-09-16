@@ -302,8 +302,35 @@ Use `UIImagePickerControllerDelegate` and `UINavigationControllerDelegate` to in
 
 ## CoreData
 
+在AppDelegate中配置一个全局的ManagedObjectContext,需要这么几个变量，`applicationDocumentDirectory: NSURL`, 
+`managedObjectModel: NSManagedObjectModel`, `persistentStoreCoordinator: NSPersistentStoreCoordinator`, `managedObjectContext: NSManagedObjectContext`
 
+全部用 `lazy var xxx: XXX = { ... return xxx}()` 的方式声明懒加载.
 
+### create Managed Object Model
+
+建完Model, Entity, 选中 Entity，在右侧的 属性栏中要把 Module设为当前项目的名称，否则在调用 `NSEntityDescription.insertNewObjectForEntityForName('Restaurant', inManagedObjectContext: managedObjectContext)` 时会报错。
+XCode7之前的版本是在属性栏Class字段写为`SimpleTable.Restaurant`.
+
+### Fetch Data
+
+`NSFetchedResultsController` and Delegate
+
+### Delete Data
+
+### show SQL
+
+`-com.apple.CoreData.SQLDebug`
+
+## Search Bar
+
+## UIPageViewController
+
+## Tab Bar
+
+## UIWebView and MFMailComposeViewController
+
+## CloudKit (not for now)
 
 
 
