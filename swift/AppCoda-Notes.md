@@ -312,19 +312,31 @@ Use `UIImagePickerControllerDelegate` and `UINavigationControllerDelegate` to in
 建完Model, Entity, 选中 Entity，在右侧的 属性栏中要把 Module设为当前项目的名称，否则在调用 `NSEntityDescription.insertNewObjectForEntityForName('Restaurant', inManagedObjectContext: managedObjectContext)` 时会报错。
 XCode7之前的版本是在属性栏Class字段写为`SimpleTable.Restaurant`.
 
+### Save Data
+
 ### Fetch Data
 
 `NSFetchedResultsController` and Delegate
 
 ### Delete Data
 
-### show SQL
+### Show SQL
 
-`-com.apple.CoreData.SQLDebug`
+`-com.apple.CoreData.SQLDebug 1`
+
 
 ## Search Bar
 
+`UISearchController` and Delegate `UISearchResultsUpdating`
+
 ## UIPageViewController
+
+what is the use of `storyboard ID` ?
+storyboard.instantiateViewControllerWithIdentifier(storyboardID)
+
+Page Indicator
+
+PageControl
 
 ## Tab Bar
 
