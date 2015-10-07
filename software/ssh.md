@@ -9,14 +9,16 @@ ssh -i ~/.ssh/private_key.pem user@host
 
 可以把信息存在配置文件中`~/.ssh/config`
 ```
-Host dev
-    HostName dev.hostname.com
-    User dev
+Host sam
+        HostName 50.62.213.12
+        User stanford
+        IdentityFile ~/.ssh/id_rsa
 
-Host aws
-    HostName 64.92.157.36
-    User user
-    IdentityFile ~/.ssh/private_key.pem
+Host lifome
+        HostName 162.249.4.210
+        Port 7822
+        User jason
+        IdentityFile ~/.ssh/id_rsa
 ```
 这样只需要：`ssh aws`，便可进入aws主机了
 

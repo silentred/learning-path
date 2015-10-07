@@ -36,9 +36,12 @@ sudo make install`
 
 yum install transmission transmission-cli transmission-common transmission-daemon
 
-配置文件位于 `/var/lib/transmission/.config/transmission/setting.json`
+sudo service transmission-daemon start # to generate the following config file
+sudo service transmission-daemon stop # 先停止，才可以编辑settings.json
 
-"rpc-whitelist": "127.0.0.1,192.168.*.*,50.117.7.122,50.62.213.12",
+配置文件位于 `/var/lib/transmission/.config/transmission/settings.json`
+
+"rpc-whitelist": "192.168.1.*,127.0.0.1,50.117.7.122,50.62.213.12,173.254.246.150",
 "rpc-password": "789456123", // 密码会自动 SHA1 
 "rpc-username": "jason",
 
