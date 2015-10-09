@@ -116,7 +116,7 @@ class Handler(BaseHandler):
 
 
 def getPics(html):
-    match = re.search('var J_photo = (.*);', html)
+    match = re.search('var J_photo = (\[.*\]);', html)
     if match is not None:
         obj_string = match.group(1)
     obj = json.JSONDecoder().decode(obj_string)
