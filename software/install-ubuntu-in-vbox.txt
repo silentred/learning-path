@@ -1,7 +1,9 @@
 if the screen is frozen during the installation, try ctrl+f1 and ctrl+f7
 
 # for resolution
-sudo apt-get install virtualbox-guest-dkms
+sudo apt-get install virtualbox-guest-dkms virtualbox-guest-x11
+
+重启后，分辨率自动适应。
 
 #for sharing folder
 sudo mount -t vboxsf shared ~/shared/
