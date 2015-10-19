@@ -1,3 +1,100 @@
+字符串常量的直接值是指针，而不是这些字符本身
+声明指针尽量用 int *a, 不要用 int* a,
+
+
+## 关于数组：
+数组变量是指向第一个元素的指针。
+array[i]的本质是*(array+i)，i可以越界，所以检查数组越界尤其重要。
+数组变量的局限：array 是 constant pointor, 代表他不能自增自减，无法使用 array++之类的操作。
+int *p[3], 表示长度为3的 int指针 的数组
+```c
+// %lu means long unsigned
+printf("sizeof int is %lu \n", sizeof(int));
+
+int *p;
+// variable "array" is the pointer to the first element
+// array[i] is the shortcut of *(array+i)
+int array[] = {1, 6,3,7};
+p = array;
+int i = 0;
+for( i=0; i<5; i++){
+	printf("current num is %d , pintor is %p \n", p[i], p+i);
+}
+printf("index 99 is %d \n", *(p+99));
+```
+
+## 关于指针
+默认为NULL, 可以用if(p){}来判断。NULL的值为0
+
+```
+int *ap;
+if(ap == NULL){
+	printf("ap is NULL by default. its value is %x \n", ap);
+}
+```
+
+## 关于字符串
+在使用strcat(s, s2)的之前，必须检查s的长度是否够容下s+s2字符的总长度。
+char *s = "hello"; 字符串字面量的类型是char[], 虽然不是const，但是不可以修改他，行为未定义。
+
+```
+char *s = "hello";
+char *s2 = malloc(strlen(s)+1);
+if(s2 == NULL) {
+	printf("s2 value is NULL \n");
+}
+printf("s2 value is %x \n", s2);
+strcpy(s2, s);
+printf("string s2 is %s \n", s2);
+```
+
+## struct问题
+每个成员变量的起始位置的内存地址必须为4的倍数。所以下面Book占8 byte。
+id:4, title:1, author:1, null:2, 最后两个字节浪费。
+如果顺序为 title, id, author则为12字节，如下
+title:1, null:3, id:4, author:1, null:3, 浪费了6个字节。
+
+```
+	struct Book
+	{
+	   int id;
+	   char  title;
+	   char author;
+	};
+```
+
+### Bit fields
+
+```
+struct packed_struct {
+  unsigned int f1:1;
+  unsigned int f2:1;
+  unsigned int f3:1;
+  unsigned int f4:1;
+  unsigned int type:4;
+  unsigned int my_int:9;
+};
+```
+
+## Union 问题
+
+这里str输出的顺序和大端小端有关系？
+
+```
+union Data data;
+//data.i = 97;
+//data.i = 24929;
+data.i = 1633837925;
+
+printf("sizeof Data is %d \n", sizeof(union Data));
+
+printf( "data.i : %d\n", data.i);
+printf( "data.f : %f\n", data.f);
+printf( "data.str : %s\n", data.str);
+```
+	
+	
+## 问题
 Win64下安装gcc后，遇到丢失zlib1.dll，解决如下：
 I had this same problem, but fixed it like this:
 
@@ -12,7 +109,4 @@ Now everything worked properly.
 为什么UINT_MAX为-1
 什么是 宽字符常量 L"X"?
 \377, '\377'代表什么？
-字符串常量的直接值是指针，而不是这些字符本身
-声明指针尽量用 int *a, 不要用 int* a,
-
 
