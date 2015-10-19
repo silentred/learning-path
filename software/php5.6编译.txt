@@ -14,8 +14,9 @@
 
 
 //简单安装，不安装GD
-./configure --prefix=/usr/local/php56 --with-config-file-path=/usr/local/php56/etc  --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-gettext --enable-mbstring   --with-iconv --with-mcrypt --with-mhash --with-openssl --enable-bcmath --enable-soap --with-libxml-dir --enable-pcntl --enable-shmop --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-sockets --with-curl=/usr/local/libcurl  --with-zlib --enable-zip --with-bz2  --without-sqlite3 --without-pdo-sqlite --with-pear 
+./configure --prefix=/usr/local/php56 --with-config-file-path=/usr/local/php56/etc  --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-fpm --with-gettext --enable-mbstring   --with-iconv --with-mcrypt --with-mhash --with-openssl --enable-bcmath --enable-soap --enable-pcntl --enable-shmop --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-sockets --with-curl=/usr/local/libcurl  --with-zlib --enable-zip --with-bz2  --without-sqlite3 --without-pdo-sqlite --with-pear 
 需要下载安装libcurl
+yum install curl curl-devel
 安装bzip2
 sudo yum install libmcrypt-devel
 
