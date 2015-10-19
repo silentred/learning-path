@@ -149,3 +149,6 @@ $ sudo sh -c 'echo "enabled=1" >> /etc/yum.repos.d/devtools-2.repo'
 $ sudo yum install devtoolset-2
 $ scl enable devtoolset-2 bash
 $ gcc --version
+
+
+laravel部署如果遇到403 forbidden, 除了检查nginx, php-fpm的user,group, 还需要检查配置文件中是否指定了 index index.php index.html; 这个配置，如果不指定的话，是没有默认值的。 所以会导致去读一个目录而不是文件。
