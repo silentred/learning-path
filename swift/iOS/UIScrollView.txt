@@ -1,0 +1,53 @@
+# UIScrollView
+
+## Property
+
+- contentSize: 设置可以滚动的范围，一般设置为滚动内容的size，例如原图的size。
+
+- autoresizeingMask: 是从 UIView 中继承的，表示 当父元素的size发生变化时候，尺寸是否跟着改变。
+`UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight` 这个值表示宽和高都发生变化。
+  
+- contentOffset: contentView的原点相对于scrollView原点的坐标， 类似于scrollView的bounds坐标的作用。可以用 setContentOffset()来设置
+
+- contentInset: contentView到scrollView的边距。例如，当图片尺寸小于scrollView的尺寸时，希望图片能够居中显示， 此时除了调整imageView的frame可以改变其位置，也可以设置scrollView的contentInset边距（类似于scrollView的padding）使imageView居中。
+
+## 关于 frame and bounds
+
+[解释1](http://stackoverflow.com/questions/1210047/cocoa-whats-the-difference-between-the-frame-and-the-bounds/28917673#28917673)
+[解释2](http://stackoverflow.com/questions/5361369/uiview-frame-bounds-and-center)
+
+
+frame 包含一个坐标和长宽，坐标是相对于superview的。
+bounds 的坐标是相对于自身的，修改bounds坐标，可以看到subview的位置变化， 但是view本身的位置是不变的。
+center 中心点坐标，相对于superview的；center改变，view相对于superview的位置会改变， 同时frame的值也跟着改变。反之，frame的值改变，center的值也会改变。
+
+我的理解： view就像一个窗口在一个墙上（superview）， 窗外有一个很大的风景画，移动bounds坐标可以移动这幅画。
+UIScrollView的原理就是这样的。
+
+注意1： 如果对view做了transform操作，例如 rotate, scale, 那么这个view的frame属性会变为undefined ， 不可使用。 但是此时 center还是可用的，所以如果想改变相对于 superview的位置，可用操作center。
+
+注意2： 当修改tarnform属性时，所有的transformation都是相对于center这个点的。 
+
+关于 transform 属性还有一个提示，一个关于 autoresizing, 不是太理解 identity transform的意义。
+Important: If a view’s transform property does not contain the identity transform, the frame of that view is undefined and so are the results of its autoresizing behaviors.
+
+
+[App文档: View and Window Architecture](https://developer.apple.com/library/ios/documentation/WindowsViews/Conceptual/ViewPG_iPhoneOS/WindowsandViews/WindowsandViews.html)
+
+http://code.tutsplus.com/tutorials/ios-fundamentals-frames-bounds-and-cggeometry--cms-21196
+
+## 关于Zooming
+
+设置delegate。实现 `func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView?` 这个方法。
+
+- minimumZoomScale, maximumZoomScale, zoomScale: 最小，最大，当前缩放比例
+
+`override func viewWillLayoutSubviews()` 在屏幕转换方向前会调用，所以如果要动态设置最小，最大缩放比，除了在 viewDidLoad中设置，在这个函数中也要设置一次。
+
+`func scrollViewDidZoom(scrollView: UIScrollView)` 缩小后居中可以通过在这个函数中设置 contentInset来实现。
+
+
+
+
+
+
