@@ -1,0 +1,25 @@
+## 关于 union
+
+```
+union Data{
+	int i;
+	float f;
+	char str[4]
+};
+
+union Data data;
+data.i = 0x00616263;
+
+printf("data is as int: %d \n", data.i);
+printf("data is as float: %f \n", data.f);
+printf("data is as string: %s \n", data.str);
+```
+str 为cba, 这是因为环境为大端模式，int为4 bytes，高位在内存地址大的地址。
+0x00是整数的高位，所以在内存中如下排列（内存地址从小到大）：
+`0x63, 0x62, 0x61, 0x00`
+i也可以写作 0x616263. 故意在最高位留一个\0, 这样字符串有一个明确的结尾。
+字符串依次为 c,b,a,\0, 所以输出为 "cba"
+
+
+
+
