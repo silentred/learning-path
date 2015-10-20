@@ -46,7 +46,9 @@ http://code.tutsplus.com/tutorials/ios-fundamentals-frames-bounds-and-cggeometry
 
 `func scrollViewDidZoom(scrollView: UIScrollView)` 缩小后居中可以通过在这个函数中设置 contentInset来实现。
 
-
+## 关于 Content Margin
+iOS 8 每边默认加了 8 points 的margin。
+在添加 leading/trailing constraint的时候，默认 `Prefer margin relative`是勾选的。 取消勾选，这样constraint才是相对真实边界的。
 
 
 
