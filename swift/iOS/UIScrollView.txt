@@ -50,6 +50,8 @@ http://code.tutsplus.com/tutorials/ios-fundamentals-frames-bounds-and-cggeometry
 iOS 8 每边默认加了 8 points 的margin。
 在添加 leading/trailing constraint的时候，默认 `Prefer margin relative`是勾选的。 取消勾选，这样constraint才是相对真实边界的。
 
-
+## 关于 scrollView Insets
+如果viewController嵌套了navigationController，那么需要注意在Storyboard中是否选中了`Ajdust Scroll View Insets` 这个选项，默认是选中的。需要uncheck。 或者在 ViewController中 把 `self.automaticallyAdjustsScrollViewInsets` 设置为false，默认为true。 
+否则即便 scrollView的 contentInset, scrollIndicatorInsets 为 UIEdgeInsetZero，还是会发现top inset不为0， 而且height和navigation bar的height相近。
 
 
