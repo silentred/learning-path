@@ -66,5 +66,12 @@ scrollView 有一个 Paging 模式，如果设为 true, 则会以 scrollView.fra
 
 文档中的说明，`multiples of the scroll view's bounds` 意思是以一个bounds作为单位进行滑动。
 
+## 关于 hitTest
+
+## hidden, alpha
+
+## 关于 paging 时的 zooming
+查到一般做法是设置一个隐藏的 scrollView, 当单击 page 中的 imageView, 动画弹出隐藏的 scrollView, 并把imageView放置到scrollView， scrollView撑满屏幕。再次单击，动画隐藏表面的 scrollView, 返回 paging scrollView.
+
 
 
