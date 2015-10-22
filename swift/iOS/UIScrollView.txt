@@ -54,4 +54,17 @@ iOS 8 每边默认加了 8 points 的margin。
 如果viewController嵌套了navigationController，那么需要注意在Storyboard中是否选中了`Ajdust Scroll View Insets` 这个选项，默认是选中的。需要uncheck。 或者在 ViewController中 把 `self.automaticallyAdjustsScrollViewInsets` 设置为false，默认为true。 
 否则即便 scrollView的 contentInset, scrollIndicatorInsets 为 UIEdgeInsetZero，还是会发现top inset不为0， 而且height和navigation bar的height相近。
 
+## 关于 subview overflow hidden
+如果在UIView中添加sub UIView, 会遇到的默认情况是，当改变 superview 的 bounds坐标时，当subview 超出 bounds的范围，超出部分并不会被隐藏。如何实现类似 css 中 overflow: hidden 的效果呢？ 在 UIScrollView 的 Attributes 中可以发现一个 `Clip Subviews`, UIView 的属性为 `clipsToBounds` 设为 true 即可。
+
+## 关于 subview 默认撑开 superview 尺寸
+
+## 关于 pagingEnabled
+scrollView 有一个 Paging 模式，如果设为 true, 则会以 scrollView.frame.width 作为步长， 进行横向滑动。 移动到下一页的触发条件, 默认是上一张图移动超出 width/2 .
+
+> the scroll view stops on multiples of the scroll view’s bounds when the user scrolls.
+
+文档中的说明，`multiples of the scroll view's bounds` 意思是以一个bounds作为单位进行滑动。
+
+
 
