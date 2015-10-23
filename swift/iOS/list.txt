@@ -1,0 +1,8 @@
+[custom ui component](http://www.sitepoint.com/creating-custom-ui-components-live-rendering-xcode/)
+
+[custom pull to refresh](http://www.appcoda.com/custom-pull-to-refresh/)
+
+[other UIRefreshControl](https://github.com/entotsu/PullToBounce)
+
+
+
