@@ -86,4 +86,58 @@ PDO::lastInsertId();
 $mysqli->insert_id
 有些中间表没有自增的字段，这时返回0；in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
 
+## 关于 umask
+umask() 直接返回当前umask。加参数 “0777”，即设置umask为0777， 并返回之前的umask.
+当umask为0时，创建的文件的privilege为 666， 创建的目录的权限为 777.
+所以 umask(0), 之后一般是创建文件，并用chmod()显式修改需要的权限。
+
+## 关于 posix_setsid()
+可以把当前process设为 session leader. 即把process设置为daemon, session退出后进程还存在。
+
+```php
+$pid = pcntl_fork(); // fork
+if ($pid < 0)
+	die("fork error");
+elseif ($pid){ // parent
+	echo "exit parent process \n";
+	exit;
+} else { // child 
+	// detatch it from the terminal using posix_setsid()
+	$sid = posix_setsid();
+	$child_pid = posix_getpid();
+	if ($sid < 0)
+		exit;
+	for($i = 0; $i <= 10; $i++) {
+		sleep(2);
+		echo "sid is {$sid}, pid is {$child_pid} \n";
+	}
+	echo "child process is exiting. \n";
+	exit;
+}
+```
+
+## 关于信号
+SIG_IGN 是 信号忽略(ignore) 的 handler
+SIG_DFL 是 信号默认(default) 的 handler
+
+SIGSTOP 停止进程, can be handled , ignored, blocked;
+SIGTSTP is an interactive stop signal. can be handled or blocked. This signal is generated when the user types the SUSP character (normally C-z). 理解为 ctrl-z 发出 SIGTSTP 信号？
+
+SIGTTIN 当后台进程试图读terminal
+SIGTTOU 当后台进程试图写terminal
+
+SIGHUP 当terminal关闭时，该信号发给进程
+
+## 关于 flock
+有一个 LOCK_NB (non-blocking) bit mask 使得 require lock的过程为非阻塞。这样如果获得锁失败， 可以做其他操作，不用一直等待。
+
+
+
+
+
+
+
+
+
+
 
