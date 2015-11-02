@@ -11,5 +11,4 @@
             this.sync();
         }
     });
-
 </script>
