@@ -29,8 +29,9 @@ int ftok ( string $pathname , string $proj ) 文件名一般使用项目中的文件，必须是e
 包含了 SyncMutex, SyncSemaphore, SyncReaderWriter, SyncEvent 四个类。 读写锁，互斥锁，信号量貌似是sysvsem模块的封装。Event 不知道什么作用。
 
 ## pthreads
-也包含了一个 Metex 类。
-还有 Cond, Pool。 貌似只有静态方法。
+也包含了一个 Metex 类。还有 Cond, Pool。 貌似只有静态方法。只针对 thread?
+
+
 
 
 
