@@ -1,15 +1,18 @@
 # PHP IPC
 
+## Advisory File Lock
+文件锁，flock即可实现。例如用于防止一个进程执行两次，先新建一个pid文件，将pid存入。pid可以用发送signal。 有demo。
+
 ## socket and stream
 最常用，并且不局限于单机
 
 ## signal
 信号不能传递数据，只能根据信号设置回调。
-需要 declare(tick=1);
+需要 declare(tick=1); 有demo。
 
 ## msg_queue and semaphore
 模块名称为 sysvmsg, sysvsem, sysvshm
-队列能传递数据。
+msg_get_queue 队列能传递数据。有demo。
 
 ## pipe
 有一些限制，用 pcntl_fork 的子进程没办法得到 $fd, 貌似是因为子进程的$fd是从父进程复制而来。 
@@ -27,6 +30,7 @@ int ftok ( string $pathname , string $proj ) 文件名一般使用项目中的文件，必须是e
 ## sync 模块
 安装： pecl install sync
 包含了 SyncMutex, SyncSemaphore, SyncReaderWriter, SyncEvent 四个类。 读写锁，互斥锁，信号量貌似是sysvsem模块的封装。Event 不知道什么作用。
+文档中写 SyncSemaphore 和 SyncMutex 的区别是， SyncSemaphore允许一次被多个进程（线程）访问， 而Mutex一次只能被一个进程得到。
 
 ## pthreads
 也包含了一个 Metex 类。还有 Cond, Pool。 貌似只有静态方法。只针对 thread?
