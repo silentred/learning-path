@@ -2,7 +2,7 @@
 
 $pid_file = "/tmp/process.pid";
 $pid = posix_getpid();
-$fp = fopen($pid_file, 'a+');
+$fp = fopen($pid_file, 'w+');
 if(flock($fp, LOCK_EX)){
 	echo "got the lock \n";
 	ftruncate($fp, 0);      // truncate file
@@ -54,6 +54,16 @@ echo"Generating signal SIGUSR1 to self...\n";
 // send SIGUSR1 to current process id
 // posix_* functions require the posix extension
 posix_kill(posix_getpid(), SIGUSR1);
-sleep(1000);
+sleep(1);
 
 echo "Done\n";
+
+
+// IPC shared memory
+$shm_key = ftok(__FILE__, 't');
+$shm_id = shmop_open($shm_key, "c", 0644, 100);
+shmop_close($shm_key);
+
+// multi process
+
+
