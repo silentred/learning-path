@@ -25,9 +25,10 @@ function obtainLock ($mutex, $i){
 	sleep(1);
 	if (!$res){
 		echo "process {$i} unable to lock mutex. \n";
+	}else{
+		echo "process {$i} successfully got the mutex \n";
+		$mutex->unlock();
 	}
-	"process {$i} successfully got the mutex \n";
-	$mutex->unlock();
 	exit();
 }
 
