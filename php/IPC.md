@@ -36,7 +36,9 @@ SyncEventÄÜÔÚ¶à½ø³ÌÖĞÊ¹ÓÃ¡£Ò»¸ö½ø³Ìwait×èÈû£¬ÁíÒ»¸ö½ø³Ì¿ÉÒÔfireÊÂ¼ş£¬Ê¹µÃµÚÒ»¸ö½
 ## pthreads
 Ò²°üº¬ÁËÒ»¸ö Metex Àà¡£»¹ÓĞ Cond, Pool¡£ Ã²ËÆÖ»ÓĞ¾²Ì¬·½·¨¡£Ö»Õë¶Ô thread?
 
-
+PHPÏµÍ³±à³Ì£º
+http://rango.swoole.com/php%e7%b3%bb%e7%bb%9f%e7%bc%96%e7%a8%8b
+ÆäÖĞÓĞ¹ØÓÚSysvMsgµÄÊ¹ÓÃ¡£
 
 
 
