@@ -43,3 +43,7 @@ sslocal -c config.json -d start
 ```
 curl --socks 127.0.0.1:1080 www.google.com
 ```
+
+## 关于全局使用SOCKS5
+貌似是用iptables把 output的包全部转发到 ss监听的端口：
+http://serverfault.com/questions/332473/configuring-ubuntu-for-global-socks5-proxy
