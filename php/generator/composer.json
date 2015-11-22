@@ -1,0 +1,16 @@
+{
+	"name": "silentred/generator",
+	"description": "generator",
+	"license": "MIT",
+	"type": "project",
+	"require": {
+	  	"php": ">=5.5.9"
+	},
+	"require-dev": {
+	},
+	"autoload": {
+		"psr-4": {
+			"App\\": "app/"
+		}
+	}
+}
