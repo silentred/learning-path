@@ -1,10 +1,12 @@
 # PHP编程中的并发
 
-> 周末去北京面了两个公司，认识几位技术牛人，面试中聊了很多，感觉收获颇丰。过程中认识到了自己的不足之处
-，也坚定了自己对计算机编程学习的信心。本文是对其中一道面试题的总结。
+> 周末去北京面了两个公司，认识了几位技术牛人，面试中聊了很多，感觉收获颇丰。认识到了自己的不足之处
+，也坚定了自己对计算机学习的信心。本文是对其中一道面试题的总结。
 
 面试中有一个问题没有很好的回答出来，题目为：并发3个http请求，只要其中一个请求有结果，就返回，
-并中断其他两个。当时考虑的比较偏离题目原意，一直在考虑如何中断http请求，大概是在`client->recv()`之前去判断结果是否已经产生，所以回答的是用socket去发送一个http请求，
+并中断其他两个。
+
+当时考虑的内容有些偏离题目原意，一直在考虑如何中断http请求，大概是在`client->recv()`之前去判断结果是否已经产生，所以回答的是用socket去发送一个http请求，
 把socket加入libevent循环监听，在callback中判断是否已经得到结果，如果已经得到结果，就直接return。
 
 后来自己越说越觉得不对，既然已经recv到结果，就不能算是中断http请求。何况自己从来没用过libevent。后来说了还说了两种实现，一个是用 `curl_multi_init`, 另一个是用golang实现并发。
@@ -20,7 +22,6 @@ select, epoll，都很有名，这里引用[一篇非常好的文章](http://seg
 
 ```php
 <?php
-
 // build the individual requests as above, but do not execute them
  $ch_1 = curl_init('http://www.baidu.com/');
  $ch_2 = curl_init('http://www.baidu.com/');
@@ -54,13 +55,13 @@ curl_multi_remove_handle($mh, $ch_2);
 curl_multi_close($mh);
 ```
 
-这里我设置的是，select得到结果，就退出循环，并且删除 curl resource, 从而达到取消http请求的目的。
+这里我设置的是，select得到结果，就退出循环，并且删除 `curl resource`, 从而达到取消http请求的目的。
 
 ## swoole_client
+
 `swoole_client`提供了异步模式，我竟然把这个忘了。这里的sleep方法需要swoole版本大于等于1.7.21, 我还没升到这个版本，所以直接exit也可以。
 
 ```php
-
 <?php
 $client = new swoole_client(SWOOLE_SOCK_TCP, SWOOLE_SOCK_ASYNC);
 //设置事件回调函数
@@ -91,6 +92,7 @@ $client->connect('183.207.95.145', 80, 1);
 ```
 
 ## process
+
 哎，竟然忘了 swoole_process, 这里就不用 pcntl模块了。但是写完发现，这其实也不算是中断请求，而是哪个先到读哪个，忽视后面的返回值。
 
 ```
@@ -139,10 +141,13 @@ for($i = 0; $i < $worker_num; $i++) {
 
 
 ## yield
+
 yield生成的generator,可以中断函数，并用send向yield发送消息。
 稍后补充协程的版本。
 
+
 ## Golang
+
 用Go实现比较简单, 回家后查了查 close，处理一下 panic就ok了。代码如下：
 
 ```go
@@ -177,6 +182,11 @@ func doRequest(result chan string)  {
 }
 ```
 
-最后要做个广告，[计蒜客](http://www.jisuanke.com/)是一家致力于计算机科学高端教育的公司，如果你对计算机编程或者底层有兴趣，不妨去他们网站学习学习。
+上面的几个方法，除了 `curl_multi_*` 貌似符合题意外(不确定，要看下源码)，其他的方法都没有中断请求后`recv()`的操作, 如果得到response后还有后续操作，那么是有用的，否则并没有什么意义。想想可能是PHP操作粒度太大， 猜测用 C/C++ 应该能解决问题。
+
+
+最后要做个广告，[计蒜客](http://www.jisuanke.com/)是一家致力于计算机科学高端教育的公司，如果你对编程或者计算机底层有兴趣，不妨去他们网站学习学习。
 同时，公司也一直在招人，如果你对自己的能力有信心，可以去试试。公司非常自由开放，90后为主。牛人也有不少，ACM世界冠军，知乎大牛。
 公司主做教育，内部学习资料必须给力，我只看到了一些关于操作系统的测试题，涉及到的知识面很广，可见公司平均技术能力有多厉害。
+
+> 如果文章中有疏漏，错误，还请大神们不吝指出，帮助菜鸟进步，谢谢。
