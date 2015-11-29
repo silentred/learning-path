@@ -16,6 +16,7 @@ golang的版本当时忘了`close`的用法，结果并不太符合题意。
 本文大约总结了PHP编程中的五种并发方式，最后的Golang的实现纯属无聊，可以无视。
 
 ## curl_multi_init
+
 文档中说的是`Allows the processing of multiple cURL handles asynchronously.` 确实是异步。这里需要理解的是`select`这个方法，
 文档中是这么解释的`Blocks until there is activity on any of the curl_multi connections.`。了解一下常见的异步模型就应该能理解，
 select, epoll，都很有名，这里引用[一篇非常好的文章](http://segmentfault.com/a/1190000003063859)，有兴趣看下解释吧。
@@ -93,7 +94,7 @@ $client->connect('183.207.95.145', 80, 1);
 
 ## process
 
-哎，竟然忘了 swoole_process, 这里就不用 pcntl模块了。但是写完发现，这其实也不算是中断请求，而是哪个先到读哪个，忽视后面的返回值。
+哎，竟然忘了 swoole_process, 这里就不用 pcntl 模块了。但是写完发现，这其实也不算是中断请求，而是哪个先到读哪个，忽视后面的返回值。
 
 ```
 <?php
@@ -136,14 +137,42 @@ for($i = 0; $i < $worker_num; $i++) {
 }
 ```
 
-## pthread
+## pthreads
+
+编译pthreads模块时，提示php编译时必须打开ZTS, 所以貌似必须 thread safe 版本才能使用. wamp中多php正好是TS的，
+直接下了个dll, 文档中的说明复制到对应目录，就在win下测试了。
+
+```php
+<?php
+
+class MyThread extends Thread {
+    public $url;
+    public $id;
+
+    function __construct($id){
+        $this->id = $id
+    }
+
+    function run(){
+        $response = "http response";
+        echo $response . PHP_EOL;
+    }
+}
+
+for ($i=0; $i < 3; $i++) {
+    $pool[$i] = new MyThread($i);
+    $pool[$i]->start();
+    $pool[$i]->join();
+}
 
 
+
+```
 
 ## yield
 
 yield生成的generator,可以中断函数，并用send向yield发送消息。
-稍后补充协程的版本。
+稍后补充协程的版本。还在学习中。
 
 
 ## Golang
