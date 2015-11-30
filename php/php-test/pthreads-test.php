@@ -1,10 +1,9 @@
 <?php
 
 class Foo extends Stackable { 
-	public $url;
-	public $response = null;
+	public $counter; 
 	public function __construct(){ 
-		$this->url = 'http://www.baidu.com'; 
+		$this->counter = 0; 
 	} 
 	public function run(){} 
 } 
@@ -15,10 +14,9 @@ class Process extends Worker {
 		$this->text = $text; 
 		$this->object = $object; 
 	} 
-	public function run(){
-		while (is_null($this->object->response)){ 
-			print " Thread {$this->text} is running\n"; 
-			$this->object->response = 'http response';
+	public function run(){ 
+		while ($this->object->counter < 10){ 
+			print $this->object->counter++." - {$this->text}\n"; 
 			sleep(1); 
 		} 
 	} 
@@ -31,5 +29,3 @@ $a->start();
 
 $b = new Process("B",$foo); 
 $b->start();
-echo $foo->response;
-

@@ -1,5 +1,28 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
+import sys
+import math
+
+num = int(sys.stdin.readline())
+to = int(math.sqrt(num))
+ret = True
+for i in range(2, to):
+    if num % i == 0:
+        ret = False
+        break
+if ret :
+    print "YES"
+else:
+    print "NO"
+	
+	
+#str = sys.stdin.readline()
+#numbers = str.split(' ')
+#ret = 0
+#for n in numbers:
+#	ret += n
+#print ret
+
 def factorial(n):
 	if n==1:
 		return 1

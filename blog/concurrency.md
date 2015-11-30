@@ -1,54 +1,50 @@
 # PHP编程中的并发
 
-> 周末去北京面了两个公司，认识了几位技术牛人，面试中聊了很多，感觉收获颇丰。认识到了自己的不足之处
-，也坚定了自己对计算机学习的信心。本文是对其中一道面试题的总结。
+> 周末去北京面了两个公司，认识了几位技术牛人，面试中聊了很多，感觉收获颇丰。认识到了自己的不足之处，也坚定了自己对计算机学习的信心。本文是对其中一道面试题的总结。
 
 面试中有一个问题没有很好的回答出来，题目为：并发3个http请求，只要其中一个请求有结果，就返回，
 并中断其他两个。
 
-当时考虑的内容有些偏离题目原意，一直在考虑如何中断http请求，大概是在`client->recv()`之前去判断结果是否已经产生，所以回答的是用socket去发送一个http请求，
-把socket加入libevent循环监听，在callback中判断是否已经得到结果，如果已经得到结果，就直接return。
+当时考虑的内容有些偏离题目原意， 一直在考虑如何中断http请求，大概是在 `client->recv()` 之前去判断结果是否已经产生，所以回答的是用 socket 去发送一个 http 请求，把 socket 加入 libevent 循环监听，在callback中判断是否已经得到结果，如果已经得到结果，就直接 return。
 
 后来自己越说越觉得不对，既然已经recv到结果，就不能算是中断http请求。何况自己从来没用过libevent。后来说了还说了两种实现，一个是用 `curl_multi_init`, 另一个是用golang实现并发。
 golang的版本当时忘了`close`的用法，结果并不太符合题意。
 
 这题没答上来，考官也没为难我。但是心里一直在考虑，直到面试完走到楼下有点明白什么意思了，可能考的是并发，进程线程的应用。所以总结了这篇文章，来讲讲PHP中的并发。
-本文大约总结了PHP编程中的五种并发方式，最后的Golang的实现纯属无聊，可以无视。
+本文大约总结了PHP编程中的五种并发方式，最后的Golang的实现纯属无聊，可以无视。如果有空，会再补充一个libevent的版本。
 
 ## curl_multi_init
 
-文档中说的是`Allows the processing of multiple cURL handles asynchronously.` 确实是异步。这里需要理解的是`select`这个方法，
-文档中是这么解释的`Blocks until there is activity on any of the curl_multi connections.`。了解一下常见的异步模型就应该能理解，
-select, epoll，都很有名，这里引用[一篇非常好的文章](http://segmentfault.com/a/1190000003063859)，有兴趣看下解释吧。
+文档中说的是 `Allows the processing of multiple cURL handles asynchronously.` 确实是异步。这里需要理解的是`select`这个方法，文档中是这么解释的`Blocks until there is activity on any of the curl_multi connections.`。了解一下常见的异步模型就应该能理解，select, epoll，都很有名，这里引用[一篇非常好的文章](http://segmentfault.com/a/1190000003063859)，有兴趣看下解释吧。
 
 ```php
 <?php
 // build the individual requests as above, but do not execute them
- $ch_1 = curl_init('http://www.baidu.com/');
- $ch_2 = curl_init('http://www.baidu.com/');
- curl_setopt($ch_1, CURLOPT_RETURNTRANSFER, true);
- curl_setopt($ch_2, CURLOPT_RETURNTRANSFER, true);
+$ch_1 = curl_init('http://www.baidu.com/');
+$ch_2 = curl_init('http://www.baidu.com/');
+curl_setopt($ch_1, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch_2, CURLOPT_RETURNTRANSFER, true);
 
- // build the multi-curl handle, adding both $ch
- $mh = curl_multi_init();
- curl_multi_add_handle($mh, $ch_1);
- curl_multi_add_handle($mh, $ch_2);
+// build the multi-curl handle, adding both $ch
+$mh = curl_multi_init();
+curl_multi_add_handle($mh, $ch_1);
+curl_multi_add_handle($mh, $ch_2);
 
- // execute all queries simultaneously, and continue when all are complete
- $running = null;
- do {
-     curl_multi_exec($mh, $running);
-     $ch = curl_multi_select($mh);
-     if($ch !== 0){
-         $info = curl_multi_info_read($mh);
-         if($info){
-             var_dump($info);
-             $response_1 = curl_multi_getcontent($info['handle']);
-             echo "$response_1 \n";
-             break;
-         }
-     }
- } while ($running > 0);
+// execute all queries simultaneously, and continue when all are complete
+$running = null;
+do {
+   curl_multi_exec($mh, $running);
+   $ch = curl_multi_select($mh);
+   if($ch !== 0){
+       $info = curl_multi_info_read($mh);
+       if($info){
+           var_dump($info);
+           $response_1 = curl_multi_getcontent($info['handle']);
+           echo "$response_1 \n";
+           break;
+       }
+   }
+} while ($running > 0);
 
 //close the handles
 curl_multi_remove_handle($mh, $ch_1);
@@ -139,39 +135,49 @@ for($i = 0; $i < $worker_num; $i++) {
 
 ## pthreads
 
-编译pthreads模块时，提示php编译时必须打开ZTS, 所以貌似必须 thread safe 版本才能使用. wamp中多php正好是TS的，
-直接下了个dll, 文档中的说明复制到对应目录，就在win下测试了。
+编译pthreads模块时，提示php编译时必须打开ZTS, 所以貌似必须 thread safe 版本才能使用. wamp中多php正好是TS的，直接下了个dll, 文档中的说明复制到对应目录，就在win下测试了。 还没完全理解，查到文章说 php 的 pthreads 和 POSIX pthreads是完全不一样的。代码有些烂，还需要多看看文档，体会一下。
 
 ```php
 <?php
-
-class MyThread extends Thread {
-    public $url;
-    public $id;
-
-    function __construct($id){
-        $this->id = $id
-    }
-
-    function run(){
-        $response = "http response";
-        echo $response . PHP_EOL;
-    }
+class Foo extends Stackable {
+	public $url;
+	public $response = null;
+	public function __construct(){
+		$this->url = 'http://www.baidu.com';
+	}
+	public function run(){}
 }
 
-for ($i=0; $i < 3; $i++) {
-    $pool[$i] = new MyThread($i);
-    $pool[$i]->start();
-    $pool[$i]->join();
+class Process extends Worker {
+	private $text = "";
+	public function __construct($text,$object){
+		$this->text = $text;
+		$this->object = $object;
+	}
+	public function run(){
+		while (is_null($this->object->response)){
+			print " Thread {$this->text} is running\n";
+			$this->object->response = 'http response';
+			sleep(1);
+		}
+	}
 }
 
+$foo = new Foo();
 
+$a = new Process("A",$foo);
+$a->start();
+
+$b = new Process("B",$foo);
+$b->start();
+
+echo $foo->response;
 
 ```
 
 ## yield
 
-yield生成的generator,可以中断函数，并用send向yield发送消息。
+yield生成的generator,可以中断函数，并用send向 generator 发送消息。
 稍后补充协程的版本。还在学习中。
 
 
@@ -213,6 +219,7 @@ func doRequest(result chan string)  {
 
 上面的几个方法，除了 `curl_multi_*` 貌似符合题意外(不确定，要看下源码)，其他的方法都没有中断请求后`recv()`的操作, 如果得到response后还有后续操作，那么是有用的，否则并没有什么意义。想想可能是PHP操作粒度太大， 猜测用 C/C++ 应该能解决问题。
 
+写的时候没有注意到一个问题，有些方式是返回值，有些直接打印了，这样不好，应该统一使用返回值得到请求结果。能力有限，先这样吧。
 
 最后要做个广告，[计蒜客](http://www.jisuanke.com/)是一家致力于计算机科学高端教育的公司，如果你对编程或者计算机底层有兴趣，不妨去他们网站学习学习。
 同时，公司也一直在招人，如果你对自己的能力有信心，可以去试试。公司非常自由开放，90后为主。牛人也有不少，ACM世界冠军，知乎大牛。
