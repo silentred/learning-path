@@ -50,6 +50,13 @@ clone()
 
 ## 中介者模式 Mediator
 
+## 享元模式 Flyweight
+Factory中用map存储对象，共享给其他类使用
+
+## 解释器模式 Interpreter
+
+## 访问者模式 Visitor
+
 
 
 
