@@ -143,6 +143,28 @@ sudo systemctl start mysqld
 CentOS 6 安装 mysql
 wget http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm
 
+mysql 5.7 yum install problem
+
+https://dev.mysql.com/doc/mysql-yum-repo-quick-guide/en/
+sudo rpm -Uvh mysql57-community-release-el6-n.noarch.rpm 
+sudo yum install mysql-community-server
+sudo grep 'temporary password' /var/log/mysqld.log
+mysql -u root -p rwK2kFg--bb%
+
+validate_password_dictionary_file    |        |
+| validate_password_length             | 8      |
+| validate_password_mixed_case_count   | 1      |
+| validate_password_number_count       | 1      |
+| validate_password_policy             | MEDIUM |
+| validate_password_special_char_count | 1   
+
+这些int变量都用 set global validate_password_length=0; 设置为0，才能用
+set password = password('root'); 设置新密码。
+
+select * from mysql.plugin where name='validate_password';
+不知道这里删除这条记录是否能disable这个插件。
+
+
 升级GCC
 $ sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -P /etc/yum.repos.d
 $ sudo sh -c 'echo "enabled=1" >> /etc/yum.repos.d/devtools-2.repo'

@@ -76,3 +76,33 @@ server {
         mp4_max_buffer_size 5m;
     }    
 }
+
+server {
+     listen       80;
+     server_name    local.7kk.com;
+     charset utf-8;
+     access_log  /var/log/nginx/7kk-access.log  main;
+     root /home/vagrant/projects/new-7kk/public;
+     index index.html index.php;
+  
+     location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }
+
+     location ~ .php$ {
+         fastcgi_pass   127.0.0.1:9000;
+         fastcgi_index  index.php;
+         fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+         include        fastcgi_params;
+     }
+
+}
+
+## Error : "file not found" or 403 
+查看权限
+namei -m /path/to/www-root/
+or
+tree -pufid apps/glassfish3/ | less  
+
+
+    

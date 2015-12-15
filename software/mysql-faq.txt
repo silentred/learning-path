@@ -1,47 +1,47 @@
-Í¨¹ı¿ØÖÆdumpµÄ»º³å£¬Ìá¸ßsourceµ¼ÈëµÄĞ§ÂÊ
+é€šè¿‡æ§åˆ¶dumpçš„ç¼“å†²ï¼Œæé«˜sourceå¯¼å…¥çš„æ•ˆç‡
 mysqldump -uroot -p'123' --all-database --max_allowed_packet=1047552 --net_buffer_length=16384 >all.sql
 
-µ¼³öÄ³Ò»ÕÅ±í
+å¯¼å‡ºæŸä¸€å¼ è¡¨
 mysqldump -uroot -pdbpasswd dbname test>db.sql;
 mysqldump -uroot -pFXRTNVMfBhdQTRnc 99kk tags > tags.sql;
 
-²é¿´ËùÓĞÓÃ»§£º
+æŸ¥çœ‹æ‰€æœ‰ç”¨æˆ·ï¼š
 SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
 
-ĞÂ½¨ÓÃ»§£º
+æ–°å»ºç”¨æˆ·ï¼š
 CREATE USER 'v1188'@'localhost' IDENTIFIED BY 'v1188ys';
 
-·ÖÅäÈ¨ÏŞ
+åˆ†é…æƒé™
 grant all privileges on *.* to v1188;
-grant all privileges on *.* to v1188@localhost identified by 'v1188ys' with grant option;
+grant all privileges on *.* to vagrant@"%" identified by 'being2015' with grant option;
 flush privileges;
 
-´´½¨Êı¾İ¿â
+åˆ›å»ºæ•°æ®åº“
 CREATE DATABASE `test2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
-
-µ¼Èësql
+CREATE DATABASE `wechat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+å¯¼å…¥sql
 mysql -u -p database < sql_file.sql;
 mysql> source /path/to/sql_file.sql;
 
-Ìí¼Ó×Ö¶Î£º
+æ·»åŠ å­—æ®µï¼š
 alter table t_name add new_id int unsigned not null default 0;
 
-¸Ä±ä×Ö¶Îvarchar³¤¶È£º
+æ”¹å˜å­—æ®µvarcharé•¿åº¦ï¼š
 ALTER TABLE <table_name> MODIFY <col_name> VARCHAR(65536);
 
-²é¿´µ±Ç°AUTO_INCREMENTµÄÖµ
+æŸ¥çœ‹å½“å‰AUTO_INCREMENTçš„å€¼
 SELECT `AUTO_INCREMENT`
 FROM  INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA = '99kk'
 AND   TABLE_NAME   = 'tags';
 
-ÉèÖÃAUTO_INCREMENT
+è®¾ç½®AUTO_INCREMENT
 ALTER TABLE tbl AUTO_INCREMENT = 5;
 
-É¾³ıÇ°100ĞĞ
+åˆ é™¤å‰100è¡Œ
 DELETE from table_name where col_name limit 100
 
-ºáÏò·Ö±í£¬´ÓA±íÖĞ¸´ÖÆÒ»²¿·ÖÊı¾İµ½B±í
+æ¨ªå‘åˆ†è¡¨ï¼Œä»Aè¡¨ä¸­å¤åˆ¶ä¸€éƒ¨åˆ†æ•°æ®åˆ°Bè¡¨
 INSERT INTO recipe_info(recipe_id,
 picture, intro, main_material, condiment,
  `procedure`, tips, tool) 
@@ -49,35 +49,27 @@ SELECT id, picture, intro, main_material,
 condiment, `procedure`, tips, tool
 from recipe
 
-É¾³ı×Ö¶Î
+åˆ é™¤å­—æ®µ
 alter table `recipe` drop column ()
 
-
-²é¿´µ±Ç°Á¬½Ó×´Ì¬
+æŸ¥çœ‹å½“å‰è¿æ¥çŠ¶æ€
 show full processlist;
 
-º¯Êı£º
-GROUP_CONCAT() ÓÃ¶ººÅ°Ñgroup¾ÛºÏµÄÖµÁ¬½Ó
-SUBSTRING_INDEX('www.abc.com', ',', 2) ¸ù¾İ·Ö¸ô·û£¬È¡n¸öÖµ, n¿ÉÒÔÎª¸ºÊı,´ú±í´ÓÓÒÍù×ó¼ÆËã,½á¹ûÎª'www.abc'
-
-
-ÓÅ»¯±Ê¼Ç£º
-¸üĞÂ±í£¨´úÌæwhere inµÄ×ö·¨£¬ÓÃjoin£©
-×Ó²éÑ¯£º
+å‡½æ•°ï¼š
+GROUP_CONCAT() ç”¨é€—å·æŠŠgroupèšåˆçš„å€¼è¿æ¥
+SUBSTRING_INDEX('www.abc.com', ',', 2) æ ¹æ®åˆ†éš”ç¬¦ï¼Œå–nä¸ªå€¼, nå¯ä»¥ä¸ºè´Ÿæ•°,ä»£è¡¨ä»å³å¾€å·¦è®¡ç®—,ç»“æœä¸º'www.abc'
+ä¼˜åŒ–ç¬”è®°ï¼š
+æ›´æ–°è¡¨ï¼ˆä»£æ›¿where inçš„åšæ³•ï¼Œç”¨joinï¼‰
+å­æŸ¥è¯¢ï¼š
 update picture_infos set tag_ids = "0en"
 where picture_id in (select picture_id from tag_en_pic)
-ÓÃwhere inÌ«ÂıÁË£¬»á¶Ôpicture_infosÖĞµÄidÈ¡³öÀ´È¥ºÍ×Ó²éÑ¯ÀïµÄÃ¿Ò»Ìõ¶Ô±È
-
-JOIN²éÑ¯£º£¨Èç¹ûp.tag_ids¼ÓË÷Òı»á¸ü¿ì£¬±ÜÃâÁËpicture_infosµÄÈ«±íÉ¨Ãè£©
+ç”¨where inå¤ªæ…¢äº†ï¼Œä¼šå¯¹picture_infosä¸­çš„idå–å‡ºæ¥å»å’Œå­æŸ¥è¯¢é‡Œçš„æ¯ä¸€æ¡å¯¹æ¯”
+JOINæŸ¥è¯¢ï¼šï¼ˆå¦‚æœp.tag_idsåŠ ç´¢å¼•ä¼šæ›´å¿«ï¼Œé¿å…äº†picture_infosçš„å…¨è¡¨æ‰«æï¼‰
 UPDATE picture_infos as p
 INNER JOIN tag_en_pic as t 
 ON p.picture_id = t.picture_id AND p.tag_ids="0" 
 SET p.tag_ids = "0en"
-
-
-¹ØÓÚwhere not in,Ò»ÑùÓÃjoinÈ¥½â¾ö, ×óÁ¬±íÖ®ºó£¬ÓÒ±íÁ¬½Ó×Ö¶ÎÎªNULLµÄ£¬¾ÍÊÇÎÒÃÇĞèÒªµÄ
+å…³äºwhere not in,ä¸€æ ·ç”¨joinå»è§£å†³, å·¦è¿è¡¨ä¹‹åï¼Œå³è¡¨è¿æ¥å­—æ®µä¸ºNULLçš„ï¼Œå°±æ˜¯æˆ‘ä»¬éœ€è¦çš„
 SELECT * FROM customers 
 LEFT JOIN orders ON customers.customers_id = orders.customers_id
 WHERE orders.customers_id IS NULL
-
-
