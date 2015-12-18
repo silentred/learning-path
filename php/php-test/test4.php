@@ -143,3 +143,6 @@ $arr["two"] = "A value";
 var_dump($arr["two"]);
 $arr[] = 'Append 1';
 print_r($arr);
+
+echo time() - strtotime('2015-12-16 19:30:40');
+echo "\n";

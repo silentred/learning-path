@@ -54,6 +54,13 @@ git reset --hard {commit id} 回退
 git push 会报错，说 current branch is behind
 git push -f 强制提交
 
+## Git 本地合并commit
+
+假设想要合并最近三个commit
+git rebase -i HEAD~3
+
+会出现最近三次的commit信息，保留第一行不变，剩下的两行前面的命令改为 `s` or `squash`，wq退出
+出现提示输入合并后的message，wq退出。结果就是三次commit合并为一次了。
 
 
 Git 小技巧
