@@ -33,4 +33,14 @@ func main() {
 		log.Printf("error is : %v", err)
 	}
 	fmt.Printf("End of main")
+
+	data := []int{0, 1, 2, 3, 4}
+	s1 := data[:2]
+	fmt.Printf("data ptr is %p, s1 ptr is %p", &data, &s1);
+	s2 := append(s1, 100, 200)
+	fmt.Println("\n", data)
+	fmt.Println(s1)
+	fmt.Println(s2)
+	fmt.Printf("data ptr is %p, s1 ptr is %p, s2 ptr is %p \n", &data, &s1, &s2);
+
 }

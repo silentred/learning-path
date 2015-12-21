@@ -146,3 +146,45 @@ print_r($arr);
 
 echo time() - strtotime('2015-12-16 19:30:40');
 echo "\n";
+
+// MQTT payload length
+
+$x = 321; // 65 + 128*2
+$x = 449; // 65 + 128*3
+$x = 16384;
+
+function numToDigit($x){
+    $return = '';
+    do {
+        $digit = $x % 128;
+        $x = floor($x / 128);
+        if ($x > 0) {
+            $digit = $digit | 0x80;
+        }
+        $return .= chr($digit);
+    }while ( $x > 0);
+
+    return $return;
+}
+
+var_dump(numToDigit(321));
+
+function digitToNum($string='')
+{
+    $multiplier = 1;
+    $value = 0;
+    $offset = 0;
+    $length = strlen($string);
+    //var_dump($length);
+    do {
+        $digit = ord($string[$offset++]);
+        $value += ($digit & 127) * $multiplier;
+        $multiplier *= 128;
+    } while ( $offset <= $length && ($digit & 128)!=0 );
+
+    return $value;
+}
+
+var_dump( digitToNum(numToDigit(321)) );
+
+
