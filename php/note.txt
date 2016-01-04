@@ -1,10 +1,10 @@
-//¹ØÓÚPDOµÄ²Ù×÷
+//å…³äºPDOçš„æ“ä½œ
 $resAdd = $this->addVideoRelations($video_id, $toAdd);
 //in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
 if((int)$resAdd === 0 ) $resAdd=true;
-ÕâÀïPDOºÍmysqli×÷ÎªdriverÊ±ºò£¬insertµÄ·µ»Ø½á¹û²»Í¬£¬PDOÎª¡°0¡°£¬ mysqliÎª0
+è¿™é‡ŒPDOå’Œmysqliä½œä¸ºdriveræ—¶å€™ï¼Œinsertçš„è¿”å›ç»“æœä¸åŒï¼ŒPDOä¸ºâ€œ0â€œï¼Œ mysqliä¸º0
 
-PDOµÄÊ¹ÓÃ£º
+PDOçš„ä½¿ç”¨ï¼š
 $pdo = \DB::connection()->getPdo();
 $sql = 'select * from video where id=1';
 $result = $pdo->query($sql);
@@ -23,9 +23,9 @@ $result = $statement->fetchAll();
 var_dump($result);
 var_dump($statement->rowCount());
 
-¹ØÓÚphp·¢ËÍGET/POST http ÇëÇó£º
+å…³äºphpå‘é€GET/POST http è¯·æ±‚ï¼š
 //GET
-$query_string = http_build_query($param); //paramÊÇarray
+$query_string = http_build_query($param); //paramæ˜¯array
 $opts = array(
     'http'=>array(
         'method'=>"GET",
@@ -44,7 +44,7 @@ $options = array(
 );
 $context = stream_context_create($opts);
 $content = file_get_contents($url, false, $context);
-»òÕßpost»¹¿ÉÒÔÓÃcurlÀ´·¢ËÍ£º
+æˆ–è€…postè¿˜å¯ä»¥ç”¨curlæ¥å‘é€ï¼š
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_POST, true);
@@ -57,13 +57,13 @@ curl_close($ch);
 unset($ch);
 
 
-PHPµÄnotices£¬ warning£¬errorµÈ´íÎó¼¶±ğĞèÒª²é¿´Ò»ÏÂ
-¹ØÓÚÈçºÎ´¦Àí´íÎó£º
-·½·¨1£º set your own error handler before the call and restore the previous error handler later with restore_error_handler().
+PHPçš„noticesï¼Œ warningï¼Œerrorç­‰é”™è¯¯çº§åˆ«éœ€è¦æŸ¥çœ‹ä¸€ä¸‹
+å…³äºå¦‚ä½•å¤„ç†é”™è¯¯ï¼š
+æ–¹æ³•1ï¼š set your own error handler before the call and restore the previous error handler later with restore_error_handler().
 set_error_handler(function() { /* ignore errors */ });
 dns_get_record();
-restore_error_handler(); //»Ö¸´µ½Ö®Ç°µÄ´¦Àíº¯Êı
-·½·¨2£ºTurning errors into exceptions
+restore_error_handler(); //æ¢å¤åˆ°ä¹‹å‰çš„å¤„ç†å‡½æ•°
+æ–¹æ³•2ï¼šTurning errors into exceptions
 set_error_handler(function($errno, $errstr, $errfile, $errline, array $errcontext) {
     // error was suppressed with the @-operator
     if (0 === error_reporting()) {
@@ -77,62 +77,75 @@ try {
     // ...
 }
 The important thing to note when using your own error handler is that it will bypass the error_reporting setting and pass all errors (notices, warnings, etc.) to your error handler. You can set a second argument on set_error_handler() to define which error types you want to receive, or access the current setting using ... = error_reporting() inside the error handler.
-·½·¨3£¨²»ÍÆ¼ö£©£ºSuppressing the warning
+æ–¹æ³•3ï¼ˆä¸æ¨èï¼‰ï¼šSuppressing the warning
 Another possibility is to suppress the call with the @ operator and check the return value of dns_get_record() afterwards. But I'd advise against this as errors/warnings are triggered to be handled, not to be suppressed.
 
 
-Êı¾İ¿â²åÈëÊı¾İºóµÄ×ÔÔöidÈçºÎ»ñµÃ£º
+æ•°æ®åº“æ’å…¥æ•°æ®åçš„è‡ªå¢idå¦‚ä½•è·å¾—ï¼š
 PDO::lastInsertId();
 $mysqli->insert_id
-ÓĞĞ©ÖĞ¼ä±íÃ»ÓĞ×ÔÔöµÄ×Ö¶Î£¬ÕâÊ±·µ»Ø0£»in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
+æœ‰äº›ä¸­é—´è¡¨æ²¡æœ‰è‡ªå¢çš„å­—æ®µï¼Œè¿™æ—¶è¿”å›0ï¼›in PDO, $resAdd is '0'; in Mysqli, $resAdd is 0
 
-## ¹ØÓÚ umask
-umask() Ö±½Ó·µ»Øµ±Ç°umask¡£¼Ó²ÎÊı ¡°0777¡±£¬¼´ÉèÖÃumaskÎª0777£¬ ²¢·µ»ØÖ®Ç°µÄumask.
-µ±umaskÎª0Ê±£¬´´½¨µÄÎÄ¼şµÄprivilegeÎª 666£¬ ´´½¨µÄÄ¿Â¼µÄÈ¨ÏŞÎª 777.
-ËùÒÔ umask(0), Ö®ºóÒ»°ãÊÇ´´½¨ÎÄ¼ş£¬²¢ÓÃchmod()ÏÔÊ½ĞŞ¸ÄĞèÒªµÄÈ¨ÏŞ¡£
+## å…³äº umask
+umask() ç›´æ¥è¿”å›å½“å‰umaskã€‚åŠ å‚æ•° â€œ0777â€ï¼Œå³è®¾ç½®umaskä¸º0777ï¼Œ å¹¶è¿”å›ä¹‹å‰çš„umask.
+å½“umaskä¸º0æ—¶ï¼Œåˆ›å»ºçš„æ–‡ä»¶çš„privilegeä¸º 666ï¼Œ åˆ›å»ºçš„ç›®å½•çš„æƒé™ä¸º 777.
+æ‰€ä»¥ umask(0), ä¹‹åä¸€èˆ¬æ˜¯åˆ›å»ºæ–‡ä»¶ï¼Œå¹¶ç”¨chmod()æ˜¾å¼ä¿®æ”¹éœ€è¦çš„æƒé™ã€‚
 
-## ¹ØÓÚ posix_setsid()
-¿ÉÒÔ°Ñµ±Ç°processÉèÎª session leader. ¼´°ÑprocessÉèÖÃÎªdaemon, sessionÍË³öºó½ø³Ì»¹´æÔÚ¡£
+## å…³äº posix_setsid()
+å¯ä»¥æŠŠå½“å‰processè®¾ä¸º session leader. å³æŠŠprocessè®¾ç½®ä¸ºdaemon, sessioné€€å‡ºåè¿›ç¨‹è¿˜å­˜åœ¨ã€‚
 
 ```php
 $pid = pcntl_fork(); // fork
 if ($pid < 0)
-	die("fork error");
+    die("fork error");
 elseif ($pid){ // parent
-	echo "exit parent process \n";
-	exit;
+    echo "exit parent process \n";
+    exit;
 } else { // child 
-	// detatch it from the terminal using posix_setsid()
-	$sid = posix_setsid();
-	$child_pid = posix_getpid();
-	if ($sid < 0)
-		exit;
-	for($i = 0; $i <= 10; $i++) {
-		sleep(2);
-		echo "sid is {$sid}, pid is {$child_pid} \n";
-	}
-	echo "child process is exiting. \n";
-	exit;
+    // detatch it from the terminal using posix_setsid()
+    $sid = posix_setsid();
+    $child_pid = posix_getpid();
+    if ($sid < 0)
+        exit;
+    for($i = 0; $i <= 10; $i++) {
+        sleep(2);
+        echo "sid is {$sid}, pid is {$child_pid} \n";
+    }
+    echo "child process is exiting. \n";
+    exit;
 }
 ```
 
-## ¹ØÓÚĞÅºÅ
-SIG_IGN ÊÇ ĞÅºÅºöÂÔ(ignore) µÄ handler
-SIG_DFL ÊÇ ĞÅºÅÄ¬ÈÏ(default) µÄ handler
+## å…³äºä¿¡å·
+SIG_IGN æ˜¯ ä¿¡å·å¿½ç•¥(ignore) çš„ handler
+SIG_DFL æ˜¯ ä¿¡å·é»˜è®¤(default) çš„ handler
 
-SIGSTOP Í£Ö¹½ø³Ì, can be handled , ignored, blocked;
-SIGTSTP is an interactive stop signal. can be handled or blocked. This signal is generated when the user types the SUSP character (normally C-z). Àí½âÎª ctrl-z ·¢³ö SIGTSTP ĞÅºÅ£¿
+SIGSTOP åœæ­¢è¿›ç¨‹, can be handled , ignored, blocked;
+SIGTSTP is an interactive stop signal. can be handled or blocked. This signal is generated when the user types the SUSP character (normally C-z). ç†è§£ä¸º ctrl-z å‘å‡º SIGTSTP ä¿¡å·ï¼Ÿ
 
-SIGTTIN µ±ºóÌ¨½ø³ÌÊÔÍ¼¶Áterminal
-SIGTTOU µ±ºóÌ¨½ø³ÌÊÔÍ¼Ğ´terminal
+SIGTTIN å½“åå°è¿›ç¨‹è¯•å›¾è¯»terminal
+SIGTTOU å½“åå°è¿›ç¨‹è¯•å›¾å†™terminal
 
-SIGHUP µ±terminal¹Ø±ÕÊ±£¬¸ÃĞÅºÅ·¢¸ø½ø³Ì
+SIGHUP å½“terminalå…³é—­æ—¶ï¼Œè¯¥ä¿¡å·å‘ç»™è¿›ç¨‹
 
-## ¹ØÓÚ flock
-ÓĞÒ»¸ö LOCK_NB (non-blocking) bit mask Ê¹µÃ require lockµÄ¹ı³ÌÎª·Ç×èÈû¡£ÕâÑùÈç¹û»ñµÃËøÊ§°Ü£¬ ¿ÉÒÔ×öÆäËû²Ù×÷£¬²»ÓÃÒ»Ö±µÈ´ı¡£
+## å…³äº flock
+æœ‰ä¸€ä¸ª LOCK_NB (non-blocking) bit mask ä½¿å¾— require lockçš„è¿‡ç¨‹ä¸ºéé˜»å¡ã€‚è¿™æ ·å¦‚æœè·å¾—é”å¤±è´¥ï¼Œ å¯ä»¥åšå…¶ä»–æ“ä½œï¼Œä¸ç”¨ä¸€ç›´ç­‰å¾…ã€‚
 
 
+## å…³äºjson_encode
+ä¸­æ–‡ç­‰utf8å­—ç¬¦ä¸²ï¼Œä¼šè½¬åŒ–ä¸º code point, ç±»ä¼¼â€œ\u3f30â€ã€‚å¦‚æœä¸æƒ³è½¬ï¼Œå¯ä»¥ç”¨
+json_encode($array, JSON_UNESCAPED_UNICODE);
 
+æˆ–è€…
+
+æŠŠæ±‰å­—å…ˆurlencodeç„¶åå†ä½¿ç”¨json_encodeï¼Œjson_encodeä¹‹åå†æ¬¡ä½¿ç”¨urldecodeæ¥è§£ç ï¼Œè¿™æ ·ç¼–ç å‡ºæ¥çš„jsonæ•°ç»„ä¸­çš„æ±‰å­—å°±ä¸ä¼šå‡ºç°unicodeç¼–ç äº†ã€‚
+
+$array = array(
+'test'=>urlencode("æˆ‘æ˜¯æµ‹è¯•")
+);
+$array = json_encode($array);
+echo urldecode($array);
+//{"test":"æˆ‘æ˜¯æµ‹è¯•"} 
 
 
 

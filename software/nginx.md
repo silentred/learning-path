@@ -19,3 +19,9 @@ location ~* ^/simg/(\d+)_(\d+)/attachment/.*$ {
 
 原图最大2M，要裁剪的图片超过2M返回415错误，需要调节参数image_filter_buffer 
 image_filter_buffer 2M;        
+
+
+## 关于配置
+
+### tcp_nodelay
+关闭
