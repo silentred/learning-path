@@ -122,3 +122,7 @@ dd if=/dev/zero of="/tmp/test" bs=100MB count=2
 
 ### Run script in string
 use `script`, for instance, echo "`pwd`/filename"
+
+### 替换多个文件中的文字
+grep -rl matchstring somedir/ | xargs sed -i '' 's/string1/string2/g'
+-i 后面的 '' 是为了在mac下的可用，表示备份原文件后缀，例如 '.bak' 会在修改前保存被修改的文件到' original.bak'

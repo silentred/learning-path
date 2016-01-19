@@ -24,4 +24,4 @@ image_filter_buffer 2M;
 ## 关于配置
 
 ### tcp_nodelay
-关闭
+强制TCP输出，而不用缓存。如果发送的包太小，TCP默认会延迟0.2秒等待buffer填满再发消息， 现代的应用已经不需要这种机制了。

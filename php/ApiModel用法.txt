@@ -1,0 +1,47 @@
+用法：
+
+$user = new User(['id']=>1, 'name'=>'my name');
+$user->create();
+
+
+$user = User::find(1);
+这个方法依赖 delegate 去处理返回的json，把属性设置到$user中。
+
+$user->name = 'other name';
+//仅更新被修改的字段
+$user->update();
+
+// 实现delegate接口，用于转换数据结构，api User -> 本地 User
+
+class User extends BaseApiModel implements ApiDelegateContract {
+	protected $api = [
+        'create' => ['method' => 'POST', 'uri' => '/create'],
+        'find' => ['method' => 'GET', 'uri' => '/find'],
+        'update' => ['method' => 'POST', 'uri' => '/update']
+    ];
+
+	public function __construct($array){
+		parent::__construct($array);
+		$this->delegate = $this;
+	}
+	
+	public function onFound($code, $body, $model){
+		$attr = json_decode($body, true);
+		$model->name = 'prefix'. $attr['name'];
+
+		return $model;
+	}
+
+	public function onCreating($attributes){
+		$params = [
+			'name' => $attributes['name'] . 'suffix';
+		];
+
+		return $params;
+	}
+
+	public function onUpdating($attributes){
+		return $params
+	}
+}
+
