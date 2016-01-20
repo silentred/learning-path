@@ -10,3 +10,4 @@ $today = date("Y-m-d");
 exec("git commit -m \"{$today}\" ");
 exec("git push");
 
+
