@@ -54,6 +54,9 @@ QoS value	Description
 #### RETAIN:
 设为1时，服务器接受到PUBLISH，传递给当前订阅者后并不立刻销毁，而是保存。当新的订阅者订阅某个topic时，那个topic上最新的被保留的message被发送给新的订阅者。
 
+关于retained message，有一篇好文，讲解了这个flag的意义和应用场景，发送和删除 retained message 的方法。
+http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages
+
 When a server sends a PUBLISH to a client as a result of a subscription that already existed when the original PUBLISH arrived, the Retain flag should not be set, regardless of the Retain flag of the original PUBLISH. This allows a client to distinguish messages that are being received because they were retained and those that are being received "live".
 这段部分没看懂，慢慢体会
 

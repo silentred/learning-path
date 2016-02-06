@@ -392,6 +392,14 @@ Show intension actions --->  默认为command + 1，加一个 option + enter
 删除行： command ＋ d
 
 
+## Install JDK
+
+`brew cask install java`, 在 `.zshrc` 文件中设置 `JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home`
+
+## Install Hadoop
+
+
+
 
 
 

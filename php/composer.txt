@@ -46,3 +46,30 @@ composer create-project laravel/laravel --prefer-dist
     {"type": "composer", "url": "http://pkg.phpcomposer.com/repo/packagist/"},
     {"packagist": false}
 ]
+
+
+
+## Composer加载私有库
+
+http://stackoverflow.com/questions/25400378/using-composer-and-private-repository-on-github-using-vcs-on-build-server
+
+```
+"require": {
+    "silentred/private": "0.1.0"
+},
+"repositories": [
+    {
+        "type": "package",
+        "package": {
+            "name": "silentred/private",
+            "version": "0.1.0",
+            "type": "library",
+            "source": {
+                "url": "git@git.coding.net:silentred/private.git",
+                "type": "git",
+                "reference": "master"
+            }
+        }
+    }
+]
+```

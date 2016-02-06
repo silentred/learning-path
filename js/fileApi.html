@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<input type="file" id="file" name="newFile">
+</body>
+
+<script src="http://cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
+<script type="text/javascript">
+
+	var microTime = window.performance.now();
+	var timestamp = new Date().getTime();
+	console.log(timestamp);
+
+	$("#file").change(function(){
+		console.log(this.files);
+
+		createReader(this.files[0], function(width, height){ 
+			console.log("width:", width, "   height:", height);
+		});
+	});
+
+	function createReader(file, callback) {
+		var reader = new FileReader();
+	    reader.onload = function(evt) {
+	        var image = new Image();
+	        image.onload = function(evt) {
+	            var width = this.width;
+	            var height = this.height;
+	            if (callback) callback(width, height);
+	        };
+	        image.src = evt.target.result; 
+	    };
+	    reader.readAsDataURL(file);
+	}
+</script>
+</html>

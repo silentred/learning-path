@@ -51,9 +51,12 @@ use users
 db.createUser(
    {
      user: "admin",
-     pwd: "password",
+     pwd: "public",
      roles: [ {role:"readWrite", db:"users"} ]
    }
 )
+
+use admin
+db.createUser({user:"admin", pwd:"admin", roles:[{role:"root", db:"admin"}]})
 
 
