@@ -1,3 +1,8 @@
+## connection
+session
+will
+
+
 ## pub/sub
 
 http://www.hivemq.com/blog/mqtt-essentials-part2-publish-subscribe
@@ -9,4 +14,11 @@ broker保存消息的几个前提：
 2. 订阅过 QoS大于0的topic
 
 
+## topic
+
+- single
+- star
+- $SYS
+
+## Qos
 
