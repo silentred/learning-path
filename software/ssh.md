@@ -36,7 +36,7 @@ Host lifome
 2. 禁用密码验证 `PasswordAuthentication no`
 
 ### 无法使用key验证的问题
-1. 检查权限，`.ssh`为700, `authorized_keys`为600
+1. 检查权限，`.ssh`为700, `authorized_keys`为600, 如果是root用户登陆 `/root` 为700
 2. 检查SeLinux，getenforce ； 暂时关闭 setenforce 0
 
 ### 动态端口转发

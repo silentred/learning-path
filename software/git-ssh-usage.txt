@@ -8,6 +8,16 @@ git push orgin master
 git pull
 # to get things from repo
 
+## 测试merge是否有冲突
+git merge --no-ff --no-commit other-branch
+--no-commit 表示不提交，只把内容合到工作目录
+
+## 撤销合并
+git merge --abort
+
+## 撤销提交，保留当前修改在工作目录
+git reset HEAD^
+
 
 Git分支使用
 参考：https://www.atlassian.com/git/tutorials/using-branches/git-merge

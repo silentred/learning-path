@@ -165,12 +165,48 @@ select * from mysql.plugin where name='validate_password';
 不知道这里删除这条记录是否能disable这个插件。
 
 
-升级GCC
+## 升级GCC
 $ sudo wget http://people.centos.org/tru/devtools-2/devtools-2.repo -P /etc/yum.repos.d
 $ sudo sh -c 'echo "enabled=1" >> /etc/yum.repos.d/devtools-2.repo'
 $ sudo yum install devtoolset-2
 $ scl enable devtoolset-2 bash
 $ gcc --version
 
+如果 devtoolset-2 安装失败，试试：
+devtoolset-2-build
+devtoolset-2-perftools
+devtoolset-2-toolchain
 
+
+## Nginx For PHP 403问题
 laravel部署如果遇到403 forbidden, 除了检查nginx, php-fpm的user,group, 还需要检查配置文件中是否指定了 index index.php index.html; 这个配置，如果不指定的话，是没有默认值的。 所以会导致去读一个目录而不是文件。
+
+
+
+## centos 6 安装 g++ 4.7 c++11
+visit website: http://people.centos.org/tru/devtools-1.1
+download file : http://people.centos.org/tru/devtools-1.1/devtools-1.1.repo
+/etc/yum.repos.d/devtools-1.1.repo 
+yum clean all
+yum install devtoolset-1.1
+
+完成后安装在 `/opt/centos/devtoolset-1.1/root/usr/bin/` 目录下，运行：
+
+ln -s /opt/centos/devtoolset-1.1/root/usr/bin/* /usr/local/bin/
+hash -r
+g++ --version
+
+## 安装 libiconv
+http://www.gnu.org/software/libiconv/#downloading
+./confugure
+make && make install
+文章中建议安装完成后重新编译 gettext
+
+## 安装 gettext
+http://ftp.gnu.org/pub/gnu/gettext/
+./confugure 
+make && make install
+
+## libxml2
+依赖python-devel
+

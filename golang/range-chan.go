@@ -8,7 +8,8 @@ import (
 
 func main() {
 	checkMethedSet()
-
+	after()
+	interval()
 }
 
 type I interface {

@@ -23,7 +23,7 @@ func OutFunc() (i int, err error) {
 		}
 	}()
 	i = 1
-	panic("do panic")
+	panic("do panic in OutFunc..")
 	return i, err
 }
 
@@ -36,11 +36,24 @@ func main() {
 
 	data := []int{0, 1, 2, 3, 4}
 	s1 := data[:2]
-	fmt.Printf("data ptr is %p, s1 ptr is %p", &data, &s1);
+	fmt.Printf("data ptr is %p, s1 ptr is %p", &data, &s1)
 	s2 := append(s1, 100, 200)
 	fmt.Println("\n", data)
 	fmt.Println(s1)
 	fmt.Println(s2)
-	fmt.Printf("data ptr is %p, s1 ptr is %p, s2 ptr is %p \n", &data, &s1, &s2);
+	fmt.Printf("data ptr is %p, s1 ptr is %p, s2 ptr is %p \n", &data, &s1, &s2)
+
+	var pool *sync.Pool
+	pool = new(sync.Pool)
+	pool.New = func() interface{} {
+		return 1
+	}
+	//pool.Put(1)
+	i := pool.Get()
+	if i == nil {
+		fmt.Println("pool.Get is non-block function. nil could be returned. not cool")
+	} else {
+		fmt.Println("number is ", i)
+	}
 
 }
