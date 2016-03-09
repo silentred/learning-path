@@ -210,3 +210,6 @@ make && make install
 ## libxml2
 依赖python-devel
 
+ldconfig
+
+

@@ -81,6 +81,62 @@ package society {
 }
 ```
 
+## Function
+
+```scala
+def functionName ([list of parameters]) : [return type] = {
+   //function body
+   return [expr]
+}
+```
+没有＝和函数体，表示abstract
+
+## Closure
+
+```scala
+val method = (i:Int) => i * 3
+```
+
+## Array
+
+```scala
+var z : Array[String] = new Array[String](3)
+var z = new Array[String](3)
+z(0) = "Zara"; z(1) = "Nuha"; z(4/2) = "Ayan"
+
+
+```
+
+## Collection
+strict
+lazy
+
+mutable
+immutable
+
+```scala
+// Define List of integers.
+val x = List(1,2,3,4)
+val fruit: List[String] = List("apples", "oranges", "pears")
+val fruit = "apples" :: ("oranges" :: ("pears" :: Nil))
+
+
+// Define a set.
+var x = Set(1,3,5,7)
+var s : Set[Int] = Set(1,3,5,7)
+
+// Define a map.
+val x = Map("one" -> 1, "two" -> 2, "three" -> 3)
+
+// Create a tuple of two elements.
+val x = (10, "Scala")
+
+// Define an option
+val x:Option[Int] = Some(5)
+```
+Option[T] can be Some[T] or None
+
+
 
 
 
