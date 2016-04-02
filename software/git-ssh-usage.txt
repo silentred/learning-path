@@ -22,6 +22,15 @@ git reset HEAD^
 git branch -m [oldName] newName
 不写oldName 的话，默认是当前branch
 
+## 强制同步到远程branch
+git reset --hard origin/master
+
+
+## 查询两个branch之间某个文件的差异
+git diff mybranch master -- myfile.cs
+
+
+
 
 Git分支使用
 参考：https://www.atlassian.com/git/tutorials/using-branches/git-merge

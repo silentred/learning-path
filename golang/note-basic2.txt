@@ -192,3 +192,15 @@ sync.RWMutex // 单写多读模型。读锁会阻止写，不阻止读，多个r
 全局唯一操作：
 var once sync.Once
 once.Do(func) // goroutine中，并行操作只执行一次func
+
+
+
+
+## sync.Pool
+
+Pool.Get 是非阻塞的，可能返回nil。
+Pool有New这个属性，设置 New 这个 工场函数 后，当Pool为空时，会生产新的对象。
+Pool中的对象在GC时，可能会被GC回收，所以不适合用作连接池。
+
+
+

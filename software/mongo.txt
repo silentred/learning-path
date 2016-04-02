@@ -60,3 +60,9 @@ use admin
 db.createUser({user:"admin", pwd:"admin", roles:[{role:"root", db:"admin"}]})
 
 
+## 地理位置搜索必须先建索引
+
+db.usergeo.createIndex( { location : "2dsphere" } )
+
+db.usergeo.aggregate([{$geoNear:{ near:{type: "Point", coordinates:[116.462295,39.905322] }, query:{uid:{$ne: 100143}},spherical: 1,minDistance: 0,distanceField: "dis"}}, {$group: { _id: null, count:{$sum: 1}}}  ])
+
