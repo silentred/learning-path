@@ -103,3 +103,34 @@ pull: "rtmp://pili-live-rtmp.nihao.com/beingnihao-PL/100143"
 
 
 
+## 目前Feed的情况
+
+### 写入
+
+- Feed::store
+- Service::store
+- Live::onConnected
+
+- Service::update
+- Live::onDisconnected
+- Service::delete
+- Feed::delete
+
+- mongodb, status::update
+
+### 读取
+
+- Feed::subscribe （where uid in, where status or (uid=xx and status in)）
+- Feed::new 
+- Feed::nearby ()
+- 服务列表
+- live列表
+
+
+toMongoDoc(object) // 返回存入mongo的
+
+
+
+
+ 
+

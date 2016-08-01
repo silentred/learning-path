@@ -73,7 +73,7 @@ $rule = [
 	'city' => '', // nullable，'北京市'
 	'uid' => ''// nullable, 取出该用户（主账号，次账号）发表的玩法
 	'wish' => '' // boolean, 必须有uid才有意义，表示改用户想玩的玩法
-	'order' => 'desc', // 可以考虑添加排序，默认为 orderBy(id, desc) 
+	'order' => 'desc', // 可以考虑添加排序，默认为 orderBy(id, desc)
 	'field' => 'id'
 ];
 
@@ -110,7 +110,7 @@ $rule = [
 	'content' => 'required', // json
 	'country' => '',  // 微信没有要求填这两个数据
 	'province' => '',
-	'city' => 'required', 
+	'city' => 'required',
 	'is_free' => 'required',
 	'width' => 'required', // 封面的宽高，用七牛截图时需要
 	'height' => 'required',
@@ -229,9 +229,3 @@ $rule = [
 
 ### response
 修改后的订单，不需要对应玩法，卖家买家。
-
-
-
-
-
-

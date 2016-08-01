@@ -203,4 +203,6 @@ Pool有New这个属性，设置 New 这个 工场函数 后，当Pool为空时�
 Pool中的对象在GC时，可能会被GC回收，所以不适合用作连接池。
 
 
+## 跨平台编译
 
+GOOS=linux GOARCH=amd64 go build .

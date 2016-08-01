@@ -1,0 +1,72 @@
+﻿# 文案
+
+## 交易明细
+
+### 英文
+
+Tom是人物名称，不需要翻译.
+
+```
+奖励： โบนัสฟรี 1000 เหรียญ
+回复他人, 不带 tip：คุณตอบกลับข้อความราคา 100 เหรียญของ Tom
+回复他人, 带 tip： คุณตอบกลับข้อความราคา 100 เหรียญของ Tom และให้ทิป 100 เหรียญ
+他人回复你, 不带 tip： Tom ตอบกลับข้อความราคา 100 เหรียญของคุณ
+他人回复你, 带 tip： Tom ตอบกลับข้อความราคา 100 เหรียญของคุณ และให้ทิปคุณ 100 เหรียญ
+你看了消息：คุณดูข้อความราคา 100 เหรียญของ Tom
+
+你看了消息：You viewed a message from Tom
+他人看了你的消息：Tom viewed your message
+
+他人看了你的消息：Tom ดูข้อความราคา 100 เหรียญของคุณ
+充值：คุณซื้อ 1000 เหรียญด้วยเงิน $10
+提现：คุณขอถอนเงิน 1000 เหรียญ มูลค่า $10
+
+```
+
+## 错误提示
+
+翻译单引号中的文字，例如英文版本写为：
+ErrorCode::INVALID_PARAM => '参数不合法',
+ErrorCode::INVALID_PARAM => 'Invalid parameters',
+
+```
+ErrorCode::VERSION_SUPPORT => 'เวอร์ชั่นของคุณล้าสมัย กรุณาอัปเดต
+ErrorCode::INVALID_PARAM => 'การคำนวณผิดพลาด',
+ErrorCode::SIGN => 'การลงชื่อเข้าใช้ล้มเหลว โปรดลองอีกครั้ง',
+ErrorCode::USER_SAVE => 'การบันทึกบัญชีผู้ใช้ล้มเหลว',
+ErrorCode::USER_NOT_FOUND => 'ไม่พบบัญชีผู้ใช้',
+ErrorCode::PASSWORD => 'อีเมล์หรือรหัสผ่านไม่ถูกต้อง',
+ErrorCode::USER_UPDATE => 'การอัพเดตบัญชีผู้ใช้ล้มเหลว',
+ErrorCode::MSG_SAVE_FAILED => 'การบันทึกข้อความล้มเหลว',
+ErrorCode::MSG_EXPIRE => 'ข้อความหมดอายุ',
+ErrorCode::COIN_NOT_ENOUGH => 'เหรียญไม่พอ กรุณาเติมเงิน',
+ErrorCode::FOLLOW_SAVE => 'การติดตามล้มเหลว โปรดลองอีกครั้ง',
+ErrorCode::SEND_EMAIL => 'การส่งอีเมล์ล้มเหลว',
+ErrorCode::EMAIL_NOT_FOUND => 'ไม่พบอีเมล์',
+ErrorCode::TRANSACTION => 'การจัดเก็บข้อความติดต่อสื่อสารล้มเหลว',
+ErrorCode::USERNAME_FORMAT => 'ชื่อบัญชีผู้ใช้ต้องมีความยาว 5-16 ตัวอักษรและอนุญาตให้ใช้เป็นตัวอักษร ตัวเลข และขีดล่างเท่านั้น',
+ErrorCode::PASSWORD_FORMAT => 'ความยาวรหัสผ่าน 6-18 ตัว',
+ErrorCode::GENDER_FORMAT => 'กรุณาเลือกเพศ',
+ErrorCode::EMAIL_FORMAT => 'รูปแบบอีเมล์ไม่ถูกต้อง',
+ErrorCode::REPLY_FAILED => 'การตอบกลับล้มเหลว,โปรดลองอีกครั้ง',
+ErrorCode::EMAIL_EXISTS => 'ลงทะเบียนอีเมล์สำเร็จ',
+ErrorCode::USERNAME_EXISTS => 'ลงทะเบียนบัญชีผู้ใช้สำเร็จ',
+ErrorCode::PASSWORD_SAVE => 'การบันทึกรหัสผ่านล้มเหลว',
+ErrorCode::EMAIL_CODE => 'รหัสยืนยันไม่ถูกต้อง',
+ErrorCode::INBOX_UPDATE_FAILED => 'การลบล้มเหลว',
+ErrorCode::NETWORK_BAD => 'เครือข่ายหมดเวลา,โปรดลองอีกครั้ง',
+ErrorCode::HOTFIX_NOT_FOUND => 'ไม่พบโปรแกรมซ่อมแซมจุดบกพร่อง',
+ErrorCode::BLOCK_FAILED => 'การบันทึกblacklistล้มเหลว',
+```
+
+## 推送提示
+
+```
+默认提示：'คุณได้รับข้อความใหม่'
+Tom看了你的免费消息： 'Tom ดูข้อความฟรีของคุณ
+Tom看了你的付费消息: 'Tome ดูข้อความราคา 100 เหรียญของคุณ'
+Tom发了一条新消息： 'Tom ส่งข้อความถึงคุณ!'
+Tom回复了消息: 'Tom ตอบกลับข้อความของคุณ!'
+```
+
+

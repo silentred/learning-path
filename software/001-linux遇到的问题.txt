@@ -212,4 +212,31 @@ make && make install
 
 ldconfig
 
+## yum repo
+yum -y --enablerepo=remi,remi-test install redis
+
+## install ffmpeg
+/etc/yum.repos.d/dag.repo
+[dag]
+name=Dag RPM Repository for Red Hat Enterprise Linux
+baseurl=http://apt.sw.be/redhat/el$releasever/en/$basearch/dag
+gpgcheck=1
+enabled=1
+
+yum install ffmpeg ffmpeg-devel
+
+To fix rpmforge GPG key warning:
+rpm -Uhv http://apt.sw.be/redhat/el5/en/i386/rpmforge/RPMS/rpmforge-release-0.3.6-1.el5.rf.i386.rpm
+rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
+
+## 检测视频完整度
+ffmpeg -v error -i file.avi -f null - 2>error.log
+
+
+## grep多个文件
+grep -r "something" dir
+-l: 只打印文件名，不打印匹配到的内容
+
+## 
+
 

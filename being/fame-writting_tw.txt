@@ -1,0 +1,67 @@
+﻿# 文案
+
+## 交易明細
+
+### 英文
+
+Tom是人物名稱，不需要翻譯.
+
+```
+獎勵： 1000免費額外金幣
+回覆他人, 不帶 tip： 你已花費100金幣回覆Tom的訊息。
+回覆他人, 帶 tip： 你已花費100金幣和100小費回覆Tom的訊息。
+他人回覆你, 不帶 tip： Tom花費了100金幣回覆你的訊息。
+他人回覆你, 帶 tip： Tom花費了100金幣和100小費回覆你的訊息。
+你看了消息：你已花費了100金幣瀏覽Tom的訊息。
+他人看了你的消息：Tom花費了100金幣瀏覽你的訊息。
+儲值：你已花費$10購買1000金幣。
+提現：你提出了一個將1000金幣轉換成10美金的提款申請
+
+```
+
+## 錯誤提示
+
+翻譯單引號中的文字，例如英文版本寫為：
+ErrorCode::INVALID_PARAM => '參數不合法',
+ErrorCode::INVALID_PARAM => '參數不合法',
+
+```
+ErrorCode::VERSION_SUPPORT => '請先升級你的版本',
+ErrorCode::INVALID_PARAM => '參數不合法',
+ErrorCode::SIGN => '登入失敗，請重新登入',
+ErrorCode::USER_SAVE => '保存用戶資訊失敗',
+ErrorCode::USER_NOT_FOUND => '用戶名稱不存在',
+ErrorCode::PASSWORD => 'E-mail或密碼輸入錯誤',
+ErrorCode::USER_UPDATE => '更新用戶資訊失敗',
+ErrorCode::MSG_SAVE_FAILED => '保存訊息失敗',
+ErrorCode::MSG_EXPIRE => '此訊息已過期',
+ErrorCode::COIN_NOT_ENOUGH => '你的金幣不足',
+ErrorCode::FOLLOW_SAVE => '追蹤失敗，請再試一次',
+ErrorCode::SEND_EMAIL => '發送郵件失敗',
+ErrorCode::EMAIL_NOT_FOUND => 'E-mail不存在',
+ErrorCode::TRANSACTION => '保存交易資訊失敗',
+ErrorCode::USERNAME_FORMAT => '用戶名稱僅限使用5-16個字元',
+ErrorCode::PASSWORD_FORMAT => '密碼請輸入6-18個字元',
+ErrorCode::GENDER_FORMAT => '請選擇你的性別',
+ErrorCode::EMAIL_FORMAT => 'E-mail格式不正確',
+ErrorCode::REPLY_FAILED => '回覆失敗,請再試一次',
+ErrorCode::EMAIL_EXISTS => '此E-mail已被註冊',
+ErrorCode::USERNAME_EXISTS => '此用戶名已被註冊',
+ErrorCode::PASSWORD_SAVE => '保存密碼失敗',
+ErrorCode::EMAIL_CODE => '驗證碼輸入錯誤',
+ErrorCode::INBOX_UPDATE_FAILED => '刪除失敗',
+ErrorCode::NETWORK_BAD => '網路逾時，請再試一次',
+ErrorCode::HOTFIX_NOT_FOUND => '沒有可使用的更新',
+ErrorCode::BLOCK_FAILED => '封鎖用戶失敗',
+```
+
+## 推送提示
+
+```
+默認提示：'你收到了一則訊息。'
+Tom看了你的免費消息： 'Tom瀏覽了你的訊息。'
+Tom看了你的付費消息: 'Tom花費100金幣瀏覽你的訊息。'
+Tom發了一條新消息： 'Tom寄給你一封訊息。'
+Tom回復了消息: 'Tom回覆了你的訊息。'
+```
+

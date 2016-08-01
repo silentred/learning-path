@@ -242,6 +242,33 @@
 分享
 雷达
 
-
+### 大视频
+```
+{
+	"msgid" : "3501ce9bd72255bc1049ad66ca9da09000cc037d",
+	"type" : 1,
+	"body": {
+		"type" : -1,
+		"content": {
+			"r": "xxx.mp4",
+			"cover_r": "http://xxx.png",
+			"w": 120,
+			"h": 60,
+			"l": 123, //时长，秒
+			"s": 123 // 文件大小，optional
+		}
+	},
+	"time": 1458727012,
+	"from": {
+		"uid":"100101",
+		"fullname":"xxx",
+		"avatar":"http:xxx.jpg",
+		"sex":"1",
+		"truthful":"3",
+		"age":"0",
+		"intro":""
+	}
+}
+```
 
 

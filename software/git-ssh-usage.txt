@@ -31,6 +31,14 @@ git diff mybranch master -- myfile.cs
 
 
 
+## Install git-core and bash-completion
+
+`sudo apt-get install -y git-core bash-completion`
+### For current session usage
+`source /usr/share/bash-completion/completions/git`
+### To have it always on for all sessions
+`echo "source /usr/share/bash-completion/completions/git" >> ~/.bashrc`
+
 
 Git分支使用
 参考：https://www.atlassian.com/git/tutorials/using-branches/git-merge

@@ -1,0 +1,18 @@
+http://f1.being.com/free-coin/100COINS@2x.jpg
+
+{"url":"http://f1.being.com/free-coin/100COINS2@2x.jpg","w":"750","h":"1334"}
+
+Congratulation! You are now awarded 100 COINS for free as a welcoming gift.\n Start your 2-way communictions with your idol now!
+
+{"c":"Congratulation! You are now awarded 100 COINS for free as a welcoming gift.\n Start your 2-way communictions with your idol now!","o":0.35}
+
+
+
+$ curl -L http://127.0.0.1:4001/v2/keys/creds -XPUT -d value='dbname=naughtylist host=ec2-123-73-145-214.northpole.compute-1.amazonaws.com port=6212 user=saintnick password=ilovemrsclaus sslmode=require'
+
+$ curl -L http://127.0.0.1:4001/v2/keys/creds -XPUT -d value='dbname=naughtylist host=ec2-123-73-145-214.northpole.compute-1.amazonaws.com port=6212 user=saintnick password=iadoremrsclaus sslmode=require'
+
+wget -c vt.tumblr.com/tumblr_o40da56RLU1v5eoup_480.mp4
+
+
+fxqVOVrAqG8:APA91bEswpER_7RXHsXKrhMxpRdwZrNITuNNYBB9h3msb4kRzpCIgt4_NYH-gJ4BL8Ll5MjOSZvGN9nTgRep1ozWSK8XN3Xnxeg3vLwS3njQ-5-YKKkqZcq7n3IcHBRxLHDV6oCwl7WF
