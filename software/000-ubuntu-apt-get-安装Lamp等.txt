@@ -75,3 +75,21 @@ sudo apt-get install phantomjs
 
 #netcat?
 sudo apt-get install netcat
+
+
+## install ffmpeg
+
+To be on safe side I removed ffmpeg completely before:
+
+sudo apt-get --purge remove ffmpeg
+sudo apt-get --purge autoremove
+
+sudo apt-get install ppa-purge
+sudo ppa-purge ppa:jon-severinsson/ffmpeg
+
+sudo add-apt-repository ppa:mc3man/trusty-media
+sudo apt-get update
+sudo apt-get dist-upgrade
+
+sudo apt-get install ffmpeg
+I am not expert so maybe there is safer/better way but this worked for me. Interestingly last ffmpeg version from jon-severinsson was ffmpeg version 1.2.6-7:1.2.6-1~trusty1 Copyright (c) 2000-2014 the FFmpeg developers and in mc3man repo  ffmpeg version 2.6.1 Copyright (c) 2000-2015 the FFmpeg developers.

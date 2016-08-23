@@ -365,3 +365,10 @@ For C++ formating using clang-format see https://github.com/rhysd/vim-clang-form
 :set colorcolumn=81
 highlight ColorColumn ctermbg=8
 ```
+
+
+
+# brew安装vim后的问题，使用git遇到问题 `error: There was a problem with the editor 'vi'`
+which vim
+git config --global core.editor /usr/bin/vim
+

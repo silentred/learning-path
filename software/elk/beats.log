@@ -1,0 +1,66 @@
+sdf
+sdf
+sdf
+sdf
+test
+sdfsdfsd
+123123
+sdf 
+
+sdf123 
+
+sdf123 
+
+sdf123 
+
+sdf123 
+
+sdf123 
+
+sdf123 
+sdf123 
+sdf123 
+sdf123 
+sdf123 123123
+sdf123 123123
+sdf123 123123
+sdf123 123123
+sdf123 123123
+sdf123 123123
+sdf123 123123
+sdf123 123123 asdf asdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf
+sdf123 123123 sdf--2
+sdf123 123123 sdf--2
+sdf123 123123 sdf--2
+sdf123 123123 sdf--2
+sdf123 123123 sdf--2
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:
+[2016-08-22 02:03:14] lumen.DEBUG:  
+[2016-08-22 02:03:14] lumen.DEBUG:  
+[2016-08-22 02:03:14] lumen.DEBUG:  
+/data/fame-server/app/Services/Sn 
+[2016-08-22 02:03:14] lumen.DEBUG: Request: GET snap/hotfix/ios {"nbid":"F17AFA8F-0307-4702-9891-9077B4F08172","app_bundle_id":"com.being.fame","os_name":"iPhone
+OS","app_id":"1108809937","os_version":"8.0","size":"640x1136","app_channel":"AppStore","lang":"zh-Hans","app_build_version":"4","appstore_id":"1108809937","country":"CN","app_version":"1.4.0","access_token":"56f1590fbf29488f2f5238fb8c00a5ba","version":"1.4.0","_redirect":"1","sign":"0521e5c7c3a45bd10035fa55dd0a5b97","timestamp":"1471831274"} Response user10010232 {"error_code":1,"message":"hotfix not found"}
+[2016-08-22 02:03:14] lumen.DEBUG: asdf asdf asdf asdf asdfasdf
+[2016-08-22 02:03:14] lumen.DEBUG: Request: GET snap/hotfix/ios {"nbid":"F17AFA8F-0307-4702-9891-9077B4F08172","app_bundle_id":"com.being.fame","os_name":"iPhone OS","app_id":"1108809937","os_version":"8.0","size":"640x1136","app_channel":"AppStore","lang":"zh-Hans","app_build_version":"4","appstore_id":"1108809937","country":"CN","app_version":"1.4.0","access_token":"56f1590fbf29488f2f5238fb8c00a5ba","version":"1.4.0","_redirect":"1","sign":"0521e5c7c3a45bd10035fa55dd0a5b97","timestamp":"1471831274"} Response user10010232 {"error_code":1,"message":"hotfix not found"}
+[2016-08-22 02:03:14] lumen.DEBUG: Request: GET snap/hotfix/ios {"nbid":"F17AFA8F-0307-4702-9891-9077B4F08172","app_bundle_id":"com.being.fame","os_name":"iPhone OS","app_id":"1108809937","os_version":"8.0","size":"640x1136","app_channel":"AppStore","lang":"zh-Hans","app_build_version":"4","appstore_id":"1108809937","country":"CN","app_version":"1.4.0","access_token":"56f1590fbf29488f2f5238fb8c00a5ba","version":"1.4.0","_redirect":"1","sign":"0521e5c7c3a45bd10035fa55dd0a5b97","timestamp":"1471831274"} Response user10010232 {"error_code":1,"message":"hotfix not found"}
+[2016-08-22 02:03:14] lumen.DEBUG: Request: GET snap/hotfix/ios {"nbid":"F17AFA8F-0307-4702-9891-9077B4F08172","app_bundle_id":"com.being.fame","os_name":"iPhone OS","app_id":"1108809937","os_version":"8.0","size":"640x1136","app_channel":"AppStore","lang":"zh-Hans","app_build_version":"4","appstore_id":"1108809937","country":"CN","app_version":"1.4.0","access_token":"56f1590fbf29488f2f5238fb8c00a5ba","version":"1.4.0","_redirect":"1","sign":"0521e5c7c3a45bd10035fa55dd0a5b97","timestamp":"1471831274"} Response user10010232 {"error_code":1,"message":"hotfix not found"}
+[2016-08-22 02:03:14] lumen.DEBUG: asdf asdf asdf asdf asdfasdf
