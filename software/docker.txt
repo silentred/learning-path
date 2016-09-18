@@ -122,3 +122,17 @@ docker load -i /tmp/user-name-version.tar.gz
 
 对于已经启动的container，进入其bash
 docker exec -it <container-name> bash
+
+
+## Docker API
+curl --unix-socket /var/run/docker.sock http:/containers/json\?all\=1
+
+默认情况下，监听的是 unix:///var/run/docker.sock，在 linux 下，想要改变其监听方式，可以使用 dockerd 命令：
+dockerd -H 0.0.0.0:5555
+便可将 docker daemon 的监听方式变为 tcp://host:port 的方式，然后客户端可以
+docker -H :5555 pull ubuntu
+
+docker pull daocloud.io/library/ubuntu:wily-20160706
+docker pull daocloud.io/library/hello-world
+docker pull daocloud.io/library/golang
+docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
