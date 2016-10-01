@@ -135,4 +135,8 @@ docker -H :5555 pull ubuntu
 docker pull daocloud.io/library/ubuntu:wily-20160706
 docker pull daocloud.io/library/hello-world
 docker pull daocloud.io/library/golang
+
 docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
+
+docker run -dit -v $GOPATH:/go daocloud.io/library/golang
+docker exec -it Container_ID /bin/bash

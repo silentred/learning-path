@@ -42,8 +42,9 @@ A physical volume is a very large file (100 GB),
 
 Needle struct:
 Field   Comment
+
 Header  magic number
-Cookie  random number to mitigate brute force lookups
+Cookie  random number to mitigate brute force lookups // no need
 Key     64-bit id
 Alternate key   32-bit id
 Flags   if deleted
