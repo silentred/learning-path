@@ -1,0 +1,16 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: linux
+    static_configs:
+      - targets: ['localhost:9100']
+        labels:
+          instance: db1
+
+  - job_name: mysql
+    static_configs:
+      - targets: ['localhost:9104']
+        labels:
+          instance: db1
