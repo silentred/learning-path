@@ -21,3 +21,7 @@ func TestBSearch(t *testing.T) {
 	res := bSearch(slice, 6)
 	fmt.Println(res)
 }
+
+func TestFib(t *testing.T) {
+	fmt.Println(fib(10))
+}
