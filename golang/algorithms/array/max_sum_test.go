@@ -11,3 +11,8 @@ func TestMaxSum(t *testing.T) {
 	max := maxSum(s)
 	fmt.Println(max)
 }
+
+func TestNextGreater(t *testing.T) {
+	s := []int{98, 23, 54, 12, 20, 7, 27}
+	nextGreater(s)
+}
