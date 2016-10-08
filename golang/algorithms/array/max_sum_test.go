@@ -23,3 +23,9 @@ func TestRoate(t *testing.T) {
 	rotate(s, 2)
 	fmt.Println(s)
 }
+
+func TestMajority(t *testing.T) {
+	s := []int{2, 6, 2, 2, 6, 2, 2, 8, 2, 1}
+	//s := []int{1, 7, 8, 2, 6, 8, 1, 3, 2, 8}
+	fmt.Println(majority(s))
+}
