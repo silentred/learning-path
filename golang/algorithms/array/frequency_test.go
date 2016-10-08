@@ -15,3 +15,9 @@ func TestFrequency(t *testing.T) {
 	}
 
 }
+
+func TestBSearch(t *testing.T) {
+	slice := []int{1, 2, 3, 4, 5, 6}
+	res := bSearch(slice, 6)
+	fmt.Println(res)
+}
