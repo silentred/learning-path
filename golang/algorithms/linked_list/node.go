@@ -11,6 +11,10 @@ func newNode(data int) *node {
 	return &node{data, nil}
 }
 
+func (n *node) String() string {
+	return fmt.Sprintf("%d", n.data)
+}
+
 var head *node
 
 func createList(n int) {

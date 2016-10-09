@@ -1,7 +1,7 @@
 package linkedList
 
-func reverseList() {
-	next := head
+func (list *linkedList) reverseList() {
+	next := list.head
 	var current *node
 	var prev *node
 	for next != nil {
@@ -11,20 +11,20 @@ func reverseList() {
 		prev = current
 	}
 
-	head = current
+	list.head = current
 }
 
-func reverseRecursive(curr *node) {
+func (list *linkedList) reverseRecursive(curr *node) {
 	if curr == nil {
 		return
 	}
 
 	if curr.next == nil {
-		head = curr
+		list.head = curr
 		return
 	}
 
-	reverseRecursive(curr.next)
+	list.reverseRecursive(curr.next)
 	curr.next.next = curr
 	curr.next = nil
 }
