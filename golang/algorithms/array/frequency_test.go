@@ -25,3 +25,13 @@ func TestBSearch(t *testing.T) {
 func TestFib(t *testing.T) {
 	fmt.Println(fib(10))
 }
+
+func TestNonRepeating(t *testing.T) {
+	firstNonRepeating("ABCDEFGHIJKLADTVDERFSWVGHQWCNOPENSMSJWIERTFB")
+	firstNonRepeatingOptimized("ABCDEFGHIJKLADTVDERFSWVGHQWCNOPENSMSJWIERTFB")
+}
+
+func TestRearrange(t *testing.T) {
+	s := []int{-2, -3, -4, -5, -1, 3, 2, 4, 5, -6, 7, -9, 9, 10, 11, -10, -11}
+	fmt.Println(rearrangeNaive(s))
+}
