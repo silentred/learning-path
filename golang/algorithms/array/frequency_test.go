@@ -37,3 +37,9 @@ func TestRearrange(t *testing.T) {
 	reArrange(s)
 	fmt.Println(s)
 }
+
+func TestNextGreaterSameDigits(t *testing.T) {
+	s := []int{6, 9, 3, 8, 6, 5, 2}
+	nextGreaterWithSameDigits(s)
+	fmt.Println(s)
+}

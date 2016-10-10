@@ -8,7 +8,7 @@ func rotate(slice []int, k int) {
 }
 
 func reverse(slice []int, start, end int) {
-	for (end-start)/2 != 0 {
+	for start < end {
 		slice[start], slice[end] = slice[end], slice[start]
 		start++
 		end--
