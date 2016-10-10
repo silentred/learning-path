@@ -65,3 +65,49 @@ func rearrangeNaive(slice []int) []int {
 func shift(slice []int) (int, []int) {
 	return slice[0], slice[1:]
 }
+
+func reArrange(slice []int) {
+	for i := 0; i < len(slice); i++ {
+		if !atRightPosition(slice, i) {
+			nextOppositeIndex := getNextOpposite(slice, i)
+			if nextOppositeIndex != -1 {
+				moveTailToHead(slice, i, nextOppositeIndex)
+			} else {
+				break
+			}
+		}
+	}
+}
+
+func getNextOpposite(slice []int, index int) int {
+	for i := index + 1; i < len(slice); i++ {
+		if slice[i]*slice[index] < 0 {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func moveTailToHead(slice []int, low, high int) {
+	last := slice[high]
+	for i := high; i > low; i-- {
+		slice[i] = slice[i-1]
+	}
+
+	slice[low] = last
+}
+
+func atRightPosition(slice []int, i int) bool {
+	if i%2 == 0 {
+		if slice[i] > 0 {
+			return true
+		}
+		return false
+	} else {
+		if slice[i] > 0 {
+			return false
+		}
+		return true
+	}
+}
