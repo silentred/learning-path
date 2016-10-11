@@ -43,3 +43,10 @@ func TestNextGreaterSameDigits(t *testing.T) {
 	nextGreaterWithSameDigits(s)
 	fmt.Println(s)
 }
+
+func TestMedian(t *testing.T) {
+	a := []int{1, 3, 5, 11, 17}
+	b := []int{9, 10, 11, 13, 14}
+
+	fmt.Println(findMedian(a, b))
+}
