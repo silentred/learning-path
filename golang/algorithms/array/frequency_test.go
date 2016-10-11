@@ -50,3 +50,8 @@ func TestMedian(t *testing.T) {
 
 	fmt.Println(findMedian(a, b))
 }
+
+func TestLongestSubStr(t *testing.T) {
+	//ABCDBBBABDEFGCABD
+	fmt.Println(longestNonRepeatingSubstr("AAAAAABCDBABDEFGCABD"))
+}
