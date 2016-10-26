@@ -33,3 +33,9 @@ func TestRoman(t *testing.T) {
 	fmt.Println(romanToInt("XCII"))
 	fmt.Println(romanToInt("XLVIII"))
 }
+
+func TestPrefix(t *testing.T) {
+	fmt.Println(longestCommonPrefix([]string{"123", "125555"}))
+	fmt.Println(longestCommonPrefix([]string{"a"}))
+	fmt.Println(longestCommonPrefix([]string{"aa", "aa"}))
+}
