@@ -39,3 +39,29 @@ func TestPrefix(t *testing.T) {
 	fmt.Println(longestCommonPrefix([]string{"a"}))
 	fmt.Println(longestCommonPrefix([]string{"aa", "aa"}))
 }
+
+func TestReverseList(t *testing.T) {
+	head := createList(5)
+	head = reverseList(head)
+	printList(head)
+}
+
+func createList(n int) *ListNode {
+	head := &ListNode{Val: 1}
+	var curr *ListNode = head
+	for i := 2; i < n; i++ {
+		curr.Next = &ListNode{Val: i}
+		curr = curr.Next
+	}
+
+	return head
+}
+
+func printList(head *ListNode) {
+	current := head
+	for current != nil {
+		fmt.Printf("%d ", current.Val)
+		current = current.Next
+	}
+	fmt.Println("")
+}

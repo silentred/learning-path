@@ -218,28 +218,34 @@ type ListNode struct {
 
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	head = reverseList(head)
-	var step int = 1
-	var curr *ListNode = head
-	for step < n-1 && curr.Next != nil {
-		curr = curr.Next
-		step++
+	var step int
+
+	if n == 1 {
+		head = head.Next
+	} else {
+		var prev, curr, next *ListNode
+		next = head
+		for next != nil && step < n {
+			prev = curr
+			curr = next
+
+			next = curr.Next
+			step++
+		}
+		prev.Next = next
 	}
 
-	curr.Next = curr.Next.Next
-
-	return head
+	return reverseList(head)
 }
 
 func reverseList(head *ListNode) *ListNode {
 	var prev, curr, next *ListNode
-	curr = head
-	next = head.Next
+	next = head
 	for next != nil {
-		curr.Next = prev
-
-		prev = curr
 		curr = next
 		next = next.Next
+		curr.Next = prev
+		prev = curr
 	}
 
 	return curr
