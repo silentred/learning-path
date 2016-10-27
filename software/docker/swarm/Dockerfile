@@ -6,4 +6,4 @@ WORKDIR /data
 RUN go build -o hello .
 EXPOSE 9090
 
-CMD ["/data/hello"] 
+ENTRYPOINT ["/data/hello"]  
