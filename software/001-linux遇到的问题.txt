@@ -237,6 +237,20 @@ ffmpeg -v error -i file.avi -f null - 2>error.log
 grep -r "something" dir
 -l: 只打印文件名，不打印匹配到的内容
 
-## 
+## 何如在vim 打开但没有写权限的状况下 强制写入
+:w !sudo tee > /dev/null %
+
+w ! 把 当前内容的 数据流 给 下一个命令
+tee 把 数据流 导入到 null 和 当前路径的文件(% 表示 当前文件的全路径)
+
+## 如何判断 text 文件的编码类型
+file -i text.txt // in Linux
+file -I text.txt // in Mac
+
+## 如何转码 text 文件
+iconv -f $FROM_ENCODE -t $TO_ENCODE old.txt > new.txt
+iconv -l // 查看支持的 encoding 列表
+
+
 
 

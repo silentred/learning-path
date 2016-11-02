@@ -39,8 +39,8 @@ method 不等于 GET 的记录
 
 =~ 不能匹配 空字符串, 例如 {method=~".*"} 就不合法
 时间范围： <metric_name>{<label_name>=<label_value>}[time_range], e.g [5m] 表示 last 5 minutes
-
-
+<metric_name>{<label_name>=<label_value>}[time_range] offset <time_point>
+offset 表示，例如 [5m] offset 1h 表示 搜索 一小时零五分之前 到 一小时前 的数据
 
 
 

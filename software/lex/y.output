@@ -1,0 +1,249 @@
+   0  $accept : commands $end
+
+   1  commands :
+   2           | commands command SEMICOLON
+
+   3  command : zone_set
+
+   4  zone_set : ZONETOK quotedname zonecontent
+
+   5  zonecontent : OBRACE zonestatements EBRACE
+
+   6  quotedname : QUOTE FILENAME QUOTE
+
+   7  zonestatements :
+   8                 | zonestatements zonestatement SEMICOLON
+
+   9  zonestatement : statements
+  10                | FILETOK quotedname
+
+  11  block : OBRACE zonestatements EBRACE SEMICOLON
+
+  12  statements :
+  13             | statements statement
+
+  14  statement : WORD
+  15            | block
+  16            | quotedname
+
+state 0
+	$accept : . commands $end  (0)
+	commands : .  (1)
+
+	.  reduce 1
+
+	commands  goto 1
+
+
+state 1
+	$accept : commands . $end  (0)
+	commands : commands . command SEMICOLON  (2)
+
+	$end  accept
+	ZONETOK  shift 2
+	.  error
+
+	command  goto 3
+	zone_set  goto 4
+
+
+state 2
+	zone_set : ZONETOK . quotedname zonecontent  (4)
+
+	QUOTE  shift 5
+	.  error
+
+	quotedname  goto 6
+
+
+state 3
+	commands : commands command . SEMICOLON  (2)
+
+	SEMICOLON  shift 7
+	.  error
+
+
+state 4
+	command : zone_set .  (3)
+
+	.  reduce 3
+
+
+state 5
+	quotedname : QUOTE . FILENAME QUOTE  (6)
+
+	FILENAME  shift 8
+	.  error
+
+
+state 6
+	zone_set : ZONETOK quotedname . zonecontent  (4)
+
+	OBRACE  shift 9
+	.  error
+
+	zonecontent  goto 10
+
+
+state 7
+	commands : commands command SEMICOLON .  (2)
+
+	.  reduce 2
+
+
+state 8
+	quotedname : QUOTE FILENAME . QUOTE  (6)
+
+	QUOTE  shift 11
+	.  error
+
+
+state 9
+	zonecontent : OBRACE . zonestatements EBRACE  (5)
+	zonestatements : .  (7)
+
+	.  reduce 7
+
+	zonestatements  goto 12
+
+
+state 10
+	zone_set : ZONETOK quotedname zonecontent .  (4)
+
+	.  reduce 4
+
+
+state 11
+	quotedname : QUOTE FILENAME QUOTE .  (6)
+
+	.  reduce 6
+
+
+state 12
+	zonecontent : OBRACE zonestatements . EBRACE  (5)
+	zonestatements : zonestatements . zonestatement SEMICOLON  (8)
+	statements : .  (12)
+
+	FILETOK  shift 13
+	EBRACE  shift 14
+	WORD  reduce 12
+	QUOTE  reduce 12
+	OBRACE  reduce 12
+	SEMICOLON  reduce 12
+
+	zonestatement  goto 15
+	statements  goto 16
+
+
+state 13
+	zonestatement : FILETOK . quotedname  (10)
+
+	QUOTE  shift 5
+	.  error
+
+	quotedname  goto 17
+
+
+state 14
+	zonecontent : OBRACE zonestatements EBRACE .  (5)
+
+	.  reduce 5
+
+
+state 15
+	zonestatements : zonestatements zonestatement . SEMICOLON  (8)
+
+	SEMICOLON  shift 18
+	.  error
+
+
+state 16
+	zonestatement : statements .  (9)
+	statements : statements . statement  (13)
+
+	WORD  shift 19
+	QUOTE  shift 5
+	OBRACE  shift 20
+	SEMICOLON  reduce 9
+
+	quotedname  goto 21
+	block  goto 22
+	statement  goto 23
+
+
+state 17
+	zonestatement : FILETOK quotedname .  (10)
+
+	.  reduce 10
+
+
+state 18
+	zonestatements : zonestatements zonestatement SEMICOLON .  (8)
+
+	.  reduce 8
+
+
+state 19
+	statement : WORD .  (14)
+
+	.  reduce 14
+
+
+state 20
+	block : OBRACE . zonestatements EBRACE SEMICOLON  (11)
+	zonestatements : .  (7)
+
+	.  reduce 7
+
+	zonestatements  goto 24
+
+
+state 21
+	statement : quotedname .  (16)
+
+	.  reduce 16
+
+
+state 22
+	statement : block .  (15)
+
+	.  reduce 15
+
+
+state 23
+	statements : statements statement .  (13)
+
+	.  reduce 13
+
+
+state 24
+	zonestatements : zonestatements . zonestatement SEMICOLON  (8)
+	block : OBRACE zonestatements . EBRACE SEMICOLON  (11)
+	statements : .  (12)
+
+	FILETOK  shift 13
+	EBRACE  shift 25
+	WORD  reduce 12
+	QUOTE  reduce 12
+	OBRACE  reduce 12
+	SEMICOLON  reduce 12
+
+	zonestatement  goto 15
+	statements  goto 16
+
+
+state 25
+	block : OBRACE zonestatements EBRACE . SEMICOLON  (11)
+
+	SEMICOLON  shift 26
+	.  error
+
+
+state 26
+	block : OBRACE zonestatements EBRACE SEMICOLON .  (11)
+
+	.  reduce 11
+
+
+10 terminals, 11 nonterminals
+17 grammar rules, 27 states

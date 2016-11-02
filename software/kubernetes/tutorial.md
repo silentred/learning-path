@@ -38,7 +38,7 @@ The Deployment is responsible for creating and updating instances of your applic
 This provides a self-healing mechanism to address machine failure or maintenance.
 负责创建，升级 app实例，有自我修复机制。
 
-kubectl run $DeployName --image=jason/hello:v3 --port=9090
+kubectl run testgo --image=silentred/hello:v1 --port=9090
 创建一个 Deployment
 
 ### Pods:
