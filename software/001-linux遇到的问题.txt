@@ -251,6 +251,11 @@ file -I text.txt // in Mac
 iconv -f $FROM_ENCODE -t $TO_ENCODE old.txt > new.txt
 iconv -l // 查看支持的 encoding 列表
 
+## 查看 glibc version
+ldd --version
 
+## 复制文件内容
+cat file | pbcopy
+pbpaste // 粘帖
 
 
