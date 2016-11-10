@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"fmt"
 )
 
 func handlerA(w http.ResponseWriter, r *http.Request) {
@@ -14,10 +13,8 @@ func handlerA(w http.ResponseWriter, r *http.Request) {
 func handlerB(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
-	myItems := []string{"item1", "item2", "item3"}
+	myItems := []string{"item1", r.RemoteAddr}
 	a, _ := json.Marshal(myItems)
-
-	fmt.Println("hello")
 
 	w.Write(a)
 	return

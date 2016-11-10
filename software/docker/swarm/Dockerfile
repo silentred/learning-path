@@ -1,4 +1,4 @@
-FROM daocloud.io/library/golang:latest
+FROM daocloud.io/golang:alpine
 
 RUN mkdir /data
 ADD ./main.go /data
