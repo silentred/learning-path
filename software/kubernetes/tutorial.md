@@ -78,25 +78,25 @@ A Kubernetes Service is an abstraction layer which defines a logical set of Pods
 
 Labels are key/value pairs that are attached to objects, such as Pods and you can think of them as hashtags from social media.
 
-kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 9090
+kubectl expose deployment/testgo --type="NodePort" --port 9090
 kubectl describe services/testgo
 
 export NODE_PORT=$(kubectl get services/testgo -o go-template='{{(index .spec.ports 0).nodePort}}')
 
 kubectl describe deployment // See the Label
-kubectl get pods -l run=kubernetes-bootcamp
-kubectl get services -l run=kubernetes-bootcamp
+kubectl get pods -l run=testgo
+kubectl get services -l run=testgo
 
 kubectl label pod $POD_NAME app=v1 // add Label
 kubectl get pods -l app=v1 // search again
 
-kubectl delete service -l run=kubernetes-bootcamp // delete service
+kubectl delete service -l run=testgo // delete service
 
 kubectl exec -ti $POD_NAME curl localhost:9090
 
 ### Scale
 
-kubectl scale deployments/kubernetes-bootcamp --replicas=4
+kubectl scale deployments/testgo --replicas=2
 kubectl get deployments // desired 变为 4
 kubectl get pods -o wide // 展示出 4 个 pod
 
