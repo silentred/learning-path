@@ -106,7 +106,21 @@ kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/
 
 kubectl rollout status deployments/kubernetes-bootcamp // 回退
 
+## start cmd
 
+docker run --network host flynn/etcd
 
+// on master
+hyperkube apiserver --service-cluster-ip-range=172.17.17.1/24 --insecure-bind-address=127.0.0.1 --etcd_servers=http://localhost:4001 --v=2
+hyperkube scheduler --master=127.0.0.1:8080 --v=2
+hyperkube controller-manager --master=127.0.0.1:8080 --v=2
 
+// on worker
+hyperkube kubelet --api_servers=http://127.0.0.1:8080 --v=2 --address=0.0.0.0 --enable_server
+hyperkube proxy --master=http://127.0.0.1:8080 --v=2
+
+// start dns addon?
+DNS_REPLICAS=1; DNS_DOMAIN=mykube.local; DNS_SERVER_IP=172.17.17.10; kubectl create -f skydns-rc.yaml.sed
+
+DNS_REPLICAS=1; DNS_DOMAIN=mykube.local; DNS_SERVER_IP=172.17.17.10; kubectl create -f skydns-svc.yaml.sed
 
