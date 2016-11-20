@@ -48,7 +48,11 @@ curl -L  https://github.com/coreos/etcd/releases/download/v2.1.0-rc.0/etcd-v2.1.
 
 etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-client-urls 'http://172.28.128.3:2379,http://172.28.128.3:4001'  > /dev/null 2>&1
 
+
 # delete docker0 iface
+(如果这里选择删除docker0， 那么下面启动dockerd之前 设置docker0的ip就可以省略。 dockerd会根据bip再次创建一个docker0, 效果一样)
+sudo ifconfig docker0 down
+sudo brctl delbr docker0
 
 # set flannel config in etcd
 
@@ -56,7 +60,7 @@ etcdctl rm /coreos.com/network/ --recursive
 etcdctl mk /coreos.com/network/config '{"Network":"11.0.0.0/16"}'
 
 # start flannel
-sudo flanneld -iface=eth1 &
+sudo flanneld -etcd-endpoints='http://172.28.128.3:2379,http://172.28.128.3:4001' -iface=eth1 &
 
 source /run/flannel/subnet.env
 
@@ -64,3 +68,15 @@ source /run/flannel/subnet.env
 
 sudo ifconfig docker0 ${FLANNEL_SUBNET}
 sudo dockerd --bip=${FLANNEL_SUBNET} --mtu=${FLANNEL_MTU} &
+
+# new container
+sudo docker run -it bash
+
+
+# dockerd 中有一些令人在意的参数
+```
+--registry-mirror=[]                     Preferred Docker registry mirror
+-s, --storage-driver                     Storage driver to use
+```
+
+
