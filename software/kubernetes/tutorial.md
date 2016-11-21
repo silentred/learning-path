@@ -124,3 +124,7 @@ DNS_REPLICAS=1; DNS_DOMAIN=mykube.local; DNS_SERVER_IP=172.17.17.10; kubectl cre
 
 DNS_REPLICAS=1; DNS_DOMAIN=mykube.local; DNS_SERVER_IP=172.17.17.10; kubectl create -f skydns-svc.yaml.sed
 
+
+## ubuntu 14.04 docker 翻墙问题
+
+在 /etc/default/docker.
