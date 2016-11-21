@@ -43,3 +43,13 @@ sudo yum install docker-engine
 sudo systemctl enable docker.service
 
 sudo systemctl start docker
+
+# install epel
+
+yum install epel-release
+
+# install pip for docker-compose
+
+yum install python-pip -y
+
+
