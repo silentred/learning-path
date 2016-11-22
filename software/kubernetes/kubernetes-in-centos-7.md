@@ -44,12 +44,38 @@ sudo systemctl enable docker.service
 
 sudo systemctl start docker
 
-# install epel
+配置 http_proxy:
 
-yum install epel-release
+vim /lib/systemd/system/docker.service 在[Service]中添加：
+EnvironmentFile=-/etc/docker/docker.conf
+这里的 减号 表示如果文件不存在，则忽略错误
 
-# install pip for docker-compose
+vim /etc/docker/docker.conf 添加：
+http_proxy=192.168.0.2:7777
+https_proxy=192.168.0.2:7777
 
-yum install python-pip -y
+重启 dockerd
+
+# start etcd
+etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-client-urls 'http://192.168.0.2:2379,http://192.168.0.2:4001'  > /dev/null 2>&1 &
+
+# install kube
+去 github release page 下载最新的版本. 大约 1G.
+
+
+# start master 
+
+hyperkube apiserver --address=0.0.0.0 --etcd_servers=http://192.168.0.2:2379 --service-cluster-ip-range=10.10.0.0/16 --v=0 >apiserver.log 2>&1 &
+
+hyperkube controller-manager --master=127.0.0.1:8080 --logtostderr=true >cm.log 2>&1 &
+
+hyperkube scheduler --master=127.0.0.1:8080 > scheduler.log 2>&1 &
+
+# start node
+
+kube-proxy --etcd-servers=http://192.168.0.2:2379 --logtostderr=true >proxy.log 2>&1 &
+
+kubelet --address=0.0.0.0 --hostname_override=192.168.0.3 --api_servers=http://192.168.0.2:8080 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
+
 
 

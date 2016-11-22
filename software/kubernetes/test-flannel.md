@@ -1,3 +1,6 @@
+NOTICE
+请参考 /software/docker/flannel.md
+
 # start etcd
 etcd --listen-client-urls="http://0.0.0.0:2379,http://0.0.0.0:4001"
 
