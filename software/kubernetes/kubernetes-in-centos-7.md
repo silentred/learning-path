@@ -69,13 +69,26 @@ hyperkube apiserver --address=0.0.0.0 --etcd_servers=http://192.168.0.2:2379 --s
 
 hyperkube controller-manager --master=127.0.0.1:8080 --logtostderr=true >cm.log 2>&1 &
 
+日志有有报错，pem 文件找不到，和下面这两个配置有关，需要搜索
+--cluster-signing-cert-file string                                  Filename containing a PEM-encoded X509 CA certificate used to issue cluster-scoped certificates (default "/etc/kubernetes/ca/ca.pem")
+--cluster-signing-key-file string                                   Filename containing a PEM-encoded RSA or ECDSA private key used to sign cluster-scoped certificates (default "/etc/kubernetes/ca/ca.key")
+
 hyperkube scheduler --master=127.0.0.1:8080 > scheduler.log 2>&1 &
+
+提示 Could not construct reference... due to: 'selfLink was empty, can't make reference'
 
 # start node
 
-kube-proxy --etcd-servers=http://192.168.0.2:2379 --logtostderr=true >proxy.log 2>&1 &
+hyperkube proxy --master=192.168.0.2:8080 --logtostderr=true >proxy.log 2>&1 &
 
-kubelet --address=0.0.0.0 --hostname_override=192.168.0.3 --api_servers=http://192.168.0.2:8080 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
+hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=192.168.0.3 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
 
+# 问题
 
+启动 dashboard 的之前，需要 打开一段注释，args: - --apiserver-host=http://192.168.0.2:8080,
+否则 dashboard 无法启动
+
+kubectl describe pods/kubernetes-dashboard-3985220203-j043h --namespace=kube-system
+看到event信息报错, 启动其他 image 的时候也有这个错，需要查找
+MissingClusterDNS, kubelet does not have ClusterDNS IP configured and cannot create Pod using "ClusterFirst" policy. Falling back to DNSDefault policy.
 
