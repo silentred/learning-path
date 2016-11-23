@@ -18,7 +18,7 @@ start() {
     echo $! > $elasticPid
     nohup $filebeatBin -c $beatConfig > /dev/null 2>&1 &  
     echo $! > $beatPid
-    nohup $logstashBin -c $logstashConfig > /dev/null 2>&1 & 
+    nohup $logstashBin -f $logstashConfig > /dev/null 2>&1 & 
     echo $! > $logstashPid
     nohup $kibanaBin > /dev/null 2>&1 & 
     echo $! > $kibanaPid

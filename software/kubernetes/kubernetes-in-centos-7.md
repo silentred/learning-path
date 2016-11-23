@@ -53,6 +53,7 @@ EnvironmentFile=-/etc/docker/docker.conf
 vim /etc/docker/docker.conf 添加：
 http_proxy=192.168.0.2:7777
 https_proxy=192.168.0.2:7777
+no_proxy=localhost,127.0.0.1,192.168.0.2
 
 重启 dockerd
 
@@ -93,6 +94,9 @@ hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_ov
 kubectl describe pods/kubernetes-dashboard-3985220203-j043h --namespace=kube-system
 看到event信息报错, 启动其他 image 的时候也有这个错，需要查找
 MissingClusterDNS, kubelet does not have ClusterDNS IP configured and cannot create Pod using "ClusterFirst" policy. Falling back to DNSDefault policy.
+
+kubelet log显示 CPUAccounting not allowed
+这个问题估计是 systemd 控制的
 
 # 安装 skyDNS
 进入 kubernetes/cluster/addons/dns/ 目录， 需要使用到 skydns-rc.yaml.in, skydns-svc.yaml.in, 这两个文件。 
