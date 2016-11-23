@@ -79,6 +79,8 @@ hyperkube scheduler --master=127.0.0.1:8080 > scheduler.log 2>&1 &
 
 # start node
 
+建议先看 安装DNS，kubelet 要添加两个启动参数
+
 hyperkube proxy --master=192.168.0.2:8080 --logtostderr=true >proxy.log 2>&1 &
 
 hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=192.168.0.3 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
@@ -91,4 +93,78 @@ hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_ov
 kubectl describe pods/kubernetes-dashboard-3985220203-j043h --namespace=kube-system
 看到event信息报错, 启动其他 image 的时候也有这个错，需要查找
 MissingClusterDNS, kubelet does not have ClusterDNS IP configured and cannot create Pod using "ClusterFirst" policy. Falling back to DNSDefault policy.
+
+# 安装 skyDNS
+进入 kubernetes/cluster/addons/dns/ 目录， 需要使用到 skydns-rc.yaml.in, skydns-svc.yaml.in, 这两个文件。 
+
+1. rc 需要替换的变量：
+replica = 1
+dns_domain = cluster.local
+
+kube-dns 启动参数需要指定 master 的接口
+```
+args:
+# command = "/kube-dns"
+- --kube-master-url=http://192.168.0.2:8080
+```
+
+2. svc 需要替换的变量：
+dns_server = 10.10.0.10 // 这个ip需要在 apiserver 的启动参数--service-cluster-ip-range设置的ip段 里面，随意定义一个.
+
+用kubectl create -f 启动 rc , svc.
+
+kubelet 启动参数需要加入 --cluster-dns=10.10.0.10 --cluster-domain=cluster.local
+
+完整的启动命令为：
+hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=192.168.0.3 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &
+
+观察启动结果：
+kubectl get rc --namespace=kube-system
+kubectl get svc --namespace=kube-system
+
+最后在 node机 上测试 DNS:
+dig @10.10.0.10 hello.default.svc.cluster.local
+
+```
+;; ANSWER SECTION:
+hello.default.svc.cluster.local. 30 IN  A   10.10.83.26
+```
+
+这里 hello 是 之前起的一个deploy
+
+```
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: hello
+  name: hello
+spec:
+  ports:
+  - port: 9090
+  selector:
+    run: hello
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: hello
+    spec:
+      containers:
+      - name: hello
+        image: silentred/alpine-hello:v1
+        ports:
+        - containerPort: 9090
+```
+
+
+
+
+
 
