@@ -167,8 +167,28 @@ spec:
         - containerPort: 9090
 ```
 
+如果想升级 image:
+`kubectl set image deploy/hello hello=silentred/alpine-hello:v2`
+
+进入容器内部:
+```
+docker exec -it CONTAINER_ID bash
+
+// resolv.conf 的内容，估计是 dns 插件自动生成的
+bash-4.4# cat /etc/resolv.conf
+search default.svc.cluster.local svc.cluster.local cluster.local pek2.qingcloud.com.
+nameserver 10.10.0.10
+options ndots:5
+```
+
+安装完kube-dns插件后，在容器内部使用DNS查找到的ip为该 service 的 clusterIP, 在容器内部ping自身的name(hello)没有响应；并且删除svc/hello后，DNS就无法找到hello这个服务了。
+无法ping通，但是 tcp 可以访问！ 这表示，在程序中直接使用 dial("hello"), 就能通过 service 去轮询各个 container, 可以不使用 grpc 自带的 LB 策略了。
 
 
+# 结合 flannel
+
+flannel 配置的子网范围 是否必须和 apiserver 的 clusterIP 一致？
+听说可以不一致，clusterIP 的原理需要再看一下。
 
 
 

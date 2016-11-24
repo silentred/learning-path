@@ -96,7 +96,7 @@ etcdctl mk /coreos.com/network/config '{"Network":"11.0.0.0/16"}'
 
 IP: 172.28.128.3, 172.28.128.4 两台机器
 
-ifconfig 查看一下，ip为172.28.128.3 的 interface 的名称，我的情况为 eth1. 运行 flannel. subnet.env是根据 etcd中的配置自动生成的环境变量，需要导出一下.
+ifconfig 查看一下，ip为172.28.128.3 的 interface 的名称，我的情况为 eth1. 运行 flannel. `subnet.env` 是根据 etcd中的配置自动生成的环境变量，需要导出一下.
 ```
 sudo flanneld -etcd-endpoints='http://172.28.128.3:2379,http://172.28.128.3:4001' -iface=eth1 &
 source /run/flannel/subnet.env

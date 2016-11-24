@@ -1,6 +1,6 @@
 # Usage of consul
 
-$ consul agent -dev
+$ consul agent -dev // 如果启动一个单点实例，必须加 -dev , 否则会报错
 
 $ consul members -detailed
 
