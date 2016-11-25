@@ -11,3 +11,12 @@ fabio 和 consul 结合比较紧密，流程为：
 ## 部署方案
 
 flannel 打通节点docker，那么每个容器服务只需要在启动时上报正确的 ip:port, 就可以了。
+
+consul的service结构，定义了 ip , port，tags. 并且提供 DNS 来根据tag查询服务的ip和port。
+
+例如，一个服务 127.0.0.1:5000 tags=urlprefix-/foo,svc-a , 这个服务包含了两个 tag, 其中一个为 svc-a, 
+那么查询DNS的时候 `dig @localhost -p 8600 svc-a.service.consul SRV` 就能查到所有的svc
+
+
+
+其次，服务发现需要根据
