@@ -9,7 +9,15 @@
 
 安装 consul, 如果检测到多个 private ip, 会报错，可以用 -advertise 指定一个ip.
 ```
-sudo docker run -d --name=consul --net=host gliderlabs/consul-server -bootstrap -advertise=172.28.128.3 -ui
+// config.json , 指定 DNS port
+{
+    "recursors" : [ "8.8.8.8" ],
+    "ports" : {
+        "dns" : 53
+    }
+}
+
+sudo docker run -d --name=consul --net=host -v $PWD/config.json:/config/config.json gliderlabs/consul-server -bootstrap -advertise=172.28.128.3 
 
 curl 172.28.128.3:8500/v1/catalog/services
 ```
@@ -43,7 +51,24 @@ curl 172.28.128.3:8500/v1/catalog/services
 测试 DNS
 ```
 sudo yum install bind-utils
-dig @172.28.128.3 -p 8600 hello.service.consul SRV
+dig @172.28.128.3 hello.service.consul SRV
+```
+
+可以设置 /etc/resolv.conf
+```
+nameserver 172.28.128.3
+search service.consul
+```
+这样无论在容器内部，还是外部都可以直接解析 sevice 名， 例如：
+```
+[vagrant@localhost ~]$ ping hello
+PING hello.service.consul (172.28.128.3) 56(84) bytes of data.
+64 bytes from localhost.localdomain.node.dc1.consul (172.28.128.3): icmp_seq=1 ttl=64 time=0.016 ms
+
+[vagrant@localhost ~]$ sudo docker exec -it fdde1b8247b8 bash
+bash-4.4# ping hello
+PING hello (172.28.128.6): 56 data bytes
+64 bytes from 172.28.128.6: seq=0 ttl=63 time=0.361 ms
 ```
 
 ## Start Gateway
@@ -58,6 +83,12 @@ registry.consul.addr = 172.28.128.3:8500
 ```
 docker run -d -p 9999:9999 -p 9998:9998 -v $PWD/fabio.properties:/etc/fabio/fabio.properties magiconair/fabio
 ```
+
+测试gateway:
+```
+curl 172.28.128.3:9999/foo/bar
+```
+
 
 ## Health Check
 
