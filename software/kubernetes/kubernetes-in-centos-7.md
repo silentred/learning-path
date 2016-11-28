@@ -99,6 +99,7 @@ kubelet log显示 CPUAccounting not allowed
 这个问题估计是 systemd 控制的
 
 # 安装 skyDNS
+
 进入 kubernetes/cluster/addons/dns/ 目录， 需要使用到 skydns-rc.yaml.in, skydns-svc.yaml.in, 这两个文件。 
 
 1. rc 需要替换的变量：
@@ -135,7 +136,6 @@ hello.default.svc.cluster.local. 30 IN  A   10.10.83.26
 ```
 
 这里 hello 是 之前起的一个deploy
-
 ```
 kind: Service
 apiVersion: v1
@@ -170,6 +170,14 @@ spec:
 如果想升级 image:
 `kubectl set image deploy/hello hello=silentred/alpine-hello:v2`
 
+这里有一个点需要注意：
+只有service会被注册到 kube-dns 中，按照上面的service的定义，每个类型的服务都需要创建一个service， 因此每个类型的服务都会创建一个 clusterIP，clusterIP 的 backends 就是 EndPoints 的服务，默认是 round-robin 轮询。
+
+这样虽然省事，但是clusterIP在任意node节点上都是可以访问的，有些内部的RPC只希望在集群container内部访问，而不想暴露到外部。还有有些服务，就只起一个实例， --replicas永远为1，那么就不需要再分配一个 clusterIP了， 减少耦合。 这样的话，可以使用 Headless Service, 就是把 `spec.clusterIP` 设为 `None`, 这样就不会给service分配clusterIP， 如果使用了 selector, dns里查到的就是容器的ip。 
+详情看[文档](http://kubernetes.io/docs/user-guide/services/#dns)
+
+## 服务发现
+
 进入容器内部:
 ```
 docker exec -it CONTAINER_ID bash
@@ -181,14 +189,13 @@ nameserver 10.10.0.10
 options ndots:5
 ```
 
-安装完kube-dns插件后，在容器内部使用DNS查找到的ip为该 service 的 clusterIP, 在容器内部ping自身的name(hello)没有响应；并且删除svc/hello后，DNS就无法找到hello这个服务了。
-无法ping通，但是 tcp 可以访问！ 这表示，在程序中直接使用 dial("hello"), 就能通过 service 去轮询各个 container, 可以不使用 grpc 自带的 LB 策略了。
-
+安装完kube-dns插件后，在容器内部使用DNS查找到的ip为该 service 的 clusterIP, 在容器内部ping自身的name(hello)可以看到解析出来的ip, 但是ping的包全部丢失了，文档解释是只支持 tcp/udp 通信。 [doc](http://kubernetes.io/docs/user-guide/services/#virtual-ips-and-service-proxies) 
+这表示，在程序中直接使用 dial("hello"), 就能通过 service 去轮询各个 container, 可以不用实现 grpc 的 LB 策略了。
 
 # 结合 flannel
 
-flannel 配置的子网范围 是否必须和 apiserver 的 clusterIP 一致？
-听说可以不一致，clusterIP 的原理需要再看一下。
+如果使用了 Headless Service, 那么就必须保证容器间的网络连通，可以采用 flannel。
+flannel 配置的子网范围 不能和 apiserver 的 clusterIP 一致。
 
 
 
