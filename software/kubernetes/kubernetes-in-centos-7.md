@@ -84,7 +84,7 @@ hyperkube scheduler --master=127.0.0.1:8080 > scheduler.log 2>&1 &
 
 hyperkube proxy --master=192.168.0.2:8080 --logtostderr=true >proxy.log 2>&1 &
 
-hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=192.168.0.3 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
+hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
 
 # 问题
 
