@@ -210,7 +210,7 @@ options ndots:5
 ```
 
 安装完kube-dns插件后，在容器内部使用DNS查找到的ip为该 service 的 clusterIP, 在容器内部ping自身的name(hello)可以看到解析出来的ip, 但是ping的包全部丢失了，文档解释是只支持 tcp/udp 通信。 [doc](http://kubernetes.io/docs/user-guide/services/#virtual-ips-and-service-proxies) 
-这表示，在程序中直接使用 dial("hello"), 就能通过 service 去轮询各个 container, 可以不用实现 grpc 的 LB 策略了。
+这表示，在程序中直接使用 dial("default.svc.cluster.local"), 就能通过 service 去轮询各个 container, 可以不用实现 grpc 的 LB 策略了。
 
 ## 结合 Flannel
 
@@ -335,7 +335,7 @@ spec:
                 key: example.foo
 ```
 
-替换原来的deployment, `kubectl replace -f hello-deploy.yqml`, 在运行这个命令之前可以在 node 机上 用 docker ps 观察一下 hello container的 id， 运行后在看一下，会发现两者是不一样的，说明container 重启了。
+替换原来的deployment, `kubectl replace -f hello-deploy.yaml`, 在运行这个命令之前可以在 node 机上 用 docker ps 观察一下 hello container的 id， 运行后在看一下，会发现两者是不一样的，说明container 重启了。
 
 这时，再次进入 hello container 内部，`env | grep FOO` 可以看到效果。
 ```
@@ -345,8 +345,13 @@ CONFIG_FOO=bar
 
 ## Secret
 
+待续
+
 ## DaemonSet
+
+待续
 
 ## ReplicaSet
 
+待续
 
