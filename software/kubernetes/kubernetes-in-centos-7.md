@@ -1,4 +1,4 @@
-# kubernetes in centos 7 
+# 手动搭建kubernetes集群
 
 > 探索kubernetes系列的第三篇，主要记录手动搭建k8s集群的过程，部署dashboard, 部署DNS用作服务发现。顺便记录一下k8s中的一些资源的概念。
 
@@ -66,15 +66,17 @@ no_proxy=localhost,127.0.0.1,192.168.0.2
 重启 dockerd
 
 # Start etcd
-etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-client-urls 'http://192.168.0.2:2379,http://192.168.0.2:4001'  > /dev/null 2>&1 &
+`etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-client-urls 'http://192.168.0.2:2379,http://192.168.0.2:4001'  > /dev/null 2>&1 &`
 
 # Install Kubernetes
 去 github release page 下载最新的版本. 大约 1G.
 
 ## Start Master 
 
+启动 apiserver
 `hyperkube apiserver --address=0.0.0.0 --etcd_servers=http://192.168.0.2:2379 --service-cluster-ip-range=10.10.0.0/16 --v=0 >apiserver.log 2>&1 &`
 
+启动 controller-manager
 `hyperkube controller-manager --master=127.0.0.1:8080 --logtostderr=true >cm.log 2>&1 &`
 
 ```
@@ -95,7 +97,8 @@ etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-
 `hyperkube proxy --master=192.168.0.2:8080 --logtostderr=true >proxy.log 2>&1 &`
 
 安装DNS的部分有提到，kubelet 要添加两个启动参数, 完整的启动命令为：
-`hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &`
+
+`hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=192.168.0.3 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &`
 
 # 基本操作
 建议走一遍官网的 tutorial, 基本能了解常用的 资源类型， 我在github的仓库做了笔记，可以参考我的 [笔记](https://github.com/silentred/learning-path/blob/master/software/kubernetes/tutorial.md)
@@ -107,42 +110,53 @@ etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-
 启动 dashboard 的之前，需要 打开一段注释，`args: - --apiserver-host=http://192.168.0.2:8080`,
 否则 dashboard 无法启动
 
+```
 kubectl describe pods/kubernetes-dashboard-3985220203-j043h --namespace=kube-system
 看到event信息报错, 启动其他 image 的时候也有这个错，需要查找, 
 MissingClusterDNS, kubelet does not have ClusterDNS IP configured and cannot create Pod using "ClusterFirst" policy. Falling back to DNSDefault policy.
+```
 
 kubelet log显示 CPUAccounting not allowed , 
 这个问题估计是 systemd 控制的
 
+启动后界面如下：
+![图片描述][1]
+
 # 安装 skyDNS
 
-进入 kubernetes/cluster/addons/dns/ 目录， 需要使用到 skydns-rc.yaml.in, skydns-svc.yaml.in, 这两个文件。 
+进入 `kubernetes/cluster/addons/dns/` 目录， 需要使用到 `skydns-rc.yaml.in, skydns-svc.yaml.in`, 这两个文件。 
 
-1. rc 需要替换的变量：
-replica = 1
-dns_domain = cluster.local
+1. rc 需要替换的变量: 
 
-kube-dns 启动参数需要指定 master 的接口
-
-```
-args:
-# command = "/kube-dns"
-- --kube-master-url=http://192.168.0.2:8080
-```
-
+    replica = 1
+    dns_domain = cluster.local
+    
+    kube-dns 启动参数需要指定 master 的接口
+    
+    ```
+    args:
+    # command = "/kube-dns"
+    - --kube-master-url=http://192.168.0.2:8080
+    ```
+    
 2. svc 需要替换的变量：
-dns_server = 10.10.0.10 // 这个ip需要在 apiserver 的启动参数--service-cluster-ip-range设置的ip段 里面，随意定义一个.
 
-用kubectl create -f 启动 rc , svc.
-
-kubelet 启动参数需要加入 --cluster-dns=10.10.0.10 --cluster-domain=cluster.local
+    dns_server = 10.10.0.10 // 这个ip需要在 apiserver 的启动参数--service-cluster-ip-range设置的ip段 里面，随意定义一个.
+    
+    用kubectl create -f 启动 rc , svc.
+    
+    kubelet 启动参数需要加入 --cluster-dns=10.10.0.10 --cluster-domain=cluster.local
 
 完整的启动命令为：
-hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &
+
+`hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &`
 
 观察启动结果：
+
+```
 kubectl get rc --namespace=kube-system
 kubectl get svc --namespace=kube-system
+```
 
 最后在 node机 上测试 DNS:
 dig @10.10.0.10 hello.default.svc.cluster.local
@@ -152,7 +166,7 @@ dig @10.10.0.10 hello.default.svc.cluster.local
 hello.default.svc.cluster.local. 30 IN  A   10.10.83.26
 ```
 
-这里 hello 是 之前起的一个deploy，配置文件如下。建议开始分开两个文件写，hello-service.yaml, hello-deploy.yaml
+这里 hello 是 之前起的一个deploy，配置文件如下。建议还是分开两个文件写，hello-service.yaml, hello-deploy.yaml
 
 ```
 kind: Service
@@ -345,7 +359,58 @@ CONFIG_FOO=bar
 
 ## Secret
 
-待续
+和 configmap 类似，只是 value 是 base64 encoded. 创建：
+```
+apiVersion: v1
+data:
+  password: MWYyZDFlMmU2N2Rm
+  username: YWRtaW4=
+kind: Secret
+metadata:
+  creationTimestamp: 2016-01-22T18:41:56Z
+  name: mysecret
+  namespace: default
+  resourceVersion: "164619"
+  selfLink: /api/v1/namespaces/default/secrets/mysecret
+  uid: cfee02d6-c137-11e5-8d73-42010af00002
+type: Opaque
+```
+
+同样可以选择 mount 到 path或者 环境变量:
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-env-pod
+spec:
+  containers:
+    - name: mycontainer
+      image: redis
+      env:
+        - name: SECRET_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: username
+        - name: SECRET_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: password
+  restartPolicy: Never
+```
+
+### imagePullSecrets
+
+在从私有registry 拉取镜像时，可以用 secret 来设定 username, password, 参考[文档](http://kubernetes.io/docs/user-guide/images/#specifying-imagepullsecrets-on-a-pod)
+
+### 限制
+1. 对于依赖secret 的pod，必须先设定secret
+2. secret跨namespace不可见
+3. 单个secret 1MB 大小限制
+4. kubelets只支持从API server 创建的pod使用 secret. 不支持通过 kubelets --manifest-url,  --config 创建的pod // 需要查下有什么区别
+
+对于第一点：pod在被创建前，不会检查 secret是否存在，当pod被调度创建时，会先去apiserver取secret，如果失败（网络，不存在）则会重复尝试，直到得到secret，并mount成功。
 
 ## DaemonSet
 
@@ -355,3 +420,5 @@ CONFIG_FOO=bar
 
 待续
 
+
+  [1]: /img/bVGmq9
