@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 var (
@@ -12,14 +13,15 @@ var (
 
 func main() {
 	flag.StringVar(&host, "host", "", "host usage")
-	flag.StringVar(&port, "port", "9090", "host usage")
+	flag.StringVar(&port, "port", ":9090", "host usage")
 	flag.Parse()
 
-	fmt.Println(host, port)
+	name, _ := os.Hostname()
+	fmt.Println(host, port, name)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+		fmt.Fprintf(w, "Hostname=%s, uri=%s!", name, r.URL.Path[1:])
 	})
 
-	panic(http.ListenAndServe(":9090", nil))
+	panic(http.ListenAndServe(port, nil))
 }

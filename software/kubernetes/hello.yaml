@@ -1,0 +1,48 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  creationTimestamp: 2016-02-18T19:14:38Z
+  name: my-config
+  namespace: default
+data:
+  example.foo: bar
+  example.long_file: |-
+    test.1=value-1
+    test.2=value-2
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: hello
+    spec:
+      containers:
+      - name: hello
+        image: silentred/alpine-hello:v2
+        ports:
+        - containerPort: 9090
+        env:
+          - name: CONFIG_FOO
+            valueFrom:
+              configMapKeyRef:
+                name: my-config
+                key: example.foo
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: hello
+  name: hello
+spec:
+  ports:
+  - port: 9090
+  selector:
+    run: hello

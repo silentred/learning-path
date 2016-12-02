@@ -124,3 +124,27 @@ sudo ifup eth1
 
 注册容器内IP：
 每个注册的service的port都是固定的，只能从容器内部访问。如果用 flannel，可能有一些性能损失。
+
+## DNS服务发现
+
+查了一下如何利用DNS SRV类型来发现服务。本来以为可以用类似 `Dial("hello", SRV)` 的魔法 (我们都是膜法师，+1s), 查了一些资料貌似没有这么方便。看了下golang的net包，发现了两个方法 `LookupSRV`, `LookupHost`, 于是测试了一下，看下结果，大家知道该怎么用了吧，嘿嘿。
+
+``` golang
+cname, addrs, err := net.LookupSRV("", "", "hello.service.consul")
+fmt.Printf("%s, %#v, %s \n", cname, addrs, err)
+for _, srv := range addrs {
+    fmt.Printf("%#v \n", *srv)
+}
+
+newAddrs, err := net.LookupHost("hello.service.consul")
+fmt.Printf("%#v, %s \n", newAddrs, err)
+```
+
+```
+//output
+[vagrant@bogon dns]$ go run mx.go
+hello.service.consul., []*net.SRV{(*net.SRV)(0xc420010980), (*net.SRV)(0xc4200109a0)}, %!s(<nil>)
+net.SRV{Target:"bogon.node.dc1.consul.", Port:0x8003, Priority:0x1, Weight:0x1}
+net.SRV{Target:"bogon.node.dc1.consul.", Port:0x8000, Priority:0x1, Weight:0x1}
+[]string{"172.28.128.3", "172.28.128.4"}, %!s(<nil>)
+```

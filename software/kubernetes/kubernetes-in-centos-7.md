@@ -1,9 +1,13 @@
 # kubernetes in centos 7 
 
-# 安装 Guest Additions
+> 探索kubernetes系列的第三篇，主要记录手动搭建k8s集群的过程，部署dashboard, 部署DNS用作服务发现。顺便记录一下k8s中的一些资源的概念。
 
-vagrant plugin install vagrant-vbguest
-#这时在 Vagrantfile 中不要设置目录映射, 添加以下配置
+# 配置环境
+
+这个步骤可以参考[《Flannel with Docker》](https://segmentfault.com/a/1190000007585313)文中的步骤，不想赘述了。用了 `centos/7` 这个镜像，需要多做一点工作。
+
+## 安装 Guest Additions
+`vagrant plugin install vagrant-vbguest` ,这时在 Vagrantfile 中不要设置目录映射, 添加以下配置
 
 ```
 config.vbguest.auto_update = false
@@ -11,14 +15,13 @@ config.vbguest.auto_update = false
 config.vbguest.no_remote = true
 ```
 
-vagrant up
-vagrant vbguest
-// 这时会自动安装 Guest Additions， 再关闭vm，配置上目录映射，再up，就可以了
-// 家里的网络连接 centos 官方的源，速度还行， 可以不用改成国内源。
+`vagrant up` 
+`vagrant vbguest` 
+这时会自动安装 Guest Additions， 再关闭vm，配置上目录映射，再up，就可以了. 家里的网络连接 centos 官方的源，速度还行， 可以不用改成国内源。
 
+## 国内源
 
-# 国内源
-
+```
 sudo cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak
 
 wget http://mirrors.163.com/.help/CentOS7-Base-163.repo -O CentOS-Base.repo
@@ -26,9 +29,11 @@ mv CentOS-Base.repo /etc/yum.repos.d/
 
 sudo yum makecache
 sudo yum update
+```
 
-# install docker
+# Install Docker
 
+```
 sudo tee /etc/yum.repos.d/docker.repo <<-'EOF'
 [dockerrepo]
 name=Docker Repository
@@ -43,59 +48,70 @@ sudo yum install docker-engine
 sudo systemctl enable docker.service
 
 sudo systemctl start docker
+```
 
-配置 http_proxy:
+配置 http_proxy, 这步极为重要，一些必要的镜像要从谷歌的源下载, 感谢万恶的GWF:
 
 vim /lib/systemd/system/docker.service 在[Service]中添加：
-EnvironmentFile=-/etc/docker/docker.conf
+`EnvironmentFile=-/etc/docker/docker.conf`
 这里的 减号 表示如果文件不存在，则忽略错误
 
 vim /etc/docker/docker.conf 添加：
+
+```
 http_proxy=192.168.0.2:7777
 https_proxy=192.168.0.2:7777
 no_proxy=localhost,127.0.0.1,192.168.0.2
-
+```
 重启 dockerd
 
-# start etcd
+# Start etcd
 etcd --listen-client-urls 'http://0.0.0.0:2379,http://0.0.0.0:4001' --advertise-client-urls 'http://192.168.0.2:2379,http://192.168.0.2:4001'  > /dev/null 2>&1 &
 
-# install kube
+# Install Kubernetes
 去 github release page 下载最新的版本. 大约 1G.
 
+## Start Master 
 
-# start master 
+`hyperkube apiserver --address=0.0.0.0 --etcd_servers=http://192.168.0.2:2379 --service-cluster-ip-range=10.10.0.0/16 --v=0 >apiserver.log 2>&1 &`
 
-hyperkube apiserver --address=0.0.0.0 --etcd_servers=http://192.168.0.2:2379 --service-cluster-ip-range=10.10.0.0/16 --v=0 >apiserver.log 2>&1 &
+`hyperkube controller-manager --master=127.0.0.1:8080 --logtostderr=true >cm.log 2>&1 &`
 
-hyperkube controller-manager --master=127.0.0.1:8080 --logtostderr=true >cm.log 2>&1 &
-
-日志有有报错，pem 文件找不到，和下面这两个配置有关，需要搜索
+```
+日志有有报错，pem 文件找不到，可能和下面这两个配置有关，需要搜索
 --cluster-signing-cert-file string                                  Filename containing a PEM-encoded X509 CA certificate used to issue cluster-scoped certificates (default "/etc/kubernetes/ca/ca.pem")
 --cluster-signing-key-file string                                   Filename containing a PEM-encoded RSA or ECDSA private key used to sign cluster-scoped certificates (default "/etc/kubernetes/ca/ca.key")
+```
 
-hyperkube scheduler --master=127.0.0.1:8080 > scheduler.log 2>&1 &
+`hyperkube scheduler --master=127.0.0.1:8080 > scheduler.log 2>&1 &`
 
+```
 提示 Could not construct reference... due to: 'selfLink was empty, can't make reference'
+```
 
-# start node
+## Start Node
 
-建议先看 安装DNS，kubelet 要添加两个启动参数
+启动 proxy:
+`hyperkube proxy --master=192.168.0.2:8080 --logtostderr=true >proxy.log 2>&1 &`
 
-hyperkube proxy --master=192.168.0.2:8080 --logtostderr=true >proxy.log 2>&1 &
+安装DNS的部分有提到，kubelet 要添加两个启动参数, 完整的启动命令为：
+`hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &`
 
-hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true >kubelet.log 2>&1 &
+# 基本操作
+建议走一遍官网的 tutorial, 基本能了解常用的 资源类型， 我在github的仓库做了笔记，可以参考我的 [笔记](https://github.com/silentred/learning-path/blob/master/software/kubernetes/tutorial.md)
 
-# 问题
+# Dashboard
 
-启动 dashboard 的之前，需要 打开一段注释，args: - --apiserver-host=http://192.168.0.2:8080,
+在 kubernetes-src/cluster/addons/dashboard 中有 yaml 文件，使用 `kubectl create -f dashboard.yaml` 即可创建 dashboard deployment.
+
+启动 dashboard 的之前，需要 打开一段注释，`args: - --apiserver-host=http://192.168.0.2:8080`,
 否则 dashboard 无法启动
 
 kubectl describe pods/kubernetes-dashboard-3985220203-j043h --namespace=kube-system
-看到event信息报错, 启动其他 image 的时候也有这个错，需要查找
+看到event信息报错, 启动其他 image 的时候也有这个错，需要查找, 
 MissingClusterDNS, kubelet does not have ClusterDNS IP configured and cannot create Pod using "ClusterFirst" policy. Falling back to DNSDefault policy.
 
-kubelet log显示 CPUAccounting not allowed
+kubelet log显示 CPUAccounting not allowed , 
 这个问题估计是 systemd 控制的
 
 # 安装 skyDNS
@@ -107,6 +123,7 @@ replica = 1
 dns_domain = cluster.local
 
 kube-dns 启动参数需要指定 master 的接口
+
 ```
 args:
 # command = "/kube-dns"
@@ -121,7 +138,7 @@ dns_server = 10.10.0.10 // 这个ip需要在 apiserver 的启动参数--service-
 kubelet 启动参数需要加入 --cluster-dns=10.10.0.10 --cluster-domain=cluster.local
 
 完整的启动命令为：
-hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=192.168.0.3 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &
+hyperkube kubelet --api_servers=192.168.0.2:8080 --address=0.0.0.0 --hostname_override=bq-node1 --healthz-bind-address=0.0.0.0 --logtostderr=true --cluster-dns=10.10.0.10 --cluster-domain=cluster.local >kubelet.log 2>&1 &
 
 观察启动结果：
 kubectl get rc --namespace=kube-system
@@ -135,7 +152,8 @@ dig @10.10.0.10 hello.default.svc.cluster.local
 hello.default.svc.cluster.local. 30 IN  A   10.10.83.26
 ```
 
-这里 hello 是 之前起的一个deploy
+这里 hello 是 之前起的一个deploy，配置文件如下。建议开始分开两个文件写，hello-service.yaml, hello-deploy.yaml
+
 ```
 kind: Service
 apiVersion: v1
@@ -170,6 +188,8 @@ spec:
 如果想升级 image:
 `kubectl set image deploy/hello hello=silentred/alpine-hello:v2`
 
+其实还有更好的办法： `kubectl replace -f `, 后面会提到.
+
 这里有一个点需要注意：
 只有service会被注册到 kube-dns 中，按照上面的service的定义，每个类型的服务都需要创建一个service， 因此每个类型的服务都会创建一个 clusterIP，clusterIP 的 backends 就是 EndPoints 的服务，默认是 round-robin 轮询。
 
@@ -192,10 +212,141 @@ options ndots:5
 安装完kube-dns插件后，在容器内部使用DNS查找到的ip为该 service 的 clusterIP, 在容器内部ping自身的name(hello)可以看到解析出来的ip, 但是ping的包全部丢失了，文档解释是只支持 tcp/udp 通信。 [doc](http://kubernetes.io/docs/user-guide/services/#virtual-ips-and-service-proxies) 
 这表示，在程序中直接使用 dial("hello"), 就能通过 service 去轮询各个 container, 可以不用实现 grpc 的 LB 策略了。
 
-# 结合 flannel
+## 结合 Flannel
 
 如果使用了 Headless Service, 那么就必须保证容器间的网络连通，可以采用 flannel。
 flannel 配置的子网范围 不能和 apiserver 的 clusterIP 一致。
 
+
+# 资源类型
+
+## ConfigMap
+
+用于容器镜像和配置文件之间的解耦, 可以用 kubectl create configmaps 来创建，也可以用yaml来创建，贴一个文档上的例子：
+
+```
+apiVersion: v1
+data:
+  game.properties: |-
+    enemies=aliens
+    lives=3
+  ui.properties: |
+    color.good=purple
+    color.bad=yellow
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2016-02-18T18:34:05Z
+  name: game-config
+  namespace: default
+  resourceVersion: "407"-
+  selfLink: /api/v1/namespaces/default/configmaps/game-config
+  uid: 30944725-d66e-11e5-8cd0-68f728db1985
+```
+
+在容器中使用有多种方式：
+1 定义为环境变量，下面有例子，定义了环境变量，还可以用作启动参数
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dapi-test-pod
+spec:
+  containers:
+    - name: test-container
+      image: gcr.io/google_containers/busybox
+      command: [ "/bin/sh", "-c", "echo $(SPECIAL_LEVEL_KEY) $(SPECIAL_TYPE_KEY)" ]
+      env:
+        - name: SPECIAL_LEVEL_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: special.how
+        - name: SPECIAL_TYPE_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: special.type
+  restartPolicy: Never
+```
+
+2 作为volume使用，mount到镜像的指定目录：
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dapi-test-pod
+spec:
+  containers:
+    - name: test-container
+      image: gcr.io/google_containers/busybox
+      command: [ "/bin/sh", "-c", "cat /etc/config/special.how" ]
+      volumeMounts:
+      - name: config-volume
+        mountPath: /etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: special-config
+  restartPolicy: Never
+```
+
+### 测试
+定义一个 ConfigMap:
+```
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  creationTimestamp: 2016-02-18T19:14:38Z
+  name: my-config
+  namespace: default
+data:
+  example.foo: bar
+  example.long_file: |-
+    test.1=value-1
+    test.2=value-2
+```
+
+修改 hello-deploy.yaml:
+
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: hello
+    spec:
+      containers:
+      - name: hello
+        image: silentred/alpine-hello:v2
+        ports:
+        - containerPort: 9090
+        env:
+          - name: CONFIG_FOO
+            valueFrom:
+              configMapKeyRef:
+                name: my-config
+                key: example.foo
+```
+
+替换原来的deployment, `kubectl replace -f hello-deploy.yqml`, 在运行这个命令之前可以在 node 机上 用 docker ps 观察一下 hello container的 id， 运行后在看一下，会发现两者是不一样的，说明container 重启了。
+
+这时，再次进入 hello container 内部，`env | grep FOO` 可以看到效果。
+```
+bash-4.4# env | grep FOO
+CONFIG_FOO=bar
+```
+
+## Secret
+
+## DaemonSet
+
+## ReplicaSet
 
 

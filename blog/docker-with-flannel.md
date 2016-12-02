@@ -1,4 +1,4 @@
-# Docker with Flannel
+# Flannel with Docker
 
 > Flannel 是用于组建容器间通信的网络的工具，用于解决跨主机的docker containers之间的连通性问题。最近在尝试手动部署kubernetes集群，这是这个系列的第一篇。
 
