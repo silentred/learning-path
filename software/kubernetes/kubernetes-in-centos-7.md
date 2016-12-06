@@ -412,9 +412,69 @@ spec:
 
 对于第一点：pod在被创建前，不会检查 secret是否存在，当pod被调度创建时，会先去apiserver取secret，如果失败（网络，不存在）则会重复尝试，直到得到secret，并mount成功。
 
+## Ingress
+
+可以看做是把服务暴露给外网的配置，借用文档中的图：
+```
+    internet
+        |
+   [ Ingress ]
+   --|-----|--
+   [ Services ]
+```
+
+举个例子
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test
+spec:
+  rules:
+  - host: foo.bar.com
+    http:
+      paths:
+      - path: /foo
+        backend:
+          serviceName: s1
+          servicePort: 80
+      - path: /bar
+        backend:
+          serviceName: s2
+          servicePort: 80
+
+
+$ kubectl get ing
+NAME      RULE          BACKEND   ADDRESS
+test      -
+          foo.bar.com
+          /foo          s1:80
+          /bar          s2:80
+```
+
+backend 就是service name 和 port.
+
+这只是配置，必须运行相应的 Ingress Controller Pod, 才有效果，有几个现成的controller, 
+[github](https://github.com/kubernetes/contrib/tree/master/ingress/controllers)
+其中一个比较简单的例子就是 controller 不停 query ingress 配置，发现有变化就更新conf配置，再reload nginx，从而实现反向代理.
+
 ## DaemonSet
 
-待续
+DaemonSet 能保证在每个node上都运行一个pod。比如存储集群 ceph, 日志收集 fluentd, 节点监控 node_exporter(prometheus), 等 都适用这种策略。
+
+几种替代方案：
+1. init脚本，例如 systemd等
+2. pods, 指定pod运行在某台机器上
+3. static pods, kubelet 可以watch某个目录，运行其中定义的pod，这些pod不受apiserver调度。
+
+比较一下 DaemonSet 和 ReplicationController:
+
+```
+Use a replication controller for stateless services, like frontends, where scaling up and down the number of replicas and rolling out updates are more important than controlling exactly which host the pod runs on. Use a Daemon Controller when it is important that a copy of a pod always run on all or certain hosts, and when it needs to start before other pods.
+
+rc适用于无状态服务，scaling up/down, rolling out update，pods和node之间没有固定的关系
+daemon set 适用于 pods和node之间关系固定的场景，并且需要在其他pod之前存在。
+```
 
 ## ReplicaSet
 
