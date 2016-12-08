@@ -1,20 +1,27 @@
+// cpp std lib
 #include <iostream>
 #include <string>
 #include <ctime>
 
+// c std lib
+#include <stdio.h>
+
+// private lib
 #include "main.h"
 
 using namespace std;
 
 int main() {
-    print_string();
-    print_time();
+    // print_string();
+    // print_time();
 
     cout << "Hello World" << endl;
 
     Person *p = new Person("jason", 27); 
     p->sayHello();
-    delete p;
+    delete p; // cannot delete a non-pointer
+
+    printf("hello \n");
 
     return 0;
 }
@@ -23,6 +30,7 @@ Person::Person(string name, int age)
 :name(name),
 age(age) 
 {
+    merried = true;
     cout << name << " constructing" << endl;
 }
 
@@ -32,6 +40,7 @@ Person::~Person(){
 
 void Person::sayHello(){
     cout << "Hello " << name << " age is " << age <<endl;
+    cout << "Merried: " << merried <<endl;
 }
 
 void print_string(){

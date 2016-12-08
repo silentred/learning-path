@@ -9,4 +9,7 @@ class Person {
         Person(std::string name, int age);
         ~Person();
         void sayHello();
+
+    private:
+        bool merried;
 };

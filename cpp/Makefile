@@ -3,3 +3,6 @@ all:
 
 clean:
 	rm main
+
+debug:
+	g++ -g -o main main.cpp
