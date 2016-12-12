@@ -14,8 +14,12 @@ using namespace std;
 int main() {
     // print_string();
     // print_time();
+    test_class();
 
-    cout << "Hello World" << endl;
+    bool sm;
+    sm  = is_small_endian();
+
+    cout << "is_small_endian: " << sm << endl;
 
     Person *p = new Person("jason", 27); 
     p->sayHello();
@@ -41,6 +45,14 @@ Person::~Person(){
 void Person::sayHello(){
     cout << "Hello " << name << " age is " << age <<endl;
     cout << "Merried: " << merried <<endl;
+}
+
+void test_class(){
+    A *a = new B();
+    a->foo();
+
+    // B *b = new A();
+    // b->foo();
 }
 
 void print_string(){
@@ -69,4 +81,23 @@ void print_time(){
     now = time(0);
     timeStr = ctime(&now);
     cout << "now is " << now << " time string is " << timeStr << endl;
+}
+
+bool is_small_endian(){
+    int a = 0x5455;
+    char *b = (char*)&a;
+
+    if(b[0] == 0x55){
+        return true;
+    }
+
+    return false;
+}
+
+void A::foo(){
+    cout<<"A::foo() is called"<<endl;
+}
+
+void B::foo(){
+    cout<<"B::foo() is called"<<endl;
 }
