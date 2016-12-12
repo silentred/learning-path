@@ -19,6 +19,7 @@ class Person {
 class A {
     public:
         virtual void foo();
+        void bar();
 };
 
 class B: public A {

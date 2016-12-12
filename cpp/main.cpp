@@ -57,6 +57,7 @@ void test_class(){
 
     a = &child;
     a->foo();
+    a->bar(); // B has no method of bar(), so it will call A::bar()  
 }
 
 void print_string(){
@@ -100,6 +101,10 @@ bool is_small_endian(){
 
 void A::foo(){
     cout<<"A::foo() is called"<<endl;
+}
+
+void A::bar(){
+    cout<<"A::bar() is called"<<endl;
 }
 
 void B::foo(){
