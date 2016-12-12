@@ -48,11 +48,15 @@ void Person::sayHello(){
 }
 
 void test_class(){
-    A *a = new B();
+    A *a;
+    A base;
+    B child;
+
+    a = &base;
     a->foo();
 
-    // B *b = new A();
-    // b->foo();
+    a = &child;
+    a->foo();
 }
 
 void print_string(){
