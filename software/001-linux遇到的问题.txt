@@ -13,7 +13,7 @@ mount /dev/cdrom ~/cdrom
 ifconfig没找到
 yum install net-tools
 其他常用软件：
-yum groupinstall "Development Tools"
+yum group install "Development Tools"
 yum install java vim python
 yum grouplist 查看有哪些group可以安装
 

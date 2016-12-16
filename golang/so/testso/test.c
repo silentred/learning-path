@@ -1,4 +1,4 @@
-#include "testso.h"
+#include "libtestso.h"
 #include <stdio.h>
 
 int main() {
