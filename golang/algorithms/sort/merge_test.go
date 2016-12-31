@@ -11,3 +11,13 @@ func TestMerge(t *testing.T) {
 	MergeSort(slice)
 	fmt.Println(slice)
 }
+
+func TestRune(t *testing.T) {
+	str := "你好"
+	fmt.Println(len(str))
+	mbStr := []rune(str)
+	fmt.Println(len(mbStr))
+
+	i := int64(-1)
+	fmt.Printf("%b \n", uint64(i))
+}
