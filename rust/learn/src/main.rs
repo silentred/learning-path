@@ -20,6 +20,8 @@ fn main() {
 
     test_borrow();
     test_ref();
+
+    test_struct();
 }
 
 
@@ -89,4 +91,14 @@ fn test_ref(){
         *y += 1;
     }
     println!("{}", x);
+}
+
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+fn test_struct(){
+    let p = Point{x:1, y:2};
+    println!("px {} py {}", p.x, p.y)
 }
