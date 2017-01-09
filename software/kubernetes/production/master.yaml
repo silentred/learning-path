@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-apiserver
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-apiserver
+    image: gcr.io/google_containers/hyperkube-amd64:v1.5.1
+    command:
+    - /hyperkube
+    - apiserver
+    - --bind-address=0.0.0.0
+    - --insecure-bind-address=127.0.0.1
+    - --etcd-servers=http://192.168.0.2:2379 
+    - --allow-privileged=true
+    - --service-cluster-ip-range=10.10.0.0/16
+    - --secure-port=443
+    - --advertise-address=192.168.0.2
+    - --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+    - --tls-cert-file=/etc/kubernetes/ssl/apiserver.pem
+    - --tls-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
+    - --client-ca-file=/etc/kubernetes/ssl/ca.pem
+    - --runtime-config=extensions/v1beta1/networkpolicies=true
+    - --anonymous-auth=false
+    ports:
+    - containerPort: 443
+      hostPort: 443
+      name: https
+    - containerPort: 8080
+      hostPort: 8080
+      name: local
+    volumeMounts:
+    - mountPath: /etc/kubernetes/ssl
+      name: ssl-certs-kubernetes
+      readOnly: true
+    - mountPath: /etc/ssl/certs
+      name: ssl-certs-host
+      readOnly: true
+  volumes:
+  - hostPath:
+      path: /etc/kubernetes/ssl
+    name: ssl-certs-kubernetes
+  - hostPath:
+      path: /usr/share/ca-certificates
+    name: ssl-certs-host
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-controller-manager
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-controller-manager
+    image: gcr.io/google_containers/hyperkube-amd64:v1.5.1
+    command:
+    - /hyperkube
+    - controller-manager
+    - --master=http://127.0.0.1:8080
+    - --leader-elect=true
+    - --service-account-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
+    - --root-ca-file=/etc/kubernetes/ssl/ca.pem
+    resources:
+      requests:
+        cpu: 200m
+    volumeMounts:
+    - mountPath: /etc/kubernetes/ssl
+      name: ssl-certs-kubernetes
+      readOnly: true
+    - mountPath: /etc/ssl/certs
+      name: ssl-certs-host
+      readOnly: true
+  hostNetwork: true
+  volumes:
+  - hostPath:
+      path: /etc/kubernetes/ssl
+    name: ssl-certs-kubernetes
+  - hostPath:
+      path: /usr/share/ca-certificates
+    name: ssl-certs-host
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-scheduler
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-scheduler
+    image: gcr.io/google_containers/hyperkube-amd64:v1.5.1
+    command:
+    - /hyperkube
+    - scheduler
+    - --master=http://127.0.0.1:8080
+    - --leader-elect=true
+    resources:
+      requests:
+        cpu: 100m
