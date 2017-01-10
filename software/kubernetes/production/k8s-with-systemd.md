@@ -126,3 +126,26 @@ hyperkube proxy \
 --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
 > proxy.log 2>&1 &
 ```
+
+
+# Gateway: Traefik
+
+https://docs.traefik.io/user-guide/kubernetes/#deploy-trfk
+
+文档中有部署配置， 值得一提的是， pod 启动时， 会自动把 token, ca.crt, namespace 映射到 /var/run/secrets/kubernetes.io/ 下，traefik 正是利用了这几个文件和 apiserver 进行的通信。 apiserver 的host信息， 是通过环境变量的形式映射到pod内部的。
+
+
+# Calico
+
+从docker部署搞起，弄清每个组件的作用
+
+# Prometheus
+
+
+# DNS
+
+和之前一样，把 `--kube-master-url=http://192.168.0.2:8080` 这行注释掉，因为使用了 https。
+测试发现跨节点的 DNS 不能用。
+
+
+
