@@ -139,6 +139,8 @@ https://docs.traefik.io/user-guide/kubernetes/#deploy-trfk
 
 从docker部署搞起，弄清每个组件的作用
 
+注意 calico/xxx 的版本，我手动设为了 master, policy controller 之前的版本不兼容 k8s 1.5.1
+
 # Prometheus
 
 
