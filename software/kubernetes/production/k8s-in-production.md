@@ -135,8 +135,9 @@ kubectl config set-credentials default-admin --certificate-authority=/etc/kubern
 Node kubelet
 
 ```
-kubelet \
-  --api-servers=192.168.0.2 \
+hyperkube kubelet \
+  --api-servers=https://192.168.0.2 \
+  --cni-conf-dir=/etc/kubernetes/cni/net.d \
   --network-plugin=cni \
   --container-runtime=docker \
   --register-node=true \
@@ -146,9 +147,11 @@ kubelet \
   --cluster_dns=10.10.0.10 \
   --cluster_domain=cluster.local \
   --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
-  
-  #--tls-cert-file=/etc/kubernetes/ssl/worker.pem \
-  #--tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem > kubelet.log 2>&1 &
+  --tls-cert-file=/etc/kubernetes/ssl/worker.pem \
+  --tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem \
+  > kubelet.log 2>&1 &
+
+  #--api-servers=https://192.168.0.2 \ // 废弃了?
 ```
 
 Node manifests:
@@ -202,6 +205,7 @@ clusters:
 - name: local
   cluster:
     certificate-authority: /etc/kubernetes/ssl/ca.pem
+    server: https://192.168.0.2
 users:
 - name: kubelet
   user:
