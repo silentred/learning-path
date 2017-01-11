@@ -193,3 +193,7 @@ TypeError: object of type 'NoneType' has no len()
 
 # Prometheus
 
+https://coreos.com/assets/blog/promk8s/prometheus-deployment.yaml
+
+镜像换成了 prom/prometheus:v1.4.1 , 运行发现 apiserver 没有连通，有点奇怪。
+config 文件中的 insecure_skip_verify 设为了 true 也没效果。。
