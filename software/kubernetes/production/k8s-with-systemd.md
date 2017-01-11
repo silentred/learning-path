@@ -170,6 +170,9 @@ cat >/etc/cni/net.d/10-calico.conf <<EOF
 }
 EOF
 
+注意 calico/xxx 的版本，我手动设为了 master, policy controller 之前的版本不兼容 k8s 1.5.1
+
+
 ```
 
 确实可以访问，但是，policy-controller 一直报错：
@@ -180,6 +183,8 @@ Traceback (most recent call last):
   File "<string>", line 400, in _sync_resources
 TypeError: object of type 'NoneType' has no len()
 2017-01-10 12:15:06,569 5 WARNING Re-starting watch on resource: NetworkPolicy
+
+解决了，是镜像版本不对的问题，升级到 master 就可以了.
 
 # DNS
 
