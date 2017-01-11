@@ -21,6 +21,8 @@ hyperkube apiserver \
 --anonymous-auth=false \
 > apiserver.log 2>&1 &
 
+--kubelet-timeout=5s // 默认为5s, log里一直出现超时，设为 60s 试试; 没有用，现在是每60s出现一次panic log. 看来问题可能是在 kubelet 上。
+
 /etc/kubernetes/token, 格式为 token,username,uid
 1234token,kube-admin,kube-admin
 
@@ -85,12 +87,14 @@ hyperkube kubelet \
   --container-runtime=docker \
   --register-node=true \
   --allow-privileged=true \
-  --hostname-override=192.168.0.3 \
+  --hostname-override=192.168.0.4 \
   --cluster_dns=10.10.0.10 \
   --cluster_domain=cluster.local \
   --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
   --tls-cert-file=/etc/kubernetes/ssl/worker.pem \
   --tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem \
+  --network-plugin-dir=/etc/cni/net.d \
+  --network-plugin=cni \
   > kubelet.log 2>&1 &
 
 
@@ -124,9 +128,15 @@ current-context: kubelet-context
 hyperkube proxy \
 --master=https://192.168.0.2 \
 --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
+--proxy-mode=iptables \
+--cluster-cidr=10.10.0.0/16 \
+--hostname-override=192.168.0.4 \
 > proxy.log 2>&1 &
 ```
 
+Warning: clusterCIDR not specified, unable to distinguish between internal and external traffic
+
+--proxy-mode=userspace | iptables
 
 # Gateway: Traefik
 
@@ -137,15 +147,44 @@ https://docs.traefik.io/user-guide/kubernetes/#deploy-trfk
 
 # Calico
 
-从docker部署搞起，弄清每个组件的作用
+启动kubelet之前需要创建一下文件，kubelet 启动需要设置 
+--network-plugin-dir=/etc/cni/net.d \
+--network-plugin=cni \
+这两个配置项.
 
-# Prometheus
+```
+mkdir -p /etc/cni/net.d
 
+cat >/etc/cni/net.d/10-calico.conf <<EOF
+{
+    "name": "calico-k8s-network",
+    "type": "calico",
+    "etcd_endpoints": "http://192.168.0.2:2379",
+    "log_level": "info",
+    "ipam": {
+        "type": "calico-ipam"
+    },
+    "policy": {
+        "type": "k8s"
+    }
+}
+EOF
+
+```
+
+确实可以访问，但是，policy-controller 一直报错：
+
+2017-01-10 12:15:06,568 5 ERROR Unahandled exception killed NetworkPolicy manager
+Traceback (most recent call last):
+  File "<string>", line 295, in _manage_resource
+  File "<string>", line 400, in _sync_resources
+TypeError: object of type 'NoneType' has no len()
+2017-01-10 12:15:06,569 5 WARNING Re-starting watch on resource: NetworkPolicy
 
 # DNS
 
 和之前一样，把 `--kube-master-url=http://192.168.0.2:8080` 这行注释掉，因为使用了 https。
-测试发现跨节点的 DNS 不能用。
+测试发现跨节点的 DNS 不能用。 是CNI没有配置对的问题。proxy mode 使用了 iptables, 但是 calico 没有配置对。 结果就是 iptalbes 转发的位置不对。
 
-
+# Prometheus
 
