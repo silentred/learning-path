@@ -33,6 +33,8 @@ curl https://192.168.0.2/api/v1beta3/namespaces/default/pods -cert=/etc/kubernet
 // 使用 CA 公钥 访问
 curl -H 'Authorization: Bearer 1234token' -v --cacert /etc/kubernetes/ssl/ca.pem https://192.168.0.2/api/v1beta3/namespaces/default/pods
 
+curl -H 'Authorization: Bearer 1234token' --cacert /etc/kubernetes/ssl/ca.pem https://localhost:443/apis/extensions/v1beta1/ingresses 
+
 [Service]
 Environment=KUBELET_VERSION=v1.5.1
 ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/ssl
@@ -138,13 +140,6 @@ Warning: clusterCIDR not specified, unable to distinguish between internal and e
 
 --proxy-mode=userspace | iptables
 
-# Gateway: Traefik
-
-https://docs.traefik.io/user-guide/kubernetes/#deploy-trfk
-
-文档中有部署配置， 值得一提的是， pod 启动时， 会自动把 token, ca.crt, namespace 映射到 /var/run/secrets/kubernetes.io/ 下，traefik 正是利用了这几个文件和 apiserver 进行的通信。 apiserver 的host信息， 是通过环境变量的形式映射到pod内部的。
-
-
 # Calico
 
 启动kubelet之前需要创建一下文件，kubelet 启动需要设置 
@@ -172,7 +167,6 @@ EOF
 
 注意 calico/xxx 的版本，我手动设为了 master, policy controller 之前的版本不兼容 k8s 1.5.1
 
-
 ```
 
 确实可以访问，但是，policy-controller 一直报错：
@@ -190,6 +184,20 @@ TypeError: object of type 'NoneType' has no len()
 
 和之前一样，把 `--kube-master-url=http://192.168.0.2:8080` 这行注释掉，因为使用了 https。
 测试发现跨节点的 DNS 不能用。 是CNI没有配置对的问题。proxy mode 使用了 iptables, 但是 calico 没有配置对。 结果就是 iptalbes 转发的位置不对。
+
+# Gateway: Traefik
+
+https://docs.traefik.io/user-guide/kubernetes/#deploy-trfk
+
+文档中有部署配置， 值得一提的是， pod 启动时， 会自动把 token, ca.crt, namespace 映射到 /var/run/secrets/kubernetes.io/ 下，traefik 正是利用了这几个文件和 apiserver 进行的通信。 apiserver 的host信息， 是通过环境变量的形式映射到pod内部的。
+
+v1.0.0 对 apiserver 的通信使用了http polling, 导致apiserver log中报了 panic: timeout, issue中有人提了，并解决了。 https://github.com/containous/traefik/issues/732
+
+测试 v1.0.3，还是有 panic 信息。
+
+试用了一下 v1.1.2。确实没有 panic 信息了。 
+
+如果 ingress 发生变化， traefik 会自动发现并 reload 。
 
 # Prometheus
 

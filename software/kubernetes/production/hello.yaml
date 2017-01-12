@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hello-ingress
+  annotations:
+    # pay attension; set this annotation if you use prefix path
+    traefik.frontend.rule.type: pathprefixstrip
+spec:
+  rules:
+  - host: www.hello.local
+    http:
+      paths:
+      - path: /v1
+        backend:
+          serviceName: hello
+          servicePort: 9090
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: hello
+    spec:
+      containers:
+      - name: hello
+        image: silentred/alpine-hello:v2
+        ports:
+        - containerPort: 9090
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: hello
+    spec:
+      containers:
+      - name: hello
+        image: silentred/alpine-hello:v2
+        ports:
+        - containerPort: 9090
+
