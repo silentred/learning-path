@@ -2,15 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grafana
-  namespace: monitoring
+  namespace: default
   labels:
     app: grafana
     component: core
 spec:
   type: NodePort
   ports:
-    - port: 3000
-    - nodePort: 33000
+  - port: 3000
+    nodePort: 30200
   selector:
     app: grafana
     component: core
@@ -37,6 +37,9 @@ spec:
       - image: grafana/grafana:4.0.2
         name: grafana-core
         imagePullPolicy: IfNotPresent
+        ports:
+        - name: web
+          containerPort: 3000
         # env:
         resources:
           # keep request = limit to keep this container in guaranteed class
@@ -49,11 +52,11 @@ spec:
         env:
           # The following env variables set up basic auth twith the default admin user and admin password.
           - name: GF_AUTH_BASIC_ENABLED
-            value: "true"
-          - name: GF_AUTH_ANONYMOUS_ENABLED
             value: "false"
-          # - name: GF_AUTH_ANONYMOUS_ORG_ROLE
-          #   value: Admin
+          - name: GF_AUTH_ANONYMOUS_ENABLED
+            value: "true"
+          - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+            value: Admin
           # does not really work, because of template variables in exported dashboards:
           # - name: GF_DASHBOARDS_JSON_ENABLED
           #   value: "true"
@@ -69,3 +72,5 @@ spec:
       volumes:
       - name: grafana-persistent-storage
         emptyDir: {}
+      nodeSelector:
+        role: frontend

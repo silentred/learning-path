@@ -37,3 +37,5 @@ spec:
         - --web
         - --kubernetes
         - --loglevel=INFO
+      nodeSelector:
+        k8s-app: traefik-ingress-lb
