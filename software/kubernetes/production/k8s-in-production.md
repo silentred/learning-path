@@ -100,6 +100,8 @@ hyperkube kubelet \
   --allow-privileged=true \
   --pod-manifest-path=/etc/kubernetes/manifests \
   --hostname-override=192.168.0.2 \
+  --tls-cert-file=/etc/kubernetes/ssl/worker.pem \
+  --tls-private-key-file=/etc/kubernetes/ssl/worker-key.pem \
   --cluster_dns=10.10.0.10 \
   --cluster_domain=cluster.local >kubelet.log 2>&1 &
 ```
