@@ -23,6 +23,7 @@ spec:
     - --tls-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
     - --client-ca-file=/etc/kubernetes/ssl/ca.pem
     - --runtime-config=extensions/v1beta1/networkpolicies=true
+    - --token-auth-file=/etc/kubernetes/token
     - --anonymous-auth=false
     ports:
     - containerPort: 443
@@ -32,19 +33,19 @@ spec:
       hostPort: 8080
       name: local
     volumeMounts:
-    - mountPath: /etc/kubernetes/ssl
-      name: ssl-certs-kubernetes
-      readOnly: true
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host
       readOnly: true
+    - mountPath: /etc/kubernetes
+      name: config-path
+      readOnly: true
   volumes:
-  - hostPath:
-      path: /etc/kubernetes/ssl
-    name: ssl-certs-kubernetes
   - hostPath:
       path: /usr/share/ca-certificates
     name: ssl-certs-host
+  - hostPath:
+      path: /etc/kubernetes
+    name: config-path
 
 ---
 

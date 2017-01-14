@@ -150,7 +150,7 @@ Warning: clusterCIDR not specified, unable to distinguish between internal and e
 ```
 mkdir -p /etc/cni/net.d
 
-cat >/etc/cni/net.d/10-calico.conf <<EOF
+cat > /etc/cni/net.d/10-calico.conf <<EOF
 {
     "name": "calico-k8s-network",
     "type": "calico",
