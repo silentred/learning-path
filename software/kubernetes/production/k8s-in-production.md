@@ -94,11 +94,11 @@ start kubelet, 注意 kubelet 的版本，测试环境忘了升级到 1.5.1 了
 hyperkube kubelet \
   --api-servers=http://127.0.0.1:8080 \
   --register-schedulable=false \
+  --cni-conf-dir=/etc/cni/net.d/ \
+  --network-plugin=cni \
   --container-runtime=docker \
   --allow-privileged=true \
   --pod-manifest-path=/etc/kubernetes/manifests \
-  --cni-conf-dir=/etc/kubernetes/cni/net.d \
-  --network-plugin=cni \
   --hostname-override=192.168.0.2 \
   --cluster_dns=10.10.0.10 \
   --cluster_domain=cluster.local >kubelet.log 2>&1 &
