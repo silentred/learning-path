@@ -1,5 +1,15 @@
 k8s-with-systemd.md
 
+# Calico IP range
+
+教程里使用的是 v1.5, 下载对应的 calicoctl
+
+```
+calicoctl pool add 172.0.0.0/8
+```
+
+这样创建的pod的IP就会分配在这个IP段。
+
 # Apiserver
 
 ```

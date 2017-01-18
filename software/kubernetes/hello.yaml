@@ -1,15 +1,24 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  creationTimestamp: 2016-02-18T19:14:38Z
-  name: my-config
+  creationTimestamp: 2017-01-17T19:14:38Z
+  name: filebeat-config
   namespace: default
 data:
-  example.foo: bar
-  example.long_file: |-
-    test.1=value-1
-    test.2=value-2
-
+  simple-config.yml: |-
+    filebeat:
+      prospectors:
+        -
+          input_type: stdin
+        -
+          input_type: log
+          paths:
+            - "/tmp/*.log"
+            #- c:\programdata\elasticsearch\logs\*
+          document_type: app-hello
+          tail_files: true
+    output:
+      console:
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -24,24 +33,45 @@ spec:
     spec:
       containers:
       - name: hello
-        image: silentred/alpine-hello:v2
+        image: silentred/hello:v3
         ports:
         - containerPort: 9090
-        env:
-          - name: CONFIG_FOO
-            valueFrom:
-              configMapKeyRef:
-                name: my-config
-                key: example.foo
+        volumeMounts:
+        - mountPath: /tmp
+          name: log-vol
+        # env:
+        #   - name: CONFIG_FOO
+        #     valueFrom:
+        #       configMapKeyRef:
+        #         name: my-config
+        #         key: example.foo
+      - name: filebeat
+        image: silentred/filebeat
+        args:
+          - '-c=/etc/filebeat/simple-config.yml'
+        volumeMounts:
+        - name: fb-config-vol
+          mountPath: /etc/filebeat
+        - mountPath: /tmp
+          name: log-vol
 
+      volumes:
+      - name: fb-config-vol
+        configMap:
+          name: filebeat-config
+      - name: log-vol
+        emptyDir: {}
 ---
 kind: Service
 apiVersion: v1
 metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
   labels:
     app: hello
   name: hello
 spec:
+  type: NodePort
   ports:
   - port: 9090
   selector:
