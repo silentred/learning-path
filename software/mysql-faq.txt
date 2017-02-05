@@ -9,10 +9,10 @@ mysqldump -uroot -pFXRTNVMfBhdQTRnc 99kk tags > tags.sql;
 SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
 
 新建用户：
-CREATE USER 'v1188'@'localhost' IDENTIFIED BY 'v1188ys';
+CREATE USER 'jason'@'%' IDENTIFIED BY 'jason';
 
 分配权限
-grant all privileges on *.* to v1188;
+grant all privileges on *.* to jason;
 grant all privileges on *.* to vagrant@"%" identified by 'being2015' with grant option;
 flush privileges;
 
@@ -73,3 +73,6 @@ SET p.tag_ids = "0en"
 SELECT * FROM customers 
 LEFT JOIN orders ON customers.customers_id = orders.customers_id
 WHERE orders.customers_id IS NULL
+
+# 查看 DB 占磁盘大小
+SELECT table_schema "DB Name", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" FROM  information_schema.tables GROUP  BY table_schema; 
