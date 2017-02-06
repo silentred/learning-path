@@ -93,3 +93,18 @@ sudo apt-get dist-upgrade
 
 sudo apt-get install ffmpeg
 I am not expert so maybe there is safer/better way but this worked for me. Interestingly last ffmpeg version from jon-severinsson was ffmpeg version 1.2.6-7:1.2.6-1~trusty1 Copyright (c) 2000-2014 the FFmpeg developers and in mc3man repo  ffmpeg version 2.6.1 Copyright (c) 2000-2015 the FFmpeg developers.
+
+# php7
+
+```
+sudo apt-get install python-software-properties software-properties-common
+sudo LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+sudo apt-get update
+
+sudo apt-get install php7.0 php7.0-fpm php7.0-mysql -y
+sudo apt-get install php7.0-xml php7.0-zip php7.0-cli php7.0-common php7.0-curl php7.0-gd php7.0-bz2
+
+# all other extensions
+
+```
+
