@@ -76,3 +76,6 @@ WHERE orders.customers_id IS NULL
 
 # 查看 DB 占磁盘大小
 SELECT table_schema "DB Name", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "DB Size in MB" FROM  information_schema.tables GROUP  BY table_schema; 
+
+# 添加索引
+alter table `affi_conversion_201701` add index `idnex_day` (`pay_time_day`);
