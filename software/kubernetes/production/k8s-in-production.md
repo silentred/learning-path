@@ -87,7 +87,7 @@ WORKER_IP=${WORKER_IP} openssl x509 -req -in worker.csr -CA ca.pem -CAkey ca-key
 apiserver.yaml, controller.yaml, scheduler.yaml, calico.yaml
 四个文件放入 /etc/kubernetes/manifests 中。
 
-mkdir -p /etc/kubernetes/cni/net.d // 目前不知道什么作用
+mkdir -p /etc/kubernetes/cni/net.d // 目前不知道什么作用; calico自动生成的配置文件会生成到该目录.
 
 start kubelet, 注意 kubelet 的版本，测试环境忘了升级到 1.5.1 了
 ```

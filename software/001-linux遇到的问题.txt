@@ -61,7 +61,7 @@ sudo yum install php56w php56w-opcache php56w-cli php56w-common php56w-devel php
 yum list php56w*
 
 php for centos 6.8
-http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 wget http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 #or use this: wget https://mirror.webtatic.com/yum/el6/latest.rpm
 rpm -Uvh remi-release-6*.rpm epel-release-6*.rpm
