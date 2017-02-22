@@ -18,6 +18,8 @@ SimpleForum
     id: 123,
     name: "火影",
     cover: "http://full-url.jpg"
+    today_cnt: 12,
+    total_cnt: 1024,
 }
 ```
 
@@ -29,7 +31,7 @@ SimpleFeed
     title: "标题",
     cover: "http://full-url.jpb",
     reply_cnt: 5 // 回复个数
-    auther_name: "作者名称",
+    author_name: "作者名称",
     forum_name: "板块名称",
     created_at: 14xxxxxx, // unix时间戳
 }
@@ -96,6 +98,8 @@ response:
     },
     created_at: 14xxxxxxxx, //unix timestamp
     is_collected: 0, // 是否收藏
+    is_thumbup: 0, // 是否点赞
+    is_editable: 0, // 是否可编辑: 0 不可， 1 可以
     content: "html code" // 正文内容,
     thumbup_cnt: 123,
     thumbups: [
@@ -188,5 +192,16 @@ requset:
 {
     type: 1, // 1 - 帖子 , 2 - 评论
     id: 123,
+}
+```
+
+11. 编辑帖子
+
+```
+PUT feed/{id}
+request:
+{
+    title: "xxx",
+    content: "html",
 }
 ```
