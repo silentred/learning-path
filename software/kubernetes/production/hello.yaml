@@ -17,22 +17,21 @@ spec:
 
 ---
 
-apiVersion: extensions/v1beta1
-kind: Deployment
+kind: Service
+apiVersion: v1
 metadata:
+  # 需要确定 /metrics 路径的返回符合prometheus的抓取数据格式, 否则prometheus会报错
+  #annotations:
+  #  prometheus.io/scrape: 'true'
+  labels:
+    app: hello
   name: hello
 spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        run: hello
-    spec:
-      containers:
-      - name: hello
-        image: silentred/alpine-hello:v2
-        ports:
-        - containerPort: 9090
+  ports:
+  - port: 9090
+  selector:
+    run: hello
+    
 ---
 
 apiVersion: extensions/v1beta1

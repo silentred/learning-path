@@ -1,4 +1,24 @@
 apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    name: traefik-svc
+  name: traefik-svc
+spec:
+  selector:
+    k8s-app: traefik-ingress-lb
+  type: NodePort
+  ports:
+  - name: traefik-svc
+    protocol: TCP
+    port: 8080
+    nodePort: 7080
+
+---
+
+apiVersion: v1
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
