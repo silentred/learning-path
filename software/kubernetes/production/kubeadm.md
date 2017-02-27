@@ -47,12 +47,17 @@ Error syncing pod, skipping: failed to "SetupNetwork" for "kube-dns-2924299975-p
 这时可以运行来解决：
 kubectl apply -f https://git.io/weave-kube
 
-weave net 是CNI 的一种，大概和flannel类似。
+weave net 是CNI 的一种，和flannel类似。
 
 
 ```
 # 为前端机器打标签
 kubectl label node centos-1gb-sfo1-01-node1 role=frontend
+
+# for calico v2.0; kubeadm默认会打上这个label，所以可以不用执行
+# kubectl label node ubuntu-512mb-sfo1-01 kubeadm.alpha.kubernetes.io/role=master
+# 部署 calico
+kubectl apply -f http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/kubeadm/calico.yaml
 
 
 ```
