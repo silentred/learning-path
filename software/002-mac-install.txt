@@ -422,3 +422,17 @@ http://www.iteblog.com/idea/key.php
 `lsof -Pnl +M -i4 | grep 4000`
 
 
+## iTerm2 打开多个pane同时编辑
+
+```
+cmd + d // 水平打开
+或者 cmd + shift + d // 垂直打开
+
+cmd + option + i // 当前tab中的所有pane，同时输入
+// 再按一次则取消
+```
+
+
+## Jenkins 登录问题
+
+brew 安装完Jenkins后，会要求用户名密码，这需要到 ~/.jenkin/config.xml 中， 把 denyAnonymousReadAccess 这个属性改为 false
