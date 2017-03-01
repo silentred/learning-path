@@ -15,7 +15,7 @@ alias ll=“ls -Glah”
 
 ### 安装Brew
 ```
-ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew doctor
 
 brew update                        #更新brew可安装包，建议每次执行一下
