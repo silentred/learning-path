@@ -436,3 +436,22 @@ cmd + option + i // 当前tab中的所有pane，同时输入
 ## Jenkins 登录问题
 
 brew 安装完Jenkins后，会要求用户名密码，这需要到 ~/.jenkin/config.xml 中， 把 denyAnonymousReadAccess 这个属性改为 false
+
+
+## .ssh permissions
+
+~/.ssh 700
+~/.ssh/config 600
+
+## three finger drag
+
+Preference - Accessibility - Mouse&TrackPad - TrackPad option - three finger drag
+
+## change shortcut
+
+Preference - Keyboard - shortcut - input source
+换成 cmd + space 
+
+Preference - Keyboard - shortcut - spotlight
+换成 option + space
+
