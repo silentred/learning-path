@@ -43,6 +43,16 @@ make test
 ```
 
 
+## 创建slave节点
+
+进入 manage node -> new item -> 连接方式选择 java web start;
+
+在host上运行如下命令, 启动slave镜像:
+
+```
+docker run -d -e JNLP_PROTOCOL_OPTS=-Dorg.jenkinsci.remoting.engine.JnlpProtocol3.disabled=false jenkinsci/jnlp-slave -url http://138.68.232.0:8080 3ededa31c250ac8c707f33958d0edb46732430a32a0a4f1dc31adc67b1314195 slave1
+```
+
 
 
 
