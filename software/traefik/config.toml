@@ -1,0 +1,26 @@
+################################################################
+# Global configuration
+################################################################
+traefikLogsFile = "traefik.log"
+accessLogsFile = "access.log"
+logLevel = "DEBUG"
+
+[entryPoints]
+[entryPoints.http]
+address=":8000"
+
+################################################################
+# Web configuration backend
+################################################################
+[web]
+address=":7888"
+
+[web.metrics.prometheus]
+Buckets=[0.1,0.3,1.2,5.0]
+
+################################################################
+# File configuration backend
+################################################################
+[file]
+filename = "rules.toml"
+watch = true

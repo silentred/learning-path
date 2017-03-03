@@ -1,0 +1,11 @@
+[backends] 
+	[backends.backend1]
+  	[backends.backend1.servers.server1]
+  	url = "http://127.0.0.1:8080"
+     
+[frontends]
+  [frontends.frontend1]
+  backend = "backend1"
+  entrypoints = ["http"]
+    [frontends.frontend1.routes.test_1]
+    rule = "Host:test.localhost"
