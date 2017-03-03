@@ -35,7 +35,10 @@ systemctl enable kubelet && systemctl start kubelet
 
 ```
 master# kubeadm init
-node1# kubeadm join --token=6aeec4.061d4a08c3276d2d 45.55.11.138
+node1# kubeadm join --token=311971.7260777a25d70ac8 45.55.11.138
+
+# if forget token, run:
+kubectl -n kube-system get secret clusterinfo -o yaml | grep token-map | awk '{print $2}' | base64 -d | sed "s|{||g;s|}||g;s|:|.|g;s/\"//g;" | xargs echo
 ```
 
 在master运行init之后，可能会遇到 kube-dns起不来的情况，错误日志为：
@@ -48,6 +51,9 @@ Error syncing pod, skipping: failed to "SetupNetwork" for "kube-dns-2924299975-p
 kubectl apply -f https://git.io/weave-kube
 
 weave net 是CNI 的一种，和flannel类似。
+
+# CPU不足的情况下，会创建多个 Kube-dns pod 失败，删除失败的pod：
+kubectl get pods --all-namespaces --show-all | grep OutOfcpu | awk -F ' ' '{print $2}' | xargs kubectl delete -n=kube-system pod
 
 
 ```
