@@ -52,6 +52,8 @@ export GOPATH=/go \n\
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH \n\
 ' >> /home/jenkins/.bashrc
 
+RUN chown jenkins:jenkins -R $GOPATH $GOROOT
+
 # Setup sshd service; Replace original PK
 
 RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd \
