@@ -1,0 +1,71 @@
+FROM centos:7
+
+MAINTAINER Wang Yang <wangyang@luojilab.com>
+
+# Use Aliyun Repo
+
+RUN mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup \
+    && curl -sSf -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo \
+    && yum makecache
+
+# Install Tools
+
+RUN curl -sSf -o /etc/yum.repos.d/epel-apache-maven.repo https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo \
+ && yum update -y \
+ && yum install -y tar wget git which file \
+ && yum install -y make cmake gcc gcc-c++ libstdc++-static \
+ && yum install -y zlib-devel bzip2-devel snappy-devel libdwarf-devel elfutils-libelf-devel elfutils-devel binutils-devel \
+ && yum install -y openssh-server \
+ && yum install -y java-1.7.0-openjdk apache-maven \
+ && yum clean all
+
+# Install Docker
+
+RUN curl -fsSL https://get.docker.com/ | sh
+
+# Add jenkins user/group
+
+RUN adduser jenkins --uid 1000 \
+ && echo "jenkins:jenkins" | chpasswd \
+ && usermod -aG docker jenkins \
+ && usermod -aG input jenkins
+
+# Install Go Tools
+
+ENV GOLANG_VERSION 1.8
+ENV GOLANG_DOWNLOAD_URL https://golang.org/dl/go$GOLANG_VERSION.linux-amd64.tar.gz
+
+RUN curl -fsSL "$GOLANG_DOWNLOAD_URL" -o golang.tar.gz \
+ && tar -C /usr/local -xzf golang.tar.gz \
+ && rm golang.tar.gz \
+ && mkdir -p /go
+
+ENV GOPATH /go
+ENV GOROOT /usr/local/go
+ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
+
+RUN go get github.com/golang/lint/golint
+
+RUN echo 'export GOROOT=/usr/local/go \n \
+export GOPATH=/go \n \
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH \n \
+' >> /home/jenkins/.bashrc
+
+
+# Setup sshd service; Replace original PK
+
+RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd \
+ && mkdir -p /var/run/sshd \
+ && ssh-keygen -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N "" -q \
+ && ssh-keygen -t dsa -b 1024 -f /etc/ssh/ssh_host_dsa_key -N "" -q \
+ && ssh-keygen -t ecdsa -b 256 -f /etc/ssh/ssh_host_ecdsa_key -N "" -q \
+ && ssh-keygen -t ed25519 -b 2048 -f /etc/ssh/ssh_host_ed25519_key -N "" -q
+
+# TODO set git config; set file permissions
+
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
+
+
