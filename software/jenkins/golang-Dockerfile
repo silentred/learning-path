@@ -46,11 +46,11 @@ ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
 
 RUN go get github.com/golang/lint/golint
 
-RUN echo 'export GOROOT=/usr/local/go \n \
-export GOPATH=/go \n \
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH \n \
+RUN echo $'\
+export GOROOT=/usr/local/go \n\
+export GOPATH=/go \n\
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH \n\
 ' >> /home/jenkins/.bashrc
-
 
 # Setup sshd service; Replace original PK
 
