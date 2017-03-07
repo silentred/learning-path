@@ -455,3 +455,7 @@ Preference - Keyboard - shortcut - input source
 Preference - Keyboard - shortcut - spotlight
 换成 option + space
 
+
+## set git editor
+
+`git config --global core.editor "vim"`

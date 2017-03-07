@@ -79,3 +79,6 @@ SELECT table_schema "DB Name", Round(Sum(data_length + index_length) / 1024 / 10
 
 # 添加索引
 alter table `affi_conversion_201701` add index `idnex_day` (`pay_time_day`);
+
+# 查看mysql连接数
+show status where `variable_name` = 'Threads_connected';
