@@ -48,6 +48,12 @@ spec:
       containers:
       - name: hello
         image: silentred/alpine-hello:v2
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9090
+          initialDelaySeconds: 3
+          periodSeconds: 3
         ports:
         - containerPort: 9090
 

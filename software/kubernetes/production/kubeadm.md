@@ -58,10 +58,13 @@ kubectl get pods --all-namespaces --show-all | grep OutOfcpu | awk -F ' ' '{prin
 
 ```
 # 为前端机器打标签
-kubectl label node centos-1gb-sfo1-01-node1 role=frontend
+kubectl label node centos-1gb-sfo2-01-node2 role=frontend
+kubectl label node centos-1gb-sfo2-01-node2 k8s-app=traefik-ingress-lb
 
 # for calico v2.0; kubeadm默认会打上这个label，所以可以不用执行
 # kubectl label node ubuntu-512mb-sfo1-01 kubeadm.alpha.kubernetes.io/role=master
+
+
 # 部署 calico
 kubectl apply -f http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/kubeadm/calico.yaml
 

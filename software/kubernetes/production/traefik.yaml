@@ -1,20 +1,24 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    prometheus.io/scrape: 'true'
+  #annotations:
+  #  prometheus.io/scrape: 'true'
   labels:
     name: traefik-svc
   name: traefik-svc
+  namespace: kube-system
 spec:
   selector:
     k8s-app: traefik-ingress-lb
   type: NodePort
   ports:
-  - name: traefik-svc
+  - name: lb-backend
     protocol: TCP
     port: 8080
-    nodePort: 7080
+    nodePort: 30780
+  - name: http
+    port: 80
+    nodePort: 30080
 
 ---
 
@@ -51,11 +55,11 @@ spec:
             memory: 20Mi
         ports:
         - containerPort: 80
-          hostPort: 80
+          #hostPort: 80
         - containerPort: 8080
         args:
         - --web
         - --kubernetes
-        - --loglevel=INFO
+        - --loglevel=ERROR
       nodeSelector:
         k8s-app: traefik-ingress-lb
