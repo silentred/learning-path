@@ -53,6 +53,33 @@ make test
 docker run -d -e JNLP_PROTOCOL_OPTS=-Dorg.jenkinsci.remoting.engine.JnlpProtocol3.disabled=false jenkinsci/jnlp-slave -url http://138.68.232.0:8080 3ededa31c250ac8c707f33958d0edb46732430a32a0a4f1dc31adc67b1314195 slave1
 ```
 
+## 创建 go 测试环境
 
+```
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7
 
+docker run --name go-test -p 2222:22 --link some-mysql:mysql -d silentred/go-test:v7
+```
 
+## Github webhook的验证方式
+
+```
+// If we have a Secret set, we should check the MAC
+if s.Secret != "" {
+    sig := req.Header.Get("X-Hub-Signature")
+
+    if sig == "" {
+        http.Error(w, "403 Forbidden - Missing X-Hub-Signature required for HMAC verification", http.StatusForbidden)
+        return
+    }
+
+    mac := hmac.New(sha1.New, []byte(s.Secret))
+    mac.Write(body)
+    expectedMAC := mac.Sum(nil)
+    expectedSig := "sha1=" + hex.EncodeToString(expectedMAC)
+    if !hmac.Equal([]byte(expectedSig), []byte(sig)) {
+        http.Error(w, "403 Forbidden - HMAC verification failed", http.StatusForbidden)
+        return
+    }
+}
+```

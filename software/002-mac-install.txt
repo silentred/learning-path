@@ -459,3 +459,7 @@ Preference - Keyboard - shortcut - spotlight
 ## set git editor
 
 `git config --global core.editor "vim"`
+
+## redis delete keys with prefix
+
+EVAL "return redis.call('del', unpack(redis.call('keys', ARGV[1])))" 0 prefix:*
