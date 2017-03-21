@@ -259,3 +259,9 @@ cat file | pbcopy
 pbpaste // 粘帖
 
 
+## 找到哪个进程占用了某个端口
+
+sudo netstat -anp | grep 8080
+
+最后一列会显 pid/user 例如 100123/root
+
