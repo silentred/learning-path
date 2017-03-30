@@ -71,3 +71,18 @@ kubectl apply -f http://docs.projectcalico.org/v2.0/getting-started/kubernetes/i
 
 ```
 
+
+# Bug
+
+```
+/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+暂时删除 
+Environment="KUBELET_NETWORK_ARGS=--network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin"
+
+添加 
+--cgroup-driver=systemd
+
+sudo systemctl daemon-reload && sudo systemctl restart kubelet.service
+```
+但是apiserver 还是起不来，不知道原因

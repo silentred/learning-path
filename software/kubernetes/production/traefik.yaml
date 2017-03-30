@@ -62,4 +62,4 @@ spec:
         - --kubernetes
         - --loglevel=ERROR
       nodeSelector:
-        k8s-app: traefik-ingress-lb
+        role: frontend
