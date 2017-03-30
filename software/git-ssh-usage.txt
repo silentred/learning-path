@@ -111,3 +111,20 @@ git commit -m "4 in one"
 git push remote-name local_branch:/refs/for/remote_branch
 以上错误。
 应该是这样：首先git log查看最后一次的commit id， 然后 数一下要退回的commit 次数，直接git reset --mixed HEAD~N， 让头部退回， 但是index 和 working dir 保持最新。再次直接commit 即可。
+
+## 关于 patch
+
+查看log
+git log --pretty=oneline -3
+
+生成 patch
+git format-patch master --stdout > fix_empty_poster.patch
+
+
+检查patch状态
+git apply --stat 43824.patch
+git apply --check 43824.patch
+
+导入patch
+git am --signoff < 43824.patch
+
