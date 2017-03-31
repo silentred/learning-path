@@ -50,6 +50,8 @@ Error syncing pod, skipping: failed to "SetupNetwork" for "kube-dns-2924299975-p
 这时可以运行来解决：
 kubectl apply -f https://git.io/weave-kube
 
+kubectl apply -f https://git.io/weave-kube-1.6
+
 weave net 是CNI 的一种，和flannel类似。
 
 # CPU不足的情况下，会创建多个 Kube-dns pod 失败，删除失败的pod：

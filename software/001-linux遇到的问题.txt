@@ -265,3 +265,17 @@ sudo netstat -anp | grep 8080
 
 最后一列会显 pid/user 例如 100123/root
 
+
+## Redis delete
+
+EVAL "return redis.call('del', unpack(redis.call('keys', ARGV[1])))" 0 dc_go:*
+
+## package version
+
+yum info kubelet
+yum list kubelet
+
+apt-cache search keyword
+
+
+
