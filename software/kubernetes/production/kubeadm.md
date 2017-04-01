@@ -70,6 +70,9 @@ kubectl label node centos-1gb-sfo2-01-node2 k8s-app=traefik-ingress-lb
 # 部署 calico
 kubectl apply -f http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/kubeadm/calico.yaml
 
+# for 1.6 
+kubectl apply -f http://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+
 
 ```
 
@@ -77,14 +80,12 @@ kubectl apply -f http://docs.projectcalico.org/v2.0/getting-started/kubernetes/i
 # Bug
 
 ```
-/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-
-暂时删除 
-Environment="KUBELET_NETWORK_ARGS=--network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin"
-
-添加 
---cgroup-driver=systemd
-
+vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf 
+添加  --cgroup-driver=systemd
 sudo systemctl daemon-reload && sudo systemctl restart kubelet.service
+
+# 另开一个 session
+mkdir .kube
+cp /etc/kubernetes/admin.conf .kube/config
+curl -sSL https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.yml | kubectl create -f -
 ```
-但是apiserver 还是起不来，不知道原因

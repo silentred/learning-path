@@ -41,7 +41,7 @@ sudo service transmission-daemon stop # 先停止，才可以编辑settings.json
 
 配置文件位于 `/var/lib/transmission/.config/transmission/settings.json`
 
-"rpc-whitelist": "*,127.0.0.1,50.62.213.12,104.168.174.83,45.55.11.138",
+"rpc-whitelist": "*,127.0.0.1,50.62.213.12,104.168.174.83,45.55.11.138,45.32.11.27",
 "rpc-password": "789456123", // 密码会自动 SHA1 
 "rpc-username": "jason",
 
