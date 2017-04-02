@@ -277,5 +277,9 @@ yum list kubelet
 
 apt-cache search keyword
 
+## 降低mp4质量
 
+ffmpeg -i input-HD.mp4 -vf scale=iw/1.5:-1 -vcodec libx264 -crf 20 output.mp4
 
+## 截取时间, 而不 re-encode
+ffmpeg -i movie.mp4 -ss 01:00:00 -t 02:41:55 -async 1 -c copy cut.mp4
