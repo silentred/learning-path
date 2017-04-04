@@ -89,3 +89,18 @@ mkdir .kube
 cp /etc/kubernetes/admin.conf .kube/config
 curl -sSL https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.yml | kubectl create -f -
 ```
+
+# kubelet auth
+
+```
+vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+add --authentication-token-webhook argument for kubelet
+这个参数的解释： Use the TokenReview API to determine authentication for bearer tokens.
+
+sudo systemctl daemon-reload && sudo systemctl restart kubelet.service
+```
+这样 kubelet:10250 端口会用 beaer token 作为验证
+
+
+关于验证，还需要注意 deployment 的 service account 是否被绑定了 role， 参考 rolebinding.yaml
