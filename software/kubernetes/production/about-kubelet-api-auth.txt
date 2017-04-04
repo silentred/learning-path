@@ -1,0 +1,32 @@
+liggitt:
+
+trying to remember if kubeadm enabled token auth to the kubelet
+[12:22]  
+https://github.com/kubernetes/release/blob/master/rpm/10-kubeadm.conf#L6 (edited)
+[12:22]  
+doesn’t look like it
+[12:23]  
+see https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet-authentication if you want to contact the kubelet using API tokens (including service account tokens) as auth (edited)
+[12:23]  
+(basically add `--authentication-token-webhook` to the kubelet startup args)
+
+
+me:
+this is the full kubelet cmd `/usr/bin/kubelet --kubeconfig=/etc/kubernetes/kubelet.conf --require-kubeconfig=true --pod-manifest-path=/etc/kubernetes/manifests --allow-privileged=true --network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin --cluster-dns=10.96.0.10 --cluster-domain=cluster.local --authorization-mode=Webhook --client-ca-file=/etc/kubernetes/pki/ca.crt`
+
+it uses webhook as auth-mode but without `--authentication-token-webhook`. So the kubelet does not know where to verify a user. Is this the reason?
+
+
+liggitt:
+
+yeah, with that config kubelet doesn’t even pay attention to bearer tokens for authentication (edited)
+[12:40]  
+only client certs
+[12:41]  
+so a request with a bearer token is appearing as if it were an anonymous request
+[12:41]  
+and getting forbidden
+[12:41]  
+in fact, if you set `--anonymous-auth=false`, you’d see a 401
+[12:42]  
+you can enable bearer token auth by adding `--authentication-token-webhook`
