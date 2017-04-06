@@ -182,7 +182,8 @@ message Open { ... }
 
 `protoc -I=IMPORT_PATH --go_out=DEST_DIR path/to/file.proto`
 
-
+## grpc
+`protoc -I=IMPORT_PATH --go_out=plugins=grpc:DEST_DIR path/to/file.proto`
 
 
 

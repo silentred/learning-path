@@ -104,3 +104,19 @@ sudo systemctl daemon-reload && sudo systemctl restart kubelet.service
 
 
 关于验证，还需要注意 deployment 的 service account 是否被绑定了 role， 参考 rolebinding.yaml
+
+
+# Node failure
+
+如果节点挂了，controller manager 会负责把pod重新调度到其他节点 (先 evict, 在 bind), 启动参数中有:
+
+```
+--node-eviction-rate float32
+
+Number of nodes per second on which pods are deleted in case of node failure when a zone is healthy (see --unhealthy-zone-threshold for definition of healthy/unhealthy). Zone refers to entire cluster in non-multizone clusters. (default 0.1)
+
+--pod-eviction-timeout duration
+
+The grace period for deleting pods on failed nodes. (default 5m0s)
+
+```
