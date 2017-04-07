@@ -39,6 +39,13 @@ node1# kubeadm join --token=311971.7260777a25d70ac8 45.55.11.138
 
 # if forget token, run:
 kubectl -n kube-system get secret clusterinfo -o yaml | grep token-map | awk '{print $2}' | base64 -d | sed "s|{||g;s|}||g;s|:|.|g;s/\"//g;" | xargs echo
+
+对于v1.6.0不适用了，可能是secret改变了名称; 目前在 bootstrap-token.token-id 和 bootstrap-token.token-secret 中
+kubectl -n kube-system get secret bootstrap-token-db4706 -o yaml | grep 'token-id|token-secret' | awk '{print $2}' | base64 -d
+
+db4706.517accfc0a418a16
+
+kubectl -n kube-system get secret bootstrap-token-db4706 -o yaml | grep -E "token-id|token-secret" | awk '{print $2}' | while read line; do echo $line | base64 --decode | awk '{print $1}'; done | tr '\n' '.' | awk '{print $1"\n"}'
 ```
 
 在master运行init之后，可能会遇到 kube-dns起不来的情况，错误日志为：

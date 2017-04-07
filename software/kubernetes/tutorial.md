@@ -145,3 +145,19 @@ could be wrong
 ## ubuntu 14.04 docker 翻墙问题
 
 在 /etc/default/docker.
+
+
+
+## update config and restart 
+
+```
+https://github.com/kubernetes/kubernetes/issues/13488
+
+Small work around (I use deployments and I want to change configs without having real changes in image/pod):
+
+create configMap
+create deployment with ENV variable (you will use it as indicator for your deployment) in any container
+update configMap
+update deployment (change this ENV variable)
+k8s will see that definition of the deployment has been changed and will start process of replacing pods
+```
