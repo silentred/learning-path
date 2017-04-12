@@ -23,3 +23,7 @@ foreach ($hrefs as $value) {
 	echo 'https://packages.cloud.google.com/yum/' . substr($value, 6) . "\n";
 }
 ```
+
+# copy debs
+
+wget -O - https://packages.cloud.google.com/apt/dists/kubernetes-xenial/main/binary-amd64/Packages | grep Filename | grep -E '1.6.1|docker' | awk '{print $2}' | xargs -i wget https://packages.cloud.google.com/apt/'{}'
