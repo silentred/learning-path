@@ -78,7 +78,7 @@ kubectl label node centos-1gb-sfo2-01-node2 k8s-app=traefik-ingress-lb
 kubectl apply -f http://docs.projectcalico.org/v2.0/getting-started/kubernetes/installation/hosted/kubeadm/calico.yaml
 
 # for 1.6 
-kubectl apply -f http://docs.projectcalico.org/master/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
+kubectl apply -f http://docs.projectcalico.org/v2.1/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml
 
 
 ```
