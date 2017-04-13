@@ -1,0 +1,109 @@
+jasoncodes [6:36 PM] 
+How to create HA cluster with kubeadm, I see the external etcd cluster option. But it seems create master with different join-token every time running `kubeadm init`
+
+dima.shmakov [6:37 PM] 
+you should replace the /etc/kubernetes/   files from master 1, on the other 2 masters
+
+jasoncodes [6:38 PM] 
+sorry for bothering you.
+
+dima.shmakov [6:38 PM] 
+use the kubeadm just for placing your files , binaries and creating folders structure :slightly_smiling_face:
+
+[6:38] 
+it's ok np  :stuck_out_tongue:
+
+jasoncodes [6:39 PM] 
+ok. I see. Thanks.
+
+dima.shmakov [6:39 PM] 
+added and commented on this Plain Text snippet
+Current production cluster setup
+Installed 3 etcd nodes, bare-instance installation, endpoint: http://etcd-production.xxxxxxxxxx.local:2379
+Used “kubeadm” official installation tool, one 3 master nodes, with further modifications after default setup completed. 
+1 Comment Click to expand inline 29 lines
+might help
+
+dima.shmakov [6:40 PM] 
+it's an internal doc i started writing when made it... but then the guys in team didn't used it .. everyone diggs stuff itself :smile: ...  so i didn't complete it
+
+[6:40] 
+may help you a bit
+
+jasoncodes [6:40 PM] 
+the join-token is lying on somewhere in /etc/kubernetes, right?
+
+dima.shmakov [6:40 PM] 
+yea
+
+[6:40] 
+in tokens.txt  or something :smile:
+
+jasoncodes [6:40 PM] 
+Thank you, I will read it
+
+dima.shmakov [6:41 PM] 
+but you need only the 1st master, use everything from it, the token too.   discard the 2 other masters output, it's not needed.  by copying /etc/kubernetes  you actually kinda replicate your master 1  to others
+
+[6:41] 
+good luck
+
+jasoncodes [6:42 PM] 
+understood. thanks
+
+dima.shmakov [6:42 PM] 
+also my is on ubuntu
+
+[6:42] 
+on RPM based distro you'll have issues with cAdvisor (if not fixed yet) and heapster/grafana monitoring stack because of this
+
+[6:43] 
+so be careful not waste too much time to setup this on amazon linux or something :smile:   use ubuntu
+
+jasoncodes [6:43 PM] 
+great, I am using ubuntu
+
+dima.shmakov [6:43 PM] 
+on rpm based distro you'll probably need to do workarounds or purge it all and start from scratch on ubuntu (what we did lol)
+
+[6:43] 
+nice
+
+[6:43] 
+bye good luck
+
+jasoncodes [6:44 PM] 
+thx, bye
+
+
+---
+
+dima.shmakov [6:45 PM] 
+oob it doesn't work, but - create 1 master with kubeadm init.    then  run same command on 2 other nodes
+
+[6:46] 
+delete /etc/kubernets  on 2 other nodes.  and copy this folder from master 1.
+
+[6:46] 
+delete /etc/kubernetes/manifests/etcd.json ,  and change    kube-apiserver.json  setting of etcd to point to external 3 node manually maintained etcd cluster
+
+[6:47] 
+kube master components will use the locking mechanism to elect a leader (kube-apiserver, controller-manager, etc'  are only operational 1 at a time. but they're smart enough to elect leader between themselves easily through a lock in etcd)
+
+dima.shmakov [6:49 PM] 
+uploaded and commented on this image: Pasted image at 2017-04-13, 1:48 PM
+1 Comment
+so your cluster will look like this approximately :stuck_out_tongue:
+
+dima.shmakov [6:49 PM] 
+just be sure to backup etcd and cluster state (state with    get something -o yaml)
+
+new messages
+[6:50] 
+i'm not saying it's the best way to setup HA cluster ever :smile:  just was my shortest path to HA cluster and I like it :slightly_smiling_face:
+
+[6:51] 
+before that - we had an HA cluster on Rancher, and it was awesome... just that my boss didn't liked Rancher and we got rid of it ...
+
+
+
