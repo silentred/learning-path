@@ -1,9 +1,9 @@
 #!/bin/bash
 
 quayImages=(
-    kube-policy-controller:master
-    node:master
-    cni:master    
+    kube-policy-controller:v0.5.4
+    node:v1.1.0
+    cni:v1.6.1   
 )
 
 fullQuayImages=( "${quayImages[@]/#/'quay.io/calico/'}" )
@@ -16,6 +16,7 @@ gcrImages=(
     kube-scheduler-amd64:v1.6.0
 
     etcd-amd64:3.0.17
+    etcd:2.2.1
     pause-amd64:3.0
 
     k8s-dns-sidecar-amd64:1.14.1
