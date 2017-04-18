@@ -127,3 +127,34 @@ Number of nodes per second on which pods are deleted in case of node failure whe
 The grace period for deleting pods on failed nodes. (default 5m0s)
 
 ```
+
+# check route list
+
+```
+# ip route list
+
+root@iZ2zegw6nmd5t5qxy35lh0Z:~# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         47.93.163.247   0.0.0.0         UG    0      0        0 eth1
+10.0.0.0        10.30.251.247   255.0.0.0       UG    0      0        0 eth0 // this one 
+10.30.248.0     0.0.0.0         255.255.252.0   U     0      0        0 eth0
+47.93.160.0     0.0.0.0         255.255.252.0   U     0      0        0 eth1
+100.64.0.0      10.30.251.247   255.192.0.0     UG    0      0        0 eth0
+172.16.0.0      10.30.251.247   255.240.0.0     UG    0      0        0 eth0
+172.17.0.0      0.0.0.0         255.255.255.0   U     0      0        0 docker0
+192.168.31.128  0.0.0.0         255.255.255.192 U     0      0        0 *
+```
+
+根据参数删除某一条规则:
+
+```
+// del
+route del -net 10.0.0.0 gw 10.27.219.247 netmask 255.0.0.0 dev eth0
+route del -net 10.0.0.0 gw 10.30.251.247 netmask 255.0.0.0 dev eth0
+
+// add
+route del -net 10.30.0.0 gw 10.27.219.247 netmask 255.255.0.0 dev eth0
+route add -net 10.27.0.0 gw 10.30.251.247 netmask 255.255.0.0 dev eth0
+
+```
