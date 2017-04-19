@@ -154,7 +154,11 @@ route del -net 10.0.0.0 gw 10.27.219.247 netmask 255.0.0.0 dev eth0
 route del -net 10.0.0.0 gw 10.30.251.247 netmask 255.0.0.0 dev eth0
 
 // add
-route del -net 10.30.0.0 gw 10.27.219.247 netmask 255.255.0.0 dev eth0
+route add -net 10.30.0.0 gw 10.27.219.247 netmask 255.255.0.0 dev eth0
 route add -net 10.27.0.0 gw 10.30.251.247 netmask 255.255.0.0 dev eth0
 
+根据分析，可能缺少 指向 tunl0 的路由规则
+route add -net 192.168.31.128 gw 10.30.248.80 netmask 255.255.255.192 dev tunl0
+
 ```
+
