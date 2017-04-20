@@ -23,7 +23,7 @@
 
 长期使用google，技术问题只用英文搜索。
 stackoverflow 上有122分。
-前年因为对ios开发感兴趣，翻译了swift语言的教程。
+前年因为对ios开发感兴趣，翻译了swift语言的[教程]()。
 kubernetes team slack上积极参与提问。kubeadm v1.6.0 风波; calico/node 风波 都是在 github 提 issue 解决的。
 领域知识内的口语也还可以。
 
@@ -31,7 +31,12 @@ kubernetes team slack上积极参与提问。kubeadm v1.6.0 风波; calico/node 
 
 [segmentfault](https://segmentfault.com/blog/silentred) 上有几篇拙文
 
-比较希望能从事有创新性，有挑战的工作，例如 分布式应用，中间件等。
+我比较希望能从事有创新性，有挑战的工作，例如 分布式应用，中间件等;
 希望周围能有非常优秀的同事，向他们多学习，在技术驱动的公司快乐的编程。
 听说 Grab team 会 review 开发者的每一行代码，这也是我对贵公司心仪的重要原因。
 
+
+我的联系方式:
+
+微信ID: silentred3
+手机: 13915564514
