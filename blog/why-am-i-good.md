@@ -9,7 +9,7 @@
 3. Web 开发框架: 公司需要一个统一的 api 开发工具，主要处理 依赖注入，配置，Log，数据库，中间件，测试(配合DI实现)
 4. Micro-service 框架: 利用etcd作为服务发现，grpc 负载均衡, 中间件(tracing, auth), HTTP协议转换, 和会上ezbuy的架构有些类似。
 5. Worker/Consumer 框架: 队列消费者，凑巧也用了 Harbor的演讲者 在会议上说的 worker pool 的模型
-6. K8S Tutorial: 自己研究了一套 K8S 部署微服务的架构，包括 路由自动发现注册，日志自动收集，监控。
+6. K8S Tutorial: 自己研究了一套 K8S 部署微服务的架构，包括 路由自动发现注册，日志自动收集，监控 (prometheus + grafana)。
 7. Chatroom 玩具: 一个 websocket 的聊天服务器，无聊时的产物
 
 以上项目都在我的 [github](https://github.com/silentred)
