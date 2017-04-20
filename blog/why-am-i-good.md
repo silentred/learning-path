@@ -29,7 +29,7 @@ kubernetes team slack上积极参与提问。kubeadm v1.6.0 风波; calico/node 
 
 博客:
 
-[segmentfault](https://segmentfault.com/blog/silentred) 上有几篇拙文
+[segmentfault](https://segmentfault.com/blog/silentred) 上有几篇技术心得
 
 我比较希望能从事有创新性，有挑战的工作，例如 分布式应用，中间件等;
 希望周围能有非常优秀的同事，向他们多学习，在技术驱动的公司快乐的编程。
