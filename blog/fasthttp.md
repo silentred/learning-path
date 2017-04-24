@@ -21,7 +21,7 @@ func (s *Server) Serve(ln net.Listener) error {
         LogAllErrors:    s.LogAllErrors,
         Logger:          s.logger(),
     }
-    // break-01
+    // break-00
     wp.Start()
 
     for {
@@ -87,7 +87,7 @@ goroutine status:
 
 1. main0: wp.Start()
 
-## break-01
+## break-00
 
 ```
 // workerpool.go
@@ -103,6 +103,7 @@ func (wp *workerPool) Start() {
     go func() {
         var scratch []*workerChan
         for {
+            // break-01
             wp.clean(&scratch)
             select {
             case <-stopCh:
@@ -120,6 +121,48 @@ goroutine status:
 1. main0: wp.Start()
 2. g1: for loop to clean idle workerChan
 
+## break-01
+
+```
+func (wp *workerPool) clean(scratch *[]*workerChan) {
+    maxIdleWorkerDuration := wp.getMaxIdleWorkerDuration()
+
+    // Clean least recently used workers if they didn't serve connections
+    // for more than maxIdleWorkerDuration.
+    currentTime := time.Now()
+
+    wp.lock.Lock()
+    ready := wp.ready
+    n := len(ready)
+    i := 0
+    // 这里从队列头部取出超过 最大空闲时间 的workerChan。
+    // 可以看出，最后使用的workerChan 一定是放回队列尾部的。
+    for i < n && currentTime.Sub(ready[i].lastUseTime) > maxIdleWorkerDuration {
+        i++
+    }
+    // 把空闲的放入 scratch, 剩余的放回 ready
+    *scratch = append((*scratch)[:0], ready[:i]...)
+    if i > 0 {
+        m := copy(ready, ready[i:])
+        for i = m; i < n; i++ {
+            ready[i] = nil
+        }
+        wp.ready = ready[:m]
+    }
+    wp.lock.Unlock()
+
+    // Notify obsolete workers to stop.
+    // This notification must be outside the wp.lock, since ch.ch
+    // may be blocking and may consume a lot of time if many workers
+    // are located on non-local CPUs.
+    tmp := *scratch
+    // 销毁的操作就是向 chan net.Conn 中塞入一个 nil, 后面会看到解释
+    for i, ch := range tmp {
+        ch.ch <- nil
+        tmp[i] = nil
+    }
+}
+```
 
 ## break-02
 
