@@ -100,6 +100,8 @@ curl -sSL https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.ym
 # kubelet auth
 
 ```
+# for ubuntu
+
 vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
 add --authentication-token-webhook argument for kubelet
