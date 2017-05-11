@@ -10,14 +10,13 @@
 - 简单web admin
 
 代码量比较小, 代码比较清晰，容易理解. 目前不支持 k8s ingress. 
-
+目前不支持 k8s ingress.
 ---
 
 # traefik
 
 ## 功能
 
-- http, https, websocket
 - basic auth; digest auth; 
 - 支持 host, prefix 的路由区分; 正则; url rewrite
 - 熔断器, 负载均衡
@@ -25,7 +24,9 @@
 - web admin
 - 端口探活
 
+## 开发
 代码量大，抽象比较多，不容易二次开发。
+路由backend比较多，引入的包比较多，编译较慢；
 
 ---
 
