@@ -283,3 +283,21 @@ ffmpeg -i input-HD.mp4 -vf scale=iw/1.5:-1 -vcodec libx264 -crf 20 output.mp4
 
 ## 截取时间, 而不 re-encode
 ffmpeg -i movie.mp4 -ss 01:00:00 -t 02:41:55 -async 1 -c copy cut.mp4
+
+
+
+## pip install scrapy 失败问题
+
+for scrapy with Python 3, you'll need
+
+sudo apt-get install python3 python-dev python3-dev \
+     build-essential libssl-dev libffi-dev \
+     libxml2-dev libxslt1-dev zlib1g-dev \
+     python-pip
+     
+with Python 2, you'll need
+
+sudo apt-get install python-dev  \
+     build-essential libssl-dev libffi-dev \
+     libxml2-dev libxslt1-dev zlib1g-dev \
+     python-pip
