@@ -1,0 +1,56 @@
+> Generational and Compact gc have already been thought best practice. But 
+> golang doesn't adopt it. Who can tell me the reason? 
+
+This has been discussed in the past. 
+
+Ignoring details, the basic advantages of a compacting GC are 1) avoid 
+fragmentation, and 2) permit the use of a simple and efficient bump 
+allocator.  However, modern memory allocation algorithms, like the 
+tcmalloc-based approach used by the Go runtime, have essentially no 
+fragmentation issues.  And while a bump allocator can be simple and 
+efficient for a single-threaded program, in a multi-threaded program 
+like Go it requires locks.  In general it's likely to be more 
+efficient to allocate memory using a set of per-thread caches, and at 
+that point you've lost the advantages of a bump allocator.  So I would 
+assert that, in general, with many caveats, there is no real advantage 
+to using a compacting memory allocator for a multi-threaded program 
+today.  I don't mean that there is anything wrong with using a 
+compacting allocator, I'm just claiming that it doesn't bring any big 
+advantage over a non-compacting one. 
+
+Now let's consider a generational GC.  The point of a generational GC 
+relies on the generational hypothesis: that most values allocated in a 
+program are quickly unused, so there is an advantage for the GC to 
+spend more time looking at recently allocated objects.  Here Go 
+differs from many garbage collected languages in that many objects are 
+allocated directly on the program stack.  The Go compiler uses escape 
+analysis to find objects whose lifetime is known at compile time, and 
+allocates them on the stack rather than in garbage collected memory. 
+So in general, in Go, compared to other languages, a larger percentage 
+of the quickly-unused values that a generational GC looks for are 
+never allocated in GC memory in the first place.  So a generational GC 
+would likely bring less advantage to Go than it does for other 
+languages. 
+
+More subtly, the implicit point of most generational GC 
+implementations is to reduce the amount of time that a program pauses 
+for garbage collection.  By looking at only the youngest generation 
+during a pause, the pause is kept short.  However, Go uses a 
+concurrent garbage collector, and in Go the pause time is independent 
+of the size of the youngest generation, or of any generation.  Go is 
+basically assuming that in a multi-threaded program it is better 
+overall to spend slightly more total CPU time on GC, by running GC in 
+parallel on a different core, rather than to minimize GC time but to 
+pause overall program execution for longer. 
+
+All that said, generational GC could perhaps still bring significant 
+value to Go, by reducing the amount of work the GC has to do even in 
+parallel.  It's a hypothesis that needs to be tested.  Current GC work 
+in Go is actually looking closely at a related but different 
+hypothesis: that Go programs may tend to allocate memory on a 
+per-request basis.  This is described at 
+https://docs.google.com/document/d/1gCsFxXamW8RRvOe5hECz98Ftk-tcRRJcDFANj2VwCB0/view 
+.  This is work in progress and it remains to be seen whether it will 
+be advantageous in reality. 
+
+Ian 
