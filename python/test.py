@@ -3,6 +3,7 @@
 import sys
 import math
 
+print "Enter a number:"
 num = int(sys.stdin.readline())
 to = int(math.sqrt(num))
 ret = True
@@ -280,3 +281,11 @@ def already_converted(url):
 
 print  'Test for string contains', already_converted('http://tv.sohu.com/20150510/n412776646.shtml?lcode=AAAASRKIxcEXJgTE8izsN5WNN68rTFA6JHt8IWfMlNKJYRD_pSYV-XynPPgnpx8M_FWOVMBj0TWm_yY5twhLvHT4PFME-YPtilAk_xwcE3GKniMusk5&lqd=14444')
 
+
+def testargs(first, *args, **kwargs):
+	print first
+	print args
+	print kwargs
+	pass
+
+testargs("haha", "2", 3, a=1, b=2)
