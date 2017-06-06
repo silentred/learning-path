@@ -54,7 +54,7 @@ enum EnumAllowingAlias {
   option allow_alias = true;
   UNKNOWN = 0;
   STARTED = 1;
-  RUNNING = 1;
+  RUNNING = 1; // valid only when set allow_alias=true
 }
 ```
 
@@ -125,7 +125,11 @@ message SomeOtherMessage {
 
 ## Any
 
-没怎么看懂， Any == bytes ?
+Any 可以被 pack(), unpack()
+message Any {
+  bytes data // 序列化
+  string url // 标识, default is type.googleapis.com/packagename.messagename
+}
 
 ## Oneof
 
