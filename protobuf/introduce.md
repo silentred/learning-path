@@ -178,7 +178,16 @@ message Open { ... }
 
 ## Services
 
+
+```
+service SearchService {
+  rpc Search (SearchRequest) returns (SearchResponse);
+}
+```
+
 ## JSON mapping
+
+各个类型与JSON的映射关系
 
 ## options
 
