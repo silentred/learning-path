@@ -284,7 +284,12 @@ ffmpeg -i input-HD.mp4 -vf scale=iw/1.5:-1 -vcodec libx264 -crf 20 output.mp4
 ## 截取时间, 而不 re-encode
 ffmpeg -i movie.mp4 -ss 01:00:00 -t 02:41:55 -async 1 -c copy cut.mp4
 
+## 每10分钟截图一次，输出为 thumb0001.jpg, 
+ffmpeg -i test.flv -vf fps=1/600 thumb%04d.jpg
+// fps=1/600 表示 每秒1/600个frame, 等于 每600秒1个frame.
 
+## 输出固定时间画面
+ffmpeg -i input.flv -ss 00:00:14.435 -vframes 1 out.jpg
 
 ## pip install scrapy 失败问题
 
