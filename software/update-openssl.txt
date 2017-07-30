@@ -1,0 +1,45 @@
+openssl升级步骤： 
+
+
+
+0. 首先通过 #openssl version –a 查看系统中存在的OpenSSL版本号 
+
+下载最新版本的openssl源码包 
+
+# wget ftp://ftp.openssl.org/source/openssl-1.0.1g.tar.gz
+
+2. 安装openssl 
+
+ 
+
+1. tar –xzvf openssl-1.0.1g.tar.gz  
+
+ 2. cd openssl-1.0.1g  
+
+ 3. ./config shared zlib 
+
+ 4. make  
+
+ 5. make install  
+
+ 6. mv /usr/bin/openssl /usr/bin/openssl.OFF 
+
+ 7. mv /usr/include/openssl /usr/include/openssl.OFF 
+
+ 8. ln –s /usr/local/ssl/bin/openssl /usr/bin/openssl 
+
+ 9. ln –s /usr/local/ssl/include/openssl /usr/include/openssl 
+
+ 配置库文件搜索路径
+
+ 10. echo “/usr/local/ssl/lib” >> /etc/ld.so.conf 
+
+ 11. ldconfig –v  
+
+
+
+4 查看openssl版本号，验证安装正确性 
+
+
+
+ 1. openssl version –a 

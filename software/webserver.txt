@@ -6,10 +6,10 @@ sudo service sphinxd start
 php ~/lifomecom/artisan queue:listen &
 
 
-优化
+浼樺寲
 php artisan config:cache
 php artisan route:cache
 php artisan optimize
-启动APC等opcode cache
+鍚姩APC绛塷pcode cache
 
 
