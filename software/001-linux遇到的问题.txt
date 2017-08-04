@@ -306,3 +306,61 @@ sudo apt-get install python-dev  \
      build-essential libssl-dev libffi-dev \
      libxml2-dev libxslt1-dev zlib1g-dev \
      python-pip
+
+
+## linux perf tools
+
+```
+CPU性能分析工具：
+vmstat
+ps
+sar
+time
+strace
+pstree
+top
+Memory性能分析工具：
+vmstat
+strace
+top
+ipcs
+ipcrm
+cat /proc/meminfo
+cat /proc/slabinfo
+cat /proc//maps
+I/O性能分析工具：
+vmstat
+ipstat
+repquota
+quotacheck
+Network性能分析工具：
+ifconfig
+ethereal
+tethereal
+iptraf
+iwconfig
+nfsstat
+mrtg
+ntop
+netstat
+cat /proc/sys/net
+Linux 性能调优工具
+当通过上述工具及命令，我们发现了应用的性能瓶颈以后，我们可以通过以下工具或者命令来进行性能的调整。
+CPU性能调优工具：
+nice / renic
+sysctl
+Memory性能调优工具：
+swapon
+ulimit
+sysctl
+I/O性能调优工具：
+edquota
+quoton
+sysctl
+boot line:
+elevator=
+Network性能调优工具：
+ifconfig
+iwconfig
+sysctl
+```
