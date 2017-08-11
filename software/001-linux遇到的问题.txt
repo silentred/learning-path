@@ -364,3 +364,17 @@ ifconfig
 iwconfig
 sysctl
 ```
+
+## linux 检查进程开启的线程PID
+
+ps -efL | grep <Process Name>
+           
+          PPID       PID 
+wangyang 28063     1 28063  0   12 10:52 ?        00:00:00 ./entree -vv=3 -log_dir=/data/logs/logdir
+wangyang 28063     1 28064  0   12 10:52 ?        00:00:00 ./entree -vv=3 -log_dir=/data/logs/logdir
+wangyang 28063     1 28065  0   12 10:52 ?        00:00:01 ./entree -vv=3 -log_dir=/data/logs/logdir
+wangyang 28063     1 28066  0   12 10:52 ?        00:00:00 ./entree -vv=3 -log_dir=/data/logs/logdir
+
+// 如何strace多线程 程序
+strace -f -p 28063
+
