@@ -470,3 +470,17 @@ EVAL "return redis.call('del', unpack(redis.call('keys', ARGV[1])))" 0 prefix:*
 grep -rl 'windows' . | xargs sed -i '' 's/windows/linux/g'
 
 
+## remove Chrome
+
+```
+rm -r /Applications/Google\ Chrome.app/
+rm -r ~/Library/Application\ Support/Google/Chrome/
+rm ~/Library/Application\ Support/CrashReporter/Google\ Chrome*
+rm ~/Library/Preferences/com.google.Chrome*
+rm ~/Library/Preferences/Google\ Chrome*
+rm -r ~/Library/Caches/com.google.Chrome*
+rm -r ~/Library/Saved\ Application\ State/com.google.Chrome.savedState/
+rm ~/Library/Google/GoogleSoftwareUpdate/Actives/com.google.Chrome
+rm ~/Library/Google/Google\ Chrome*
+rm -r ~/Library/Speech/Speakable\ Items/Application\ Speakable\ Items/Google\ Chrome/
+```
