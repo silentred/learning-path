@@ -4,4 +4,5 @@ build:
 
 clean:
 	rm main
+	docker rm $(docker ps -aq)
 	docker rmi vfstest
