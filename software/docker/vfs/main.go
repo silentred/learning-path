@@ -42,6 +42,19 @@ func main() {
 	file.Close()
 	fmt.Printf("Write %d bytes, cost %s \n", totalSize, duration)
 
+	// append to file
+	timeStart = time.Now()
+	file, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for i := 0; i < 100; i++ {
+		file.WriteString("test")
+	}
+	duration = time.Now().Sub(timeStart)
+	file.Close()
+	fmt.Printf("Append 100 times, cost %s \n", duration)
+
 	// read test
 	var buf = make([]byte, pageSize)
 	file, err = os.Open(filePath)
