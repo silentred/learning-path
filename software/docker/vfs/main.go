@@ -27,12 +27,12 @@ func main() {
 	duration := write(filePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, totalSize)
 	fmt.Printf("Write %d bytes to wr-layer, cost %s \n", totalSize, duration)
 
-	duration = read(filePath, os.O_WRONLY, totalSize)
+	duration = read(filePath, totalSize)
 	fmt.Printf("Read %d bytes from wr-layer, cost %s \n", totalSize, duration)
 
 	duration = append(imgFilePath, 500)
 	fmt.Printf("[Img] Append %d times, cost %s \n", 500, duration)
-	duration = read(imgFilePath, os.O_WRONLY, totalSize)
+	duration = read(imgFilePath, totalSize)
 	fmt.Printf("[Img] Read %d bytes from image-layer, cost %s \n", 300<<20, duration)
 }
 
@@ -57,9 +57,9 @@ func write(fileName string, flag, total int) time.Duration {
 	return duration
 }
 
-func read(fileName string, flag, total int) time.Duration {
+func read(fileName string, total int) time.Duration {
 	var buf = make([]byte, pageSize)
-	file, err := os.OpenFile(fileName, flag, 0600)
+	file, err := os.Open(fileName)
 	if err != nil {
 		log.Fatalln(err)
 	}
