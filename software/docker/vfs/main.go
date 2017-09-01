@@ -81,17 +81,17 @@ func read(fileName string, total int) time.Duration {
 func append(fileName string, cnt int) time.Duration {
 	// append to file
 	timeStart := time.Now()
-	file, err := os.OpenFile(imgFilePath, os.O_APPEND|os.O_WRONLY, 0600)
-	if err != nil {
-		log.Fatalln(err)
-	}
 	for i := 0; i < cnt; i++ {
+		file, err := os.OpenFile(imgFilePath, os.O_APPEND|os.O_WRONLY, 0600)
+		if err != nil {
+			log.Fatalln(err)
+		}
 		_, err = file.WriteString(content)
 		if err != nil {
 			log.Fatalf("append error: %v", err)
 		}
+		file.Close()
 	}
 	duration := time.Now().Sub(timeStart)
-	file.Close()
 	return duration
 }
