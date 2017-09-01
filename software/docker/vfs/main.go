@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	totalSize   = 1 << 30 // 1G
+	totalSize   = 500 << 20 // 500MB
 	filePath    = "/tmp/data"
 	imgFilePath = "/tmp/output.dat"
 	content     = strings.Repeat("a", pageSize)
@@ -30,8 +30,8 @@ func main() {
 	duration = read(filePath, totalSize)
 	fmt.Printf("Read %d bytes from wr-layer, cost %s \n", totalSize, duration)
 
-	duration = append(imgFilePath, 50)
-	fmt.Printf("[Img] Append %d times, cost %s \n", 50, duration)
+	duration = append(imgFilePath, 5)
+	fmt.Printf("[Img] Append %d times, cost %s \n", 5, duration)
 	duration = read(imgFilePath, 100<<20)
 	fmt.Printf("[Img] Read %d bytes from image-layer, cost %s \n", 100<<20, duration)
 }
