@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	totalSize   = 500 << 20 // 500MB
+	totalSize   = 2 << 30 // 2G
 	filePath    = "/tmp/data"
 	imgFilePath = "/tmp/output.dat"
 	content     = strings.Repeat("a", pageSize)
