@@ -38,10 +38,6 @@ func main() {
 		}
 		bytesWriten += n
 	}
-	err = file.Sync()
-	if err != nil {
-		log.Printf("sync error: %v \n", err)
-	}
 	duration := time.Now().Sub(timeStart)
 	file.Close()
 	fmt.Printf("Write %d bytes, cost %s \n", totalSize, duration)
