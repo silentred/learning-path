@@ -33,7 +33,7 @@ func main() {
 	duration = append(imgFilePath, 500)
 	fmt.Printf("[Img] Append %d times, cost %s \n", 500, duration)
 	duration = read(imgFilePath, totalSize)
-	fmt.Printf("[Img] Read %d bytes from image-layer, cost %s \n", 300<<20, duration)
+	fmt.Printf("[Img] Read %d bytes from image-layer, cost %s \n", totalSize, duration)
 }
 
 func write(fileName string, flag, total int) time.Duration {
@@ -68,7 +68,7 @@ func read(fileName string, total int) time.Duration {
 	for bytesRead < total {
 		n, err := file.Read(buf)
 		if err != nil {
-			log.Printf("write error: %v \n", err)
+			log.Printf("read error: %v \n", err)
 			break
 		}
 		bytesRead += n
@@ -86,7 +86,10 @@ func append(fileName string, cnt int) time.Duration {
 		log.Fatalln(err)
 	}
 	for i := 0; i < cnt; i++ {
-		file.WriteString(content)
+		_, err = file.WriteString(content)
+		if err != nil {
+			log.Fatalf("append error: %v", err)
+		}
 	}
 	duration := time.Now().Sub(timeStart)
 	file.Close()
