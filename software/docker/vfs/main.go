@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -9,16 +10,19 @@ import (
 )
 
 const (
-	pageSize  = 4 << 10   // 4k
-	totalSize = 300 << 20 // 300mb
+	pageSize = 4 << 10 // 4k
 )
 
 var (
-	filePath = "/tmp/data"
-	content  = strings.Repeat("a", pageSize)
+	totalSize = 1 << 30 // 1G
+	filePath  = "/tmp/data"
+	content   = strings.Repeat("a", pageSize)
 )
 
 func main() {
+	flag.IntVar(&totalSize, "size", totalSize, "total size to write")
+	flag.Parse()
+
 	file, err := os.Create(filePath)
 	if err != nil {
 		log.Fatalln(err)
