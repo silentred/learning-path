@@ -30,10 +30,10 @@ func main() {
 	duration = read(filePath, totalSize)
 	fmt.Printf("Read %d bytes from wr-layer, cost %s \n", totalSize, duration)
 
-	duration = append(imgFilePath, 5)
-	fmt.Printf("[Img] Append %d times, cost %s \n", 5, duration)
+	duration = append(imgFilePath, 100)
+	fmt.Printf("[Img] Append %d times, cost %s \n", 100, duration)
 	duration = read(imgFilePath, 100<<20)
-	fmt.Printf("[Img] Read %d bytes from image-layer, cost %s \n", 100<<20, duration)
+	fmt.Printf("[Img] Read %d bytes from image-layer, cost %s \n", 100<<20+100*pageSize, duration)
 }
 
 func write(fileName string, flag, total int) time.Duration {
