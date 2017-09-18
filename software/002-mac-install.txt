@@ -420,6 +420,9 @@ http://www.iteblog.com/idea/key.php
 
 ## Mac中查看端口占用情况
 `lsof -Pnl +M -i4 | grep 4000`
+`netstat -vanp tcp | grep 3000`
+For OSX El Capitan and newer (or if your netstat doesn't support -p), use lsof
+`lsof -i tcp:3000`
 
 
 ## iTerm2 打开多个pane同时编辑
