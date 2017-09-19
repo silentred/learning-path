@@ -36,7 +36,14 @@ checksum 保证数据完整。block长度存在index中。
 
 Following the blocks is the index for the blocks in the file.  The index is composed of a sequence of index entries ordered lexicographically by key and then by time.  Each index entry starts with a key length and key followed by a count of the number of blocks in the file.  Each block entry is composed of the min and max time for the block, the offset into the file where the block is located and the size of the block.
 
+索引条目根据key字典序排序，然后是根据时间排序。条目包含 key 长度，key, 文件中block数量。
+每个block条目包含 min, max 时间，文件偏移量，block大小。
+
 The index structure can provide efficient access to all blocks as well as the ability to determine the cost associated with accessing a given key.  Given a key and timestamp, we know exactly which file contains the block for that timestamp as well as where that block resides and how much data to read to retrieve the block.  If we know we need to read all or multiple blocks in a file, we can use the size to determine how much to read in a given IO.
+
+索引结构提供了高效访问blocks的途径, 和判断获取某key的消耗的能力。
+知道key + 时间戳，能确定哪个文件，block位置，block大小。 
+
 
 _TBD: The block length stored in the block data could probably be dropped since we store it in the index._
 
@@ -68,9 +75,15 @@ The file system is organized a directory per shard where each shard is an intege
 * .tsm files - a set of numerically increasing TSM files containing compressed series data.
 * .tombstone files - files named after the corresponding TSM file as #####.tombstone.  These contain measurement and series keys that have been deleted.  These files are removed during compactions.
 
+wal 目录
+tsm 文件
+tombstone 文件，包含删除的 meaturement, series, 合并过程中会被删除。
+
 # Data Flow
 
 Writes are appended to the current WAL segment and are also added to the Cache.  Each WAL segment is size bounded and rolls-over to a new file after it fills up.  The cache is also size bounded; snapshots are taken and WAL compactions are initiated when the cache becomes too full. If the inbound write rate exceeds the WAL compaction rate for a sustained period, the cache may become too full in which case new writes will fail until the compaction process catches up. The WAL and Cache are separate entities and do not interact with each other.  The Engine coordinates the writes to both.
+
+wal追加写，每个片段有大小限制，写满了写下一个文件, 同时写入 Cache。Cache一样有大小限制。当Cache较大时，触发快照和合并初始化。当持续写入速率大于合并速率，为防止Cache过大，新的写入会失败，等待合并追上。
 
 When WAL segments fill up and have been closed, the Compactor reads the WAL entries and combines them with one or more existing TSM files.  This process runs continuously until all WAL files are compacted and there is a minimum number of TSM files.  As each TSM file is completed, it is loaded and referenced by the FileStore.
 
