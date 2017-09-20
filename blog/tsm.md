@@ -87,11 +87,19 @@ wal追加写，每个片段有大小限制，写满了写下一个文件, 同时
 
 When WAL segments fill up and have been closed, the Compactor reads the WAL entries and combines them with one or more existing TSM files.  This process runs continuously until all WAL files are compacted and there is a minimum number of TSM files.  As each TSM file is completed, it is loaded and referenced by the FileStore.
 
+WAL文件写满关闭后，合并器读取WAL，和TSM进行合并。这个过程持续直到所有WAL都合并，TSM文件数减小到最小值。TSM文件被 FileStore 引用。
+
 Queries are executed by constructing Cursors for keys.  The Cursors iterate over slices of Values.  When the current Values are exhausted, a Cursor requests the next set of Values from the Engine.  The Engine returns a slice of Values by querying the FileStore and Cache.  The Values in the Cache are overlaid on top of the values returned from the FileStore.  The FileStore reads and decodes blocks of Values according to the index for the file.
+
+查询执行需要为keys构建cursors, cursors遍历Values切片。Engine 从 FileStore 和 Cache 中查询出 Values 切片。FileStore 根据文件索引，读取，解密出Values。
 
 Updates (writing a newer value for a point that already exists) occur as normal writes.  Since cached values overwrite existing values, newer writes take precedence.
 
+更新也是追加写，cache 中覆盖旧的值。
+
 Deletes occur by writing a delete entry for the measurement or series to the WAL and then updating the Cache and FileStore.  The Cache evicts all relevant entries.  The FileStore writes a tombstone file for each TSM file that contains relevant data.  These tombstone files are used at startup time to ignore blocks as well as during compactions to remove deleted entries.
+
+删除也是在WAL追加删除日志，最终同步到Cache, FileStore. FileStore 为每个TSM文件 写一个 tombstone文件 记录相关数据。 在启动，合并时，用于忽略，删除数据。
 
 # Compactions
 
@@ -102,11 +110,22 @@ Compactions are a serial and continuously running process that iteratively optim
 * Rewrites existing files that contain series data that has been deleted
 * Rewrites existing files that contain writes with more recent data to ensure a point exists in only one TSM file.
 
+- 把关闭的WAL文件转为TSM文件，删除WAL。
+- 合并小TSM文件为大文件
+- 重写 包含被删除的系列数据 的文件
+- 重写 包含更新数据 的文件，保证一个点只在一个TSM文件
+
 The compaction algorithm is continuously running and always selects files to compact based on a priority.
+
+合并过程持续进行，有优先级
 
 1. If there are closed WAL files, the 5 oldest WAL segments are added to the set of compaction files.
 2. If any TSM files contain points with older timestamps that also exist in the WAL files, those TSM files are added to the compaction set.
 3. If any TSM files have a tombstone marker, those TSM files are added to the compaction set.
+
+1. 有关闭的WAL文件，取5个最老的WAL加入合并任务
+2. TSM 包含旧的时间戳point，这些point同时存在于WAL文件，那么TSM文件被加入合并任务
+3. TSM有tombstone标记，那么加入合并任务
 
 The compaction algorithm generates a set of SeriesIterators that return a sequence of `key`, `Values` where each `key` returned is lexicographically greater than the previous one.  The iterators are ordered such that WAL iterators will override any values returned by the TSM file iterators.  WAL iterators read and cache the WAL segment so that deletes later in the log can be processed correctly.  TSM file iterators use the tombstone files to ensure that deleted series are not returned during iteration.  As each key is processed, the Values slice is grown, sorted, and then written to a new block in the new TSM file.  The blocks can be split based on number of points or size of the block.  If the total size of the current TSM file would exceed the maximum file size, a new file is created.
 
