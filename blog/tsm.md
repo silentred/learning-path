@@ -129,6 +129,8 @@ The compaction algorithm is continuously running and always selects files to com
 
 The compaction algorithm generates a set of SeriesIterators that return a sequence of `key`, `Values` where each `key` returned is lexicographically greater than the previous one.  The iterators are ordered such that WAL iterators will override any values returned by the TSM file iterators.  WAL iterators read and cache the WAL segment so that deletes later in the log can be processed correctly.  TSM file iterators use the tombstone files to ensure that deleted series are not returned during iteration.  As each key is processed, the Values slice is grown, sorted, and then written to a new block in the new TSM file.  The blocks can be split based on number of points or size of the block.  If the total size of the current TSM file would exceed the maximum file size, a new file is created.
 
+
+
 Deletions can occur while a new file is being written.  Since the new TSM file is not complete a tombstone would not be written for it. This could result in deleted values getting written into a new file.  To prevent this, if a compaction is running and a delete occurs, the current compaction is aborted and new compaction is started.
 
 When all WAL files in the current compaction have been processed and the new TSM files have been successfully written, the new TSM files are renamed to their final names, the WAL segments are truncated and the associated snapshots are released from the cache.
@@ -187,7 +189,7 @@ A variation of this can also be done without MMAPs by seeking and reading in the
 
 As an example, if we have an index structure in memory such as:
 
- ```
+```
 ┌────────────────────────────────────────────────────────────────────┐
 │                               Index                                │
 ├─┬──────────────────────┬──┬───────────────────────┬───┬────────────┘

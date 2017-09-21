@@ -487,3 +487,15 @@ rm ~/Library/Google/GoogleSoftwareUpdate/Actives/com.google.Chrome
 rm ~/Library/Google/Google\ Chrome*
 rm -r ~/Library/Speech/Speakable\ Items/Application\ Speakable\ Items/Google\ Chrome/
 ```
+
+## Rebase 使用方法
+开一个 branch，然后随便 commit ，直到真的看起来弄对了。然后把这个 branch 以 master 为起点 rebase 成只有一个 commit，然后合并到 master ，然后提交 master，然后删掉这个 branch
+
+rebase 简单流程 `git rebase -i master`, 除了第一行 pick, 后续都用 fix; 最后 `git commit --amend -m "xx"` 改注释。
+
+## vim 使用
+- 删除多行第一个单词
+ctrl+shift+v , 下移，右移选中要删除的内容，d 删除
+
+- 在每一行插入字符串
+ctrl+shift+v, 下移， shitf + i, 输入内容， esc
