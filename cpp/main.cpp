@@ -25,6 +25,9 @@ int main() {
     p->sayHello();
     delete p; // cannot delete a non-pointer
 
+    TestNull *test = NULL;
+    test->f(); // will print the word
+
     printf("hello \n");
 
     return 0;
@@ -109,4 +112,9 @@ void A::bar(){
 
 void B::foo(){
     cout<<"B::foo() is called"<<endl;
+}
+
+void TestNull::a(){}
+void TestNull::f(){
+    cout<<"TestNull::f() is called"<<endl;
 }

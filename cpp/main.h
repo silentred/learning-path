@@ -27,3 +27,10 @@ class B: public A {
         void foo();
 };
   
+class TestNull {
+    private:
+        void a();
+
+    public:
+        void f();
+};
