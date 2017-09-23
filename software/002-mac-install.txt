@@ -499,3 +499,11 @@ ctrl+shift+v , 下移，右移选中要删除的内容，d 删除
 
 - 在每一行插入字符串
 ctrl+shift+v, 下移， shitf + i, 输入内容， esc
+
+## 切分文件，合并文件
+
+`split -b 256m bigfile "bigfile.part."`
+
+`cat bigfile.part.* > origin-bigfile`
+
+
