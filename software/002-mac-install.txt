@@ -507,3 +507,8 @@ ctrl+shift+v, 下移， shitf + i, 输入内容， esc
 `cat bigfile.part.* > origin-bigfile`
 
 
+## aria2c
+
+`aria2c --enable-rpc --rpc-listen-all -D`
+
+port=6800
