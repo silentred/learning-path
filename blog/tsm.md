@@ -129,7 +129,7 @@ The compaction algorithm is continuously running and always selects files to com
 
 The compaction algorithm generates a set of SeriesIterators that return a sequence of `key`, `Values` where each `key` returned is lexicographically greater than the previous one.  The iterators are ordered such that WAL iterators will override any values returned by the TSM file iterators.  WAL iterators read and cache the WAL segment so that deletes later in the log can be processed correctly.  TSM file iterators use the tombstone files to ensure that deleted series are not returned during iteration.  As each key is processed, the Values slice is grown, sorted, and then written to a new block in the new TSM file.  The blocks can be split based on number of points or size of the block.  If the total size of the current TSM file would exceed the maximum file size, a new file is created.
 
-
+合并算法生成一组 SeriesIterators, 迭代器返回顺序的kv, key是字典序的。WAL迭代器覆盖TSM文件迭代器返回的value。WAL读取，并缓存WAL段，所以log中的删除能正确执行。tombstone文件保证删除的series不在迭代中返回。当处理每个key时，value切片增长，排序，写入新的TSM文件的新的block中。如果当前TSM文件大小到达上线，则创建新的文件。
 
 Deletions can occur while a new file is being written.  Since the new TSM file is not complete a tombstone would not be written for it. This could result in deleted values getting written into a new file.  To prevent this, if a compaction is running and a delete occurs, the current compaction is aborted and new compaction is started.
 
