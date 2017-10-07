@@ -378,3 +378,13 @@ wangyang 28063     1 28066  0   12 10:52 ?        00:00:00 ./entree -vv=3 -log_d
 // 如何strace多线程 程序
 strace -f -p 28063
 
+
+## install ststem tap 
+
+```
+uname -r
+yum install kernel-devel 或者 kernel-devel-$(uname -r)
+yum install yum-utils
+debuginfo-install kernel-$(uname -r)
+
+```
