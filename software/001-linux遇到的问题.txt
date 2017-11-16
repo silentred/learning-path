@@ -378,3 +378,58 @@ wangyang 28063     1 28066  0   12 10:52 ?        00:00:00 ./entree -vv=3 -log_d
 // 如何strace多线程 程序
 strace -f -p 28063
 
+
+## install ststem tap 
+
+```
+uname -r
+yum install kernel-devel 或者 kernel-devel-$(uname -r)
+yum install yum-utils kernel-devel perf
+debuginfo-install kernel-$(uname -r)
+
+```
+
+## centos7 安装
+
+```
+# nginx 
+yum install -y nginx
+
+# mk www
+mkdir /home/www
+cd /home/www
+chown -R nginx:nginx /home/www
+wget https://release.larsjung.de/h5ai/h5ai-0.29.0.zip
+unzip h5ai-0.29.0.zip
+vim /etcd/nginx/nginx.conf
+
+root         /home/www;
+index index.html index.php index.htm index.nginx-debian.html /_h5ai/public/index.php;
+location ~ \.php$ {
+        include phpfpm.conf;
+        fastcgi_pass 127.0.0.1:9000;
+}
+
+#phpfpm.conf
+fastcgi_split_path_info ^(.+\.php)(/.+)$;
+try_files $fastcgi_script_name =404;
+set $path_info $fastcgi_path_info;
+fastcgi_param PATH_INFO $path_info;
+fastcgi_index index.php;
+include fastcgi.conf;
+
+# php
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install -y php71w-fpm mod_php71w php71w-cli php71w-common
+
+# aria2
+yum install -y aria2
+aria2c --enable-rpc --rpc-listen-all -D
+
+# transmission
+yum install -y transmission-cli transmission-common transmission-daemon
+systemctl start transmission-daemon.service
+systemctl stop transmission-daemon.service
+ln -s /var/lib/transmission/.config/transmission-daemon/settings.json ~/setting.json
+vim ~/setting.json
+```
