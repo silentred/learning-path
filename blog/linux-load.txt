@@ -1,0 +1,459 @@
+深入解析Linux Load
+一、linux load准确含义
+
+  日常运维中我们经常会遇到linux系统load过高的问题。但是围绕这个linux load是如何计算的问题，却从来没有一个系统的论述文章。当linux load过高时，无论是公司外部的百度谷歌，还是公司内部的ATA都找不到一篇文章给出清晰的load高的排查过程。在这里，尝试全面系统的阐述linux load计算原理和排查影响因素的方法。
+  我们日常获取linux load的方法无外乎通过top、w、uptime等linux系统命令进行获取。事实上这些linux系统命令打印的load值都是通过/proc/loadavg中获取的，大家可以在自己的linux中运行如下命令：
+$ rpm -ql procps-ng | grep bin
+......
+/usr/bin/top
+/usr/bin/uptime
+/usr/bin/w
+......
+  在这里我们可以看到我们关注的系统命令top、w、uptime都在procps-ng rpm包中，老一点版本linux中包名叫procps。有兴趣的同学可以下载procps-ng源码包，看看load值是否取自/proc/loadavg。
+  /proc/目录中mount的是一种叫proc的linux伪文件系统，主要被用作内核数据结构的接口。我们可以通过如下方式查看其中的伪文件和数值的含义。
+$ man proc
+       ......
+       /proc/loadavg
+              The  first three fields in this file are load average figures giving the number of jobs in the run queue (state R) or waiting
+              for disk I/O (state D) averaged over 1, 5, and 15 minutes.  They are the same as the load average numbers given by  uptime(1)
+              and  other programs.  The fourth field consists of two numbers separated by a slash (/).  The first of these is the number of
+              currently runnable kernel scheduling entities (processes, threads).  The value after the slash is the number of kernel sched‐
+              uling  entities that currently exist on the system.  The fifth field is the PID of the process that was most recently created
+              on the system.
+       ......​
+  大意是说，loadavg文件中前三个字段是平均负载值，分别代表1、5和15分钟的作业(job)数量的平均值，作业(job)包括运行队列(state R)或者等待磁盘I/O(state D)两种类型。这里面有这么基几层信息：
+/proc/loadavg中前三个数字分别表示load1、load5、load15的值。
+load值代表的是对应时间内的jobs的平均数量，比如load1就表示过去1分钟内的jobs数量的平均值。job是一个shell概念，和进程组近似，这里应该属于用词不当（后面会分析，准确的应该是内核中的task或用户空间中的thread）。
+而且只包含state状态为R和D的两种jobs相关，其他state状态不包含在内。
+二、Linux load分解的脚本工具
+
+  很显然具体的load1、load5和load15的值是内核计算之后，通过proc文件系统提供给用户空间的。真正要深入到内核中查看load的相关代码，也非易事。而真正有个别能看懂内核代码的人分析一下load相关代码，广大读者看完之后也还是无从下手。
+  在这里，我们先抛开复杂的内核代码，直接上干货load2process脚本工具，如下：
+$ cat load2process
+#!/bin/sh
+ps -e -L h o state,ucmd  | awk '{if($1=="R"||$1=="D"){print $0}}' | sort | uniq -c | sort -k 1nr
+  简单解释一下ps命令的几个参数：
+-e参数，显示当前系统中所有进程；
+-L参数，对每一个进程信息都展开显示包含的所有线程，每个线程展开一行；
+h参数，隐藏ps命令的第一行header信息；
+o state,ucmd，这里o和state,ucmd是组合在一起生效的，只输出state和ucmd这两列信息，state表示线程状态，ucmd表示线程名称。
+  找一台比较繁忙的机器，运行下以上脚本，同时获取当时的load情况。
+$ ./load2process 
+     18 R ctasker_operato
+      4 R execution_task
+      3 R mr_task
+      2 D pangu_chunkserv
+      2 R ctasker
+      1 R cg_onlinejob_wo
+      1 R ps
+$ uptime
+ 22:09:18 up 108 days, 14:31,  1 user,  load average: 26.92, 21.89, 18.28​
+  load2process输出结果中第一列各数字相加为31，基本上和load1值26.92差不多，具体存在的差异后面会分析。此时如果想将load1值拆解到具体的线程级别，即可通过这个输出结果看到R状态的ctasker_operato是影响load1值的主要因素，且数量上贡献了18个。
+三、更灵敏的load5s和load值预测
+
+  写到这里，很多同学可能还是会将信将疑，分解linux load就这么简单吗？下面会通过引入load5s的概念，将内核中复杂的load算法尽量转换到用户空间，让读者以一个看得见摸得着的方式来体会load的计算过程。
+  平时分析load高时，很多资料上都会说看Load1、load5和load15的趋势。如果load15很高，但是load1已经比较低了，那说明系统已经处于逐步恢复中。反之，如果load1很高、load15比较低，那说明系统正在越来越严重。这都说的没错，也很容易理解，load1比load15更加灵敏。那有没有比load1更加灵敏的load值呢？
+  安装load5s的rpm包，即可获取更加灵敏的5秒钟load average，目前只支持alios 7u，而且需要确保机器上已安装与本机kernel版本号相同的kernel-devel包。具体如下： 
+$ sudo yum install load5s -b test -y
+  安装之后，即可在/proc/目录中获取load5s值：
+$ cat /proc/load5s
+23
+  多次cat这个伪文件可以发现，5秒内值不会变化。这就是比load1更加灵敏的load5s值。也就是说，如果你安装了load5s rpm包，当你的load1高时，你可以看看load5s的值，如果它已经不高了，很可能说明你的系统已经开始逐步恢复中。
+  Load5s除了比load1更加灵敏这个用途之外，它也是能帮我们揭示load1、load5和load15的计算逻辑的最关键因素。我们可以尝试在安装了load5s rpm包的机器上，运行如下shell脚本。
+$ cat load_predict.sh
+#!/bin/bash
+function calc_load(){
+    last_load_long=$1
+    exp=$2
+    active=$3
+   
+    load=$((exp*last_load_long))
+    load=$((load+$((2048-exp))*active))
+    load=$((load+1024))
+    load=$((load/2048))
+    load=$((load+10))
+    predict_load=$(echo "scale=2;$load/2048" | bc)
+
+    echo $predict_load
+}
+
+echo -e "start predict ......\n"
+last_load=$(cat /proc/loadavg)
+
+last_load1=$(echo $last_load | awk '{print $1}')
+last_load5=$(echo $last_load | awk '{print $2}')
+last_load15=$(echo $last_load | awk '{print $3}')
+last_load1_long=$(expr 2048*$last_load1/1  | bc)
+last_load5_long=$(expr 2048*$last_load5/1  | bc)
+last_load15_long=$(expr 2048*$last_load15/1  | bc)
+
+usleep 5001000
+
+current_load=$(cat /proc/loadavg)
+calc_load_tasks_counter=$(cat /proc/load5s)
+
+current_load1=$(echo $current_load | awk '{print $1}')
+current_load5=$(echo $current_load | awk '{print $2}')
+current_load15=$(echo $current_load | awk '{print $3}')
+active=$((2048*calc_load_tasks_counter))
+
+# compute
+predict_load1=$(calc_load $last_load1_long 1884 $active)
+predict_load5=$(calc_load $last_load5_long 2014 $active)
+predict_load15=$(calc_load $last_load15_long 2037 $active)
+
+# result 
+tabs=""
+tabs=$tabs"1/5/15 last_load current_load predict_load \n"
+tabs=$tabs"load1: $last_load1 $current_load1 $predict_load1 \n"
+tabs=$tabs"load5: $last_load5 $current_load5 $predict_load5 \n"
+tabs=$tabs"load15: $last_load15 $current_load15 $predict_load15 \n"
+echo -e "$tabs" | column -t 
+echo -e "\nload5s is: "$calc_load_tasks_counter
+  运行shell脚本后有如下输出：
+$./load_predict.sh 
+start predict ......
+
+1/5/15   last_load  current_load  predict_load
+load1:   24.38      25.07         25.07
+load5:   22.52      22.69         22.69
+load15:  20.30      20.37         20.37
+
+load5s is: 33
+  从数据结果中我们可以看到，current_load列和predict_load列分别在load1、load5和load15三种情况下惊人的一致。其中current_load列是从当前系统中采集出来的load值，而predict_load是我们通过shell脚本中运算预测的load1、load5和load15的值。大家不妨多运行机器load_predict.sh脚本，采集值和预测值最多只有0.01的误差。
+  此时，我们在回过头来仔细看这个脚本，原来linux load的计算过程是这样的啊。
+四、linux内核中load相关代码分析
+
+  了解了linux load的计算逻辑，我们再来对照一下内核代码。将shell和c对比着看，相信大家很快就会理解内核中load相关的c语言代码。
+  首先来看下/proc/loadavg伪文件对应的内核代码。
+$ cat fs/proc/loadavg.c 
+......
+        unsigned long avnrun[3], nr_runnable = 0;
+......
+                get_avenrun(avnrun, FIXED_1/200, 0);
+......
+        seq_printf(m, "%lu.%02lu %lu.%02lu %lu.%02lu %ld/%d %d\n",
+                LOAD_INT(avnrun[0]), LOAD_FRAC(avnrun[0]),
+                LOAD_INT(avnrun[1]), LOAD_FRAC(avnrun[1]),
+                LOAD_INT(avnrun[2]), LOAD_FRAC(avnrun[2]),
+                nr_runnable, nr_threads,
+                task_active_pid_ns(current)->last_pid);
+......
+  预编译后：
+$ cat fs/proc/loadavg.i 
+......
+  get_avenrun(avnrun, (1<<11)/200, 0);
+......
+ seq_printf(m, "%lu.%02lu %lu.%02lu %lu.%02lu %ld/%d %d\n",
+  ((avnrun[0]) >> 11), ((((avnrun[0]) & ((1<<11)-1)) * 100) >> 11),
+  ((avnrun[1]) >> 11), ((((avnrun[1]) & ((1<<11)-1)) * 100) >> 11),
+  ((avnrun[2]) >> 11), ((((avnrun[2]) & ((1<<11)-1)) * 100) >> 11),
+  nr_runnable, nr_threads,
+  task_active_pid_ns(get_current())->last_pid);
+......
+  LOAD_INT(avnrun[0]), LOAD_FRAC(avnrun[0])预编译之后是((avnrun[0]) >> 11), ((((avnrun[0]) & ((1<<11)-1)) * 100) >> 11)。由于内核没有小数计算，这段代码本质上是实现了avnrun[0]除以2048，并且取2位小数的浮点运算。
+  get_avenrun函数定义在kernel/sched/core.c页面。
+$ cat kernel/sched/core.c 
+static atomic_long_t calc_load_tasks;
+static unsigned long calc_load_update;
+unsigned long avenrun[3];
+
+void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
+{
+        loads[0] = (avenrun[0] + offset) << shift;
+        loads[1] = (avenrun[1] + offset) << shift;
+        loads[2] = (avenrun[2] + offset) << shift;
+}
+
+static long calc_load_fold_active(struct rq *this_rq)
+{
+        long nr_active, delta = 0;
+
+        nr_active = this_rq->nr_running;
+        nr_active += (long) this_rq->nr_uninterruptible;
+
+        if (nr_active != this_rq->calc_load_active) {
+                delta = nr_active - this_rq->calc_load_active;
+                this_rq->calc_load_active = nr_active;
+        }
+
+        return delta;
+}
+
+unsigned long
+calc_load(unsigned long load, unsigned long exp, unsigned long active)
+{
+        load *= exp;
+        load += active * (FIXED_1 - exp);
+        load += 1UL << (FSHIFT - 1);
+        return load >> FSHIFT;
+}
+
+void calc_global_load(unsigned long ticks)
+{
+        long active, delta;
+
+        if (time_before(jiffies, calc_load_update + 10))
+                return;
+
+        delta = calc_load_fold_idle();
+        if (delta)
+                atomic_long_add(delta, &calc_load_tasks);
+
+        active = atomic_long_read(&calc_load_tasks);
+        active = active > 0 ? active * FIXED_1 : 0;
+
+        avenrun[0] = calc_load(avenrun[0], EXP_1, active);
+        avenrun[1] = calc_load(avenrun[1], EXP_5, active);
+        avenrun[2] = calc_load(avenrun[2], EXP_15, active);
+
+#ifdef CONFIG_CGROUP_CPUACCT
+        cpuacct_cgroup_walk_tree(NULL);
+#endif
+
+        calc_load_update += LOAD_FREQ;
+        calc_global_nohz();
+}
+
+static void calc_load_account_active(struct rq *this_rq)
+{
+        long delta;
+
+        if (time_before(jiffies, this_rq->calc_load_update))
+                return;
+
+        delta  = calc_load_fold_active(this_rq);
+        if (delta)
+                atomic_long_add(delta, &calc_load_tasks);
+
+        this_rq->calc_load_update += LOAD_FREQ;
+}
+  预编译后：
+$ cat kernel/sched/core.i 
+void get_avenrun(unsigned long *loads, unsigned long offset, int shift)
+{
+ loads[0] = (avenrun[0] + offset) << shift;
+ loads[1] = (avenrun[1] + offset) << shift;
+ loads[2] = (avenrun[2] + offset) << shift;
+}
+
+static long calc_load_fold_active(struct rq *this_rq)
+{
+ long nr_active, delta = 0;
+
+ nr_active = this_rq->nr_running;
+ nr_active += (long) this_rq->nr_uninterruptible;
+
+ if (nr_active != this_rq->calc_load_active) {
+  delta = nr_active - this_rq->calc_load_active;
+  this_rq->calc_load_active = nr_active;
+ }
+
+ return delta;
+}
+
+unsigned long
+calc_load(unsigned long load, unsigned long exp, unsigned long active)
+{
+ load *= exp;
+ load += active * ((1<<11) - exp);
+ load += 1UL << (11 - 1);
+ return load >> 11;
+}
+
+void calc_global_load(unsigned long ticks)
+{
+ long active, delta;
+
+ if ((({ unsigned long __dummy; typeof(calc_load_update + 10) __dummy2; (void)(&__dummy == &__dummy2); 1; }) && ({ unsigned long __dummy; typeo
+f(jiffies) __dummy2; (void)(&__dummy == &__dummy2); 1; }) && ((long)(jiffies) - (long)(calc_load_update + 10) < 0)))
+  return;
+
+ delta = calc_load_fold_idle();
+ if (delta)
+  atomic_long_add(delta, &calc_load_tasks);
+
+ active = atomic_long_read(&calc_load_tasks);
+ active = active > 0 ? active * (1<<11) : 0;
+
+ avenrun[0] = calc_load(avenrun[0], 1884, active);
+ avenrun[1] = calc_load(avenrun[1], 2014, active);
+ avenrun[2] = calc_load(avenrun[2], 2037, active);
+
+ cpuacct_cgroup_walk_tree(((void *)0));
+
+ calc_load_update += (5*1000 +1);
+ calc_global_nohz();
+}
+
+static void calc_load_account_active(struct rq *this_rq)
+{
+ long delta;
+
+ if ((({ unsigned long __dummy; typeof(this_rq->calc_load_update) __dummy2; (void)(&__dummy == &__dummy2); 1; }) && ({ unsigned long __dummy; t
+ypeof(jiffies) __dummy2; (void)(&__dummy == &__dummy2); 1; }) && ((long)(jiffies) - (long)(this_rq->calc_load_update) < 0)))
+  return;
+
+ delta = calc_load_fold_active(this_rq);
+ if (delta)
+  atomic_long_add(delta, &calc_load_tasks);
+
+ this_rq->calc_load_update += (5*1000 +1);
+}
+
+  我们可以看到get_avenrun函数通过avenrun全局数组变量，返回上面的avnrun数组变量。avenrun全局数组变量在calc_global_load函数中每隔5001毫秒，由calc_load函数将active值添加到原有的load值中产生新的load值。其中load1、load5和load15只是第二个exp参数传入给calc_load函数不同的值，依次为1884、2014和2037。其中active值从calc_load_tasks全局结构体变量获取。calc_load_tasks全局结构体变量在calc_load_account_active函数中设置，而整个值的最初来源是calc_load_fold_active函数。
+  在函数calc_load_fold_active中，我们可以看到最终获取的是rq（run queue）队列中的this_rq->nr_running和this_rq->nr_uninterruptible两种状态的task数。熟悉cpu调度算法的同学知道，这里实际上是把每个cpu队列里的nr_running和nr_uninterruptible值都汇总到一起。而nr_running和nr_uninterruptible正好对应于用户空间中的R和D两种状态的线程的数量。
+五、内核代码的反汇编
+
+  搞懂了内核load相关代码之后，我们还是要回过头来再看看load5s的实现机制，在此之前有必要先搞清楚内核反汇编的知识。
+  linux启动时加载的内核存储在/boot/目录中，名称以vmlinuz加版本号命令。
+$ sudo cp /boot/vmlinuz-3.10.0-327.ali2010.rc7.alios7.x86_64 /boot/vmlinuz
+$ file /boot/vmlinuz
+/boot/vmlinuz: Linux kernel x86 boot executable bzImage, version 3.10.0-327.ali2010.rc7.alios7.x86_64 (admin@27cfcf77d929) #1 SM, RO-rootFS, swap_dev 0x4, Normal VGA
+  可以看到vmlinux是bzImage自解压格式。这种格式是无法直接进行反汇编的，首先需要进行解压缩。bizip压缩包内容的开始头部可以通过“1f 8b 08”这个签名来查找。
+$ dd if=/boot/vmlinuz skip=$(grep -a -b -o -m 1 -e $'\x1f\x8b\x08\x00' /boot/vmlinuz | cut -d: -f 1) bs=1 | zcat > vmlinuzu
+gzip: stdin: decompression OK, trailing garbage ignored
+  返回decompression OK表示解压缩成功。下一步对其进行反汇编。objdump有-d和-D两个选项，这里选择-D会反汇编出更多一些段信息。-M att表示按AT&T汇编语法进行反汇编。
+$ objdump -D -M att vmlinuzu > vmlinuzu_D.dis
+  打开汇编文件vmlinuzu_D.dis，我们发现这里面缺少一些符号信息，原来vmlinuz在在内核编译时，去掉了debug信息。linux提供了kernel-debug包，其中包含了符号信息。
+$ rpm -ql kernel-debuginfo-3.10.0-327.ali2010.rc7.alios7.x86_64 | grep vmlinux
+/usr/lib/debug/lib/modules/3.10.0-327.ali2010.rc7.alios7.x86_64/vmlinux
+$ cp /usr/lib/debug/lib/modules/3.10.0-327.ali2010.rc7.alios7.x86_64/vmlinux .
+  下面我们也对vmlinux进行反汇编。
+$ objdump -D -M att vmlinux  > vmlinux_D.dis
+  对比vmlinux_D.dis和vmlinuzu_D.dis这两个文件中ffffffff810b19a0到ffffffff810b1bfe的这段text段中的汇编代码，我们可以发现vmlinux_D.dis除了比vmlinuzu_D.dis多了更丰富的符号信息之外，其他内容高度一致。有了这样的结论，我们就可以放心的使用vmlinux_D.dis汇编代码来分析我们的load5s了。
+六、Load5s的kprobe实现原理
+
+  Load5s主要使用了kprobe内核探针技术。kprobe是linux内核的一个重要特性，它可以能够在不修改现有代码的基础上，灵活的hook内核代码的执行。其中这样两个关键属性symbol_name和offset可以确定在内核的任意一个函数中的某一个偏移地址处进行hook。
+  首先，根据前面对代码的分析可以，我们关心的变量是calc_global_load函数中calc_load_tasks全局结构体变量的counter属性值。如果你对汇编语言比较精通的话，很快就可以确定：
+    kp.symbol_name   = "calc_global_load";
+    kp.offset        = 0xcf;
+  再进一步分析内核汇编代码，我们还可以在bss段中发现如下信息：
+ffffffff81dc4fa8 <calc_load_tasks>:
+  这表明全局变量的内存地址是0xffffffff81dc4fa8。再接合内核proc伪文件系统代码知识，我们的load5s模块就搞定了。详见git：
+http://gitlab.alibaba-inc.com/os_health/load5s.git
+  其中c代码部分如下：
+$ cat load5s.c 
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/kprobes.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+
+static unsigned long load5s;
+ 
+/***************************************
+ *             kprobe part             * 
+ * *************************************/
+static struct kprobe kp = {};
+ 
+static int handler_pre(struct kprobe *p, struct pt_regs *regs)
+{
+    atomic_long_t *a = (atomic_long_t *)(long)0xffffffff81dc4fa8;
+    load5s = atomic_long_read(a);
+
+    return 0;
+}
+ 
+static void handler_post(struct kprobe *p, struct pt_regs *regs, unsigned long flags)
+{
+}
+ 
+static int handler_fault(struct kprobe *p, struct pt_regs *regs, int trapnr)
+{
+    printk(KERN_INFO "fault_handler: p->addr = 0x%p, trap #%dn", p->addr, trapnr);
+    return 0;
+}
+
+/***************************************
+ *              proc part              * 
+ * *************************************/
+static int hello_proc_show(struct seq_file *m, void *v) {
+  seq_printf(m, "%ld\n",load5s);
+  return 0;
+}
+
+static int load5s_proc_open(struct inode *inode, struct  file *file) {
+  return single_open(file, hello_proc_show, NULL);
+}
+
+static const struct file_operations load5s_proc_fops = {
+  .owner = THIS_MODULE,
+  .open = load5s_proc_open,
+  .read = seq_read,
+  .llseek = seq_lseek,
+  .release = single_release,
+};
+
+/***************************************
+ *  module init && module exit         * 
+ * *************************************/
+static int __init load5s_init(void)
+{
+    int ret;
+    proc_create("load5s", 0, NULL, &load5s_proc_fops);
+    
+    kp.pre_handler   = handler_pre;
+    kp.post_handler  = handler_post;
+    kp.fault_handler = handler_fault;
+    kp.symbol_name   = "calc_global_load";
+    kp.offset        = 0xcf;
+
+    ret = register_kprobe(&kp);
+    if (ret < 0) {
+        printk(KERN_INFO "register_kprobe failed, returned %d\n", ret);
+        return ret;
+    }
+    printk(KERN_INFO "Planted kprobe at %p\n", kp.addr);
+    
+    return 0;
+}
+ 
+static void __exit load5s_exit(void)
+{
+    remove_proc_entry("load5s", NULL);
+    unregister_kprobe(&kp);
+    printk(KERN_INFO "kprobe at %p unregistered\n", kp.addr);
+}
+ 
+module_init(load5s_init)
+module_exit(load5s_exit)
+MODULE_LICENSE("GPL");
+七、利用load2process脚本分析系统load高问题
+
+  到此，我们已经基本搞清楚了linux load的原理，并且提供了load2process脚本工具。接下来我们利用这些工具来说说怎么分析系统load高问题。
+  有时候系统load高发生在半夜，或者白天并不在电脑前。这个时候，就需要依靠监控系统协助我们进行进行采集，我们已经将load2process脚本在alimonitor上部署了load高的监控。目前灰度测试2-3个月，灰度过程非常稳定，后续将考虑向更多的产品部署。
+  前面已经谈到，影响load的线程状态有R和D两种，那么再接合load在不同程序线程之间的分组，系统load高时会有如下四种情况：
+  由单个程序线程R状态高导致。比如load1是200，load2process结果显示“160 R process1”，那么此时可以判断导致load高的主要原因是process1。如果是我们业务自己开发的程序，那么很多时候是由于程序员没有注意并发数限制导致。
+  由多个程序线程R状态高导致。比如load1是200，load2process结果显示“20 R process1，15 R process2，14 R process3，10 R process4.......”，这种情况不常见。
+  由单个程序线程D状态高导致。比如load1是1000，load2process结果显示“950 D process1”。此时可以查看这个程序对应进程的waiting channel信息，/proc/<pid>/wchan。造成进程D住的原因多种多样，需要结合搜索引擎分别分析。
+  由多个程序线程D状态高导致。此时可能操作系统和所在机器整体出现了问题，比如磁盘出现问题。就有人解释状态D的含义是“Disk Sleep”。实际造成的原因也是多种多样。
+  很多团队在对load高进行监控的时候，会对load进行总体监控，并不区分其中的R和D两种类型的具体构成。事实上同样数量的R或D对系统的影响是远远不同的：
+  一般来说如果是R状态为主导致的load高，普通的机器load达到100-200时，系统就会特别卡。更准确的来说，R状态的多少，主要还是要和CPU核数相关，大于主机CPU核数2倍以上，系统就会出现严重问题，出现多个R状态线程争抢CPU资源。
+  如果是D状态为主导致的load高，之前就有个案例，当时系统load高达11000多，但是整个操作系统还能正常服务。
+  既然这样，那我们就还需要进一步将load15、load5和load1，甚至load5s中的R和D状态分别进行监控记录，以便我们更加准确的判断系统健康程度。非常幸运的是kernel提供了这样的数据。
+$ cat /proc/loadavg 
+49.04 59.91 66.21 38/10083 99577
+  在/proc/loadavg伪文件中，内核还提供了一个nr_running（斜线前38的位置）的值。这个值应了当前系统中正在进行中的R状态的线程数。内核并没有通过/proc/目录直接提供nr_uninterruptible状态的线程数，但我们完全可以通过结合load和nr_running来做出推断。
+$ sar -q 1 10
+03:13:50 PM   runq-sz  plist-sz   ldavg-1   ldavg-5  ldavg-15
+03:13:51 PM         7     23992    254.63    185.25    219.55
+03:13:52 PM         6     23991    254.63    185.25    219.55
+03:13:53 PM         6     23992    239.68    183.31    218.73
+03:13:54 PM         9     23991    239.68    183.31    218.73
+03:13:55 PM         9     23993    239.68    183.31    218.73
+03:13:56 PM         5     24033    239.68    183.31    218.73
+03:13:57 PM         8     23988    239.68    183.31    218.73
+03:13:58 PM         6     23988    222.65    180.71    217.70
+03:13:59 PM         9     23987    222.65    180.71    217.70
+03:14:00 PM        11     23990    222.65    180.71    217.70
+  这是一个生产环境的实际案例，从中可以看到尽管load已经高达200多，但是runq-sz（即nr_running）值只有不到10。充分说明导致load高的原因主要是当时D状态线程数过高。
+八、Linux load中的数学问题
+
+  在前面kernel源码分析部分，我们可以在预编译之后的core.i文件中看到calc_global_load调用calc_load函数时，针对load1、load5和load15，给calc_load的第二个参数分别传入了三个不同的参数值1884，2014和2037。那么这3个值是怎么得来的呢？查看内核源码之后，我们可以发现有这样的计算公式。
+y=2048/exp(5/x)
+  分别将x代入60秒（1分钟）、300秒（5分钟）和900秒（15分钟）可以得到如下结果
+1884 = 2048/exp(5/60)
+2014 = 2048/exp(5/300)
+2037 = 2048/exp(5/900)
+  这里面exp()函数是求e的n次方的函数，数学系的同学可以来解答一下，为什么采用这样的计算方法，递归出来的load值更能代表系统的平均运行状况。
