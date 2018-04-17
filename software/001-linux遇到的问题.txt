@@ -392,6 +392,9 @@ debuginfo-install kernel-$(uname -r)
 ## centos7 安装
 
 ```
+# flush iptables
+iptables -F
+
 # nginx 
 yum install -y nginx
 
@@ -449,3 +452,48 @@ yum install wqy-zenhei-fonts
 git log --no-merges --pretty=format:%an --numstat | awk '/./ && !author { author = $0; next } author { ins[author] += $1; del[author] += $2 } /^$/ { author = ""; next } END { for (a in ins) { printf "%10d %10d %10d %s\n", ins[a] - del[a], ins[a], del[a], a } }' | sort -rn
 
 insertion-deletion, insertion, deletion, name
+
+
+翻墙攻略:
+
+## 购买VPS
+
+http://www.vultr.com/?ref=7138535 (推广链接), 选择 日本 节点，5$/month 实例, 按小时计费。建议用 ubuntu。
+
+## 搭建 ss 服务端
+
+apt-get install python-pip
+pip install shadowsocks
+
+配置文件 config.json
+```
+{
+    "server":"45.32.11.27", // vps公网ip
+    "server_port":28388, // 服务端口
+    "local_address": "127.0.0.1",
+    "local_port":1080,
+    "password":"890917123", // 密码
+    "timeout":300, 
+    "method":"rc4-md5", // 加密方法
+    "fast_open": false,
+	"workers": 2
+}
+```
+启动服务
+ssserver -c config.json --log-file ss.log -d start
+
+## 终端客户端
+
+1. Mac 
+使用 ShadowsocksX-NG
+下载地址 https://github.com/shadowsocks/ShadowsocksX-NG/releases
+安装后需要配置服务连接信息，就是服务器config文件中的信息。
+客户端是基于域名名单的路由，默认内置一份 gfwlist。一般情况，使用 Proxy Autho Configure Mode 即可，国内域名的网站不会走vps流量。
+
+2. iPhone
+使用 SsrConnectPro，免费。
+
+
+## 路由器
+
+如果觉得手机，桌面客户端不方便，可以考虑把客户端装在路由器上，我用的是 极路由，开发者模式下，可以用 https://github.com/qiwihui/hiwifi-ss 项目中的方案. 在路由器管理界面中有一个页面配置，开关。
