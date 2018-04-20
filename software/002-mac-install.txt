@@ -512,3 +512,50 @@ ctrl+shift+v, 下移， shitf + i, 输入内容， esc
 `aria2c --enable-rpc --rpc-listen-all -D`
 
 port=6800
+
+
+## build mysql on mac
+
+https://ruiaylin.github.io/2015/06/03/mysql%20source%20code%20debug%20xcode/
+
+```
+download percona-server-5.6.39-83.1.tar.gz
+tar xf percona-server-5.6.39-83.1.tar.gz
+
+brew install cmake
+brew install gcc
+
+install xcode
+xcode-select --install
+sudo xcode-select --reset
+xcrun -find c++
+xcrun -find cc
+
+cd percona-server-5.6.39-83.1
+mkdir work
+cmake . -G "Xcode" -DWITH_DEBUG=1  -DWITH_TOKUDB_STORAGE_ENGINE=OFF -DWITHOUT_TOKUDB_STORAGE_ENGINE=ON -DCMAKE_INSTALL_PREFIX=/Users/jason/Downloads/percona-server-5.6.39-83.1/work
+cmake 之后，会生成一个 xcode的工程文件 MySQL.xcodeproj ，使用xcode 打开, 点编译
+
+cd work ; mkdir {bin,share,scripts,data}; cd ..;
+cp sql/Debug/mysqld work/bin/
+cp client/Debug/mysql* work/bin/
+cp extra/Debug/my_print_defaults work/bin/
+cp -r sql/share/* work/share/
+cp -r scripts/* work/scripts/
+chmod +x work/scripts/*
+cp scripts/*.sql  work/share/
+cp support-files/*.cnf work/share/ 
+
+./scripts/mysql_install_db --user=jason --basedir=/Users/jason/Downloads/percona-server-5.6.39-83.1/work --datadir=/Users/jason/Downloads/percona-server-5.6.39-83.1/work/data  --force
+
+xcode 选择 mysqld, 修改scheme, 添加启动参数
+--user=jason
+--socket=/tmp/percona.sock // 防止和本地mysql冲突
+--port=33060
+
+环境变量添加：
+MYSQL_HOME=/Users/jason/Downloads/percona-server-5.6.39-83.1/work
+
+加断点，启动mysqld，调试
+```
+
