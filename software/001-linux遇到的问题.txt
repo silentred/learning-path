@@ -462,8 +462,32 @@ http://www.vultr.com/?ref=7138535 (推广链接), 选择 日本 节点，5$/mont
 
 ## 搭建 ss 服务端
 
-apt-get install python-pip
-pip install shadowsocks
+```
+sudo apt-get install php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2 nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev
+
+sudo pip install -U git+https://github.com/shadowsocks/shadowsocks.git@master
+OR pip install shadowsocks
+
+
+sudo lsblk
+sudo mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb
+sudo mkdir -p /mnt/disks/disk1
+sudo mount -o discard,defaults /dev/sdb /mnt/disks/disk1
+
+sudo blkid /dev/sdb
+/dev/sdb: UUID="5ad1b168-7d45-4035-a9e4-4273396116fa" TYPE="ext4"
+
+sudo cp /etc/fstab /etc/fstab.bak
+sudo vim /etc/fstab
+UUID=bfc332f6-be10-4206-8d44-289434be3354 /mnt/disks/disk1 ext4 discard,defaults,nofail 0 2
+
+// optional: 使用 SSL
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+
+https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-on-centos-7
+
+```
 
 配置文件 config.json
 ```
@@ -497,3 +521,4 @@ ssserver -c config.json --log-file ss.log -d start
 ## 路由器
 
 如果觉得手机，桌面客户端不方便，可以考虑把客户端装在路由器上，我用的是 极路由，开发者模式下，可以用 https://github.com/qiwihui/hiwifi-ss 项目中的方案. 在路由器管理界面中有一个页面配置，开关。
+
