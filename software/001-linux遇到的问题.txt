@@ -522,3 +522,15 @@ ssserver -c config.json --log-file ss.log -d start
 
 如果觉得手机，桌面客户端不方便，可以考虑把客户端装在路由器上，我用的是 极路由，开发者模式下，可以用 https://github.com/qiwihui/hiwifi-ss 项目中的方案. 在路由器管理界面中有一个页面配置，开关。
 
+
+## daemonize
+
+如果要 daemonize 一个程序，步骤为:
+1. fork, 结束父进程，子进程已经在后台运行
+2. setsid, 设置子进程为 session leader，process group leader，此时子进程已经脱离原来的 controlling terminal (CTTY).
+3. sinal, 忽略 SIGHUP, SIGCHLD
+我认为下面的步骤不是必须:
+fork again & let the parent process terminate to ensure that you get rid of the session leading process. (Only session leaders may get a TTY again.)
+chdir - Change the working directory of the daemon.
+umask - Change the file mode mask according to the needs of the daemon.
+close - Close all open file descriptors that may be inherited from the parent process.
