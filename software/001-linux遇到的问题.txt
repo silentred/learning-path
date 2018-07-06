@@ -535,3 +535,15 @@ fork again & let the parent process terminate to ensure that you get rid of the 
 chdir - Change the working directory of the daemon.
 umask - Change the file mode mask according to the needs of the daemon.
 close - Close all open file descriptors that may be inherited from the parent process.
+
+
+## SSH 配置
+Host *
+ForwardAgent yes
+ServerAliveInterval 10
+ServerAliveCountMax 10000
+TCPKeepAlive no
+ControlMaster auto
+ControlPath ~/.ssh/%h-%p-%r
+ControlPersist 4h
+Compression yes
