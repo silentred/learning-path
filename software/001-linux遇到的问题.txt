@@ -465,6 +465,11 @@ http://www.vultr.com/?ref=7138535 (推广链接), 选择 日本 节点，5$/mont
 ## 搭建 ss 服务端
 
 ```
+## add user: https://www.digitalocean.com/community/tutorials/how-to-create-a-sudo-user-on-ubuntu-quickstart
+
+adduser jason
+usermod -aG sudo jason
+
 apt-get update --fix-missing
 sudo apt-get install php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2 nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev build-essential.
 
@@ -553,7 +558,7 @@ server {
     #
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
     }
 }
 ```
@@ -563,13 +568,13 @@ server {
 配置文件 config.json
 ```
 {
-    "server":"45.32.11.27", // vps公网ip
-    "server_port":28388, // 服务端口
+    "server":"45.32.11.27",
+    "server_port":28388,
     "local_address": "127.0.0.1",
     "local_port":1080,
-    "password":"890917123", // 密码
+    "password":"890917123",
     "timeout":300, 
-    "method":"rc4-md5", // 加密方法
+    "method":"rc4-md5",
     "fast_open": false,
 	"workers": 2
 }
