@@ -427,7 +427,7 @@ yum install -y php71w-fpm mod_php71w php71w-cli php71w-common
 
 # aria2
 yum install -y aria2
-aria2c --enable-rpc --rpc-listen-all -D
+aria2c --enable-rpc --rpc-listen-all --rpc-secret jason -D
 
 # transmission
 yum install -y transmission-cli transmission-common transmission-daemon
