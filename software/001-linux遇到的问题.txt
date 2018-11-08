@@ -660,3 +660,24 @@ ip route del default via 192.168.99.1
 
 
 ```
+
+
+## vbox 
+
+```
+# 列表
+VBoxManage list vm
+
+#启动VM
+VBoxManage startvm $vmName --type headless
+
+#暂停
+VBoxManage controlvm $vmName pause|resume|reset|poweroff|savestate 
+
+VBoxManage sharedfolder add ubuntu --name src --hostpath /Users/jason/Desktop/projects/GOPATH/src
+mkdir /home/jason/go/src
+sudo mount -t vboxsf -o uid=1000,gid=1000 src /home/jason/go/src
+
+# auto-mount 的位置在 /media/sf_$shareFileName
+
+```
