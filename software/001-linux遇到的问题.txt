@@ -622,3 +622,41 @@ ControlMaster auto
 ControlPath ~/.ssh/%h-%p-%r
 ControlPersist 4h
 Compression yes
+
+
+## 配置static ip
+
+```
+# 查看所有 iface
+ifconfig -a
+
+# 修改配置
+vim /etc/network/interfaces
+
+auto enp0s8
+iface enp0s8 inet static
+address 192.168.99.103
+netmask 255.255.255.0
+network 192.168.99.0
+broadcst 192.168.99.255
+gateway 192.168.99.1
+
+# 启动配置
+ifdown enp0s8
+ifup enp0s8
+
+```
+
+## 修改 route
+
+```
+# 查看路由表
+route -n
+ip route list
+打印
+
+# 删除路邮项, del 后面的参数，是 ip route list 的输出
+ip route del default via 192.168.99.1 
+
+
+```
