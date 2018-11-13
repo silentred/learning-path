@@ -1,0 +1,20 @@
+# delve
+
+## debug 单个 UT 
+
+dlv test --build-flags='gitlab.alipay-inc.com/dbplatform/kipp/pkg/cicd/compose/shim -a -N -l' -- -test.run ^TestDockerShim$
+
+-N -l 表示禁用优化，禁用 inline
+-a 表示重新编译所有依赖, 而不是使用 cache
+
+
+## 操作
+
+b TestDockerShim
+c # continue
+l # list code
+n # next step
+s # step in
+locals # 本地变量
+p var # 打印变量
+

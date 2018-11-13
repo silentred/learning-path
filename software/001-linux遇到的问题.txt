@@ -674,6 +674,17 @@ VBoxManage startvm $vmName --type headless
 #暂停
 VBoxManage controlvm $vmName pause|resume|reset|poweroff|savestate 
 
+# 安装 addtions 插件
+# 菜单栏选择 insert VBoxAddtions.ios 名字不准确
+mkdir /mnt/cdrom
+sudo mount /dev/cdrom /mnt/cdrom
+cd /mnt/cdrom
+sudo ./VBoxAddtionsxxxx.run
+cd
+sudo umount /mnt/cdrom
+reboot
+
+# 添加共享文件
 VBoxManage sharedfolder add ubuntu --name src --hostpath /Users/jason/Desktop/projects/GOPATH/src
 mkdir /home/jason/go/src
 sudo mount -t vboxsf -o uid=1000,gid=1000 src /home/jason/go/src
@@ -681,3 +692,25 @@ sudo mount -t vboxsf -o uid=1000,gid=1000 src /home/jason/go/src
 # auto-mount 的位置在 /media/sf_$shareFileName
 
 ```
+
+
+## ubuntu 18.04 安装docker
+
+```
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt install docker-ce
+
+```
+
+## SSH tunnel
+
+ssh -nN -R 8888:localhost:7777 remoteuser@1.2.3.4
+ssh -nNT -R 8022:localhost:8080 jason@45.76.186.191
+
+这样，访问远端 1.2.3.4:8888 的请求，就会转发到 localhost:7777， 所以要求本地:7777 有服务
+-R 表示 Remote port forwarding，转发远端8888到本地7777
+
+服务器端， sudo vim /etc/ssh/sshd_config, 搜索 AllowTCP, AllowAgent, GatewayPorts, 把关于 forwording 的选项都打开， 重启sshd
