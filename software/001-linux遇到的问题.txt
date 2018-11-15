@@ -714,3 +714,34 @@ ssh -nNT -R 8022:localhost:8080 jason@45.76.186.191
 -R 表示 Remote port forwarding，转发远端8888到本地7777
 
 服务器端， sudo vim /etc/ssh/sshd_config, 搜索 AllowTCP, AllowAgent, GatewayPorts, 把关于 forwording 的选项都打开， 重启sshd
+
+## 写入镜像
+
+### mac
+sudo dd if=/tmp/2018-10-09-raspbian-stretch.img of=/dev/rdisk2 bs=4m
+sync
+
+## raspberry
+
+## 启动ssh的方法, touch /boot/ssh , 创建一个名为ssh 的文件
+
+## 设置wifi：创建文件 /boot/wpa_supplicant.conf ， 内容为:
+```
+country=CN
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+ssid="HiWiFi_930F44_CaO"
+psk="wangyang"
+key_mgmt=WPA-PSK
+priority=1
+}
+
+network={
+ssid="Jason iPhone"
+psk="789456123"
+key_mgmt=WPA-PSK
+priority=2
+}
+```
