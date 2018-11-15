@@ -715,6 +715,10 @@ ssh -nNT -R 8022:localhost:8080 jason@45.76.186.191
 
 服务器端， sudo vim /etc/ssh/sshd_config, 搜索 AllowTCP, AllowAgent, GatewayPorts, 把关于 forwording 的选项都打开， 重启sshd
 
+ssh -f -n -N -T -R 6801:localhost:6800 jason@45.76.186.191
+ssh -f -n -N -T -R 6080:localhost:80 jason@45.76.186.191
+ssh -f -n -N -T -R 6022:localhost:22 jason@45.76.186.191
+
 ## 写入镜像
 
 ### mac
