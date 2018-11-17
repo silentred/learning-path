@@ -747,3 +747,26 @@ key_mgmt=WPA-PSK
 priority=2
 }
 ```
+
+
+## samba
+
+```
+sudo apt-get install samba samba-common-bin
+sudo vim /etc/samba/smb.conf
+
+[share]
+Comment = Pi shared folder
+Path = /home/pi/www/video
+Browseable = yes
+Writeable = Yes
+only guest = no
+create mask = 0777
+directory mask = 0777
+Public = yes
+Guest ok = yes
+
+sudo smbpasswd -a pi # pwd=wangyang
+sudo /etc/init.d/samba restart
+
+```
