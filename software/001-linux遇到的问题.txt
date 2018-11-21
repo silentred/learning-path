@@ -764,9 +764,10 @@ only guest = no
 create mask = 0777
 directory mask = 0777
 Public = yes
-Guest ok = yes
+Guest ok = no
 
 sudo smbpasswd -a pi # pwd=wangyang
 sudo /etc/init.d/samba restart
 
 ```
+
