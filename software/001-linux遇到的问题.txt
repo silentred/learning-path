@@ -771,3 +771,33 @@ sudo /etc/init.d/samba restart
 
 ```
 
+## exfat
+
+```
+# mount for exfat
+sudo apt-get install exfat-utils
+# 如果是 exfat，建议把 umask 设为0; ntfs-3g 可以用 022
+sudo mount -t exfat -o umask=022,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/exfat2T
+
+# unmount
+sudo umount /dev/sda1
+
+# mount for ntfs
+sudo apt-get install ntfs-3g
+# 尝试 mount -t ntfs-3g
+
+# 查看 kernel module， 是否有 ntfs
+lsmod 
+
+# 编译 ntfs-3g
+# download page: http://www.linuxfromscratch.org/blfs/view/svn/postlfs/ntfs-3g.html
+cd ntfs-3g
+./autogen.sh
+./configure --prefix=/usr --with-fuse=external
+sudo make
+make install
+sudo ln -sv ../bin/ntfs-3g /sbin/mount.ntfs
+sudo ln -sv ntfs-3g.8 /usr/share/man/man8/mount.ntfs.8
+
+```
+
