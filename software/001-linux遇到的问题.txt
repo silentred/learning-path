@@ -231,7 +231,7 @@ rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
 
 ## 检测视频完整度
 ffmpeg -v error -i file.avi -f null - 2>error.log
-
+ffprobe xxx.mp4
 
 ## grep多个文件
 grep -r "something" dir
@@ -471,7 +471,7 @@ adduser jason
 usermod -aG sudo jason
 
 apt-get update --fix-missing
-sudo apt-get install php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2 nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev build-essential.
+sudo apt-get install build-essential nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2 .
 
 sudo pip install -U git+https://github.com/shadowsocks/shadowsocks.git@master
 OR pip install shadowsocks
@@ -777,8 +777,9 @@ sudo /etc/init.d/samba restart
 # mount for exfat
 sudo apt-get install exfat-utils
 # 如果是 exfat，建议把 umask 设为0; ntfs-3g 可以用 022
-sudo mount -t exfat -o umask=022,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/exfat2T
-
+sudo mount -t exfat -o umask=0,uid=pi,gid=pi /dev/sdd1 /home/pi/www/video/exfat2T
+sudo mount -t ntfs-3g -o umask=022,uid=pi,gid=pi /dev/sdb1 /home/pi/www/video/ntfs1T
+sudo mount -t hfsplus -o force,umask=0,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/apfs1T
 # unmount
 sudo umount /dev/sda1
 
@@ -801,3 +802,8 @@ sudo ln -sv ntfs-3g.8 /usr/share/man/man8/mount.ntfs.8
 
 ```
 
+## 合并 ts 文件到 mp4
+```
+for i in `ls *.ts | sort -V`; do echo "file $i"; done >> mylist.txt
+ffmpeg -f concat -i mylist.txt -c copy -bsf:a aac_adtstoasc video.mp4
+```
