@@ -806,4 +806,12 @@ sudo ln -sv ntfs-3g.8 /usr/share/man/man8/mount.ntfs.8
 ```
 for i in `ls *.ts | sort -V`; do echo "file $i"; done >> mylist.txt
 ffmpeg -f concat -i mylist.txt -c copy -bsf:a aac_adtstoasc video.mp4
+
+# 补充
+ls --sort=size -l | tail -81 | awk '{print $9}' | awk '{ match($0, /seg-([0-9]+).ts/, arr); if(arr[1] != "") print arr[1] }' > lost.file
+for i in `cat lost.file`; do
+    xxx;
+done
+
 ```
+
