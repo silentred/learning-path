@@ -801,3 +801,15 @@ sudo ln -sv ntfs-3g.8 /usr/share/man/man8/mount.ntfs.8
 
 ```
 
+## docker 
+
+sudo dockerd --data-root /home/admin/dockerdata -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock
+
+启动dockerd 遇到报错: Error starting daemon: Error initializing network controller: list bridge addresses failed: no available network
+
+```
+ip link add name docker0 type bridge
+ip addr add dev docker0 172.17.0.1/16
+```
+
+
