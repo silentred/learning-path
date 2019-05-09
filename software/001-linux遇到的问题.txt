@@ -777,9 +777,9 @@ sudo /etc/init.d/samba restart
 # mount for exfat
 sudo apt-get install exfat-utils
 # 如果是 exfat，建议把 umask 设为0; ntfs-3g 可以用 022
-sudo mount -t exfat -o umask=0,uid=pi,gid=pi /dev/sdd1 /home/pi/www/video/exfat2T
-sudo mount -t ntfs-3g -o umask=022,uid=pi,gid=pi /dev/sdb1 /home/pi/www/video/ntfs1T
-sudo mount -t hfsplus -o force,umask=0,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/apfs1T
+sudo mount -t exfat -o umask=0,uid=pi,gid=pi /dev/sdb1 /home/pi/www/video/exfat2T
+sudo mount -t ntfs-3g -o umask=022,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/ntfs1T
+sudo mount -t hfsplus -o force,umask=0,uid=pi,gid=pi /dev/sdc1 /home/pi/www/video/apfs1T
 # unmount
 sudo umount /dev/sda1
 
@@ -810,7 +810,7 @@ sudo dockerd --data-root /home/admin/dockerdata -H tcp://0.0.0.0:2376 -H unix://
 
 ```
 ip link add name docker0 type bridge
-ip addr add dev docker0 172.17.0.1/16
+ip addr add dev docker0 192.168.0.1/16
 ```
 
 
@@ -827,4 +827,13 @@ done
 
 ```
 
+## chattr,lsattr
+```
+查看文件属性，
+a 表示 append-only，会导致文件无法删除
+e 表示 extend format
+lsattr filename
 
+删除 a 属性
+chattr -a filename 
+```
