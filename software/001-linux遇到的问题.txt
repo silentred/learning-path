@@ -470,8 +470,10 @@ http://www.vultr.com/?ref=7138535 (推广链接), 选择 日本 节点，5$/mont
 adduser jason
 usermod -aG sudo jason
 
-apt-get update --fix-missing
-sudo apt-get install build-essential supervisor nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2 .
+sudo apt-get update --fix-missing
+sudo apt-get install build-essential supervisor nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev libsodium-dev
+
+#可以不安装 php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2
 
 sudo pip install -U git+https://github.com/shadowsocks/shadowsocks.git@master
 OR pip install shadowsocks
