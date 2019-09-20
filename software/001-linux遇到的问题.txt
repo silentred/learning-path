@@ -839,3 +839,23 @@ lsattr filename
 删除 a 属性
 chattr -a filename 
 ```
+
+## oracle cloud 主机需要关闭防火墙
+```
+#停止firewall
+systemctl stop firewalld.service
+ 
+#禁止firewall开机启动
+systemctl disable firewalld.service
+ 
+#关闭iptables
+service iptables stop
+ 
+#去掉iptables开机启动
+chkconfig iptables off
+
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -F
+```
