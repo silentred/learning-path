@@ -859,3 +859,92 @@ sudo iptables -P FORWARD ACCEPT
 sudo iptables -P OUTPUT ACCEPT
 sudo iptables -F
 ```
+
+## 安装pyspider
+
+```
+sudo apt-get install python python-dev python-distribute python-pip libcurl4-openssl-dev libxml2-dev libxslt1-dev python-lxml libssl-dev zlib1g-dev beanstalkd
+
+pip install beanstalkc
+pip uninstall wsgidav
+python -m pip install wsgidav==2.4.1
+
+# config.json
+{
+  "message_queue": "beanstalk://localhost:11300/",
+  "webui": {
+    "username": "jason",
+    "password": "jason",
+    "need-auth": true
+  }
+}
+
+
+# 启动脚本 run.sh
+#!/bin/bash
+BASEDIR=$(dirname "$0")
+NAME="pyspider"
+PIDFILE="pyspider.pid"
+start() {
+    $NAME -c=config.json > out.log 2>&1 &
+    echo $! > $BASEDIR/$PIDFILE
+}
+stop() {
+    pid=`cat $BASEDIR/$PIDFILE`
+    # send SIGTERM to pid
+    pkill $NAME && rm $BASEDIR/$PIDFILE
+}
+restart() {
+    stop
+    start
+}
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+esac
+exit
+```
+
+
+## 安装 prometheus, grafana, node_exporter
+```
+sudo apt-get install prometheus
+
+# grafana
+https://grafana.com/docs/installation/debian/
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install grafana
+
+# node exporter
+curl -LO https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+tar -xvf node_exporter-0.18.1.linux-amd64.tar.gz
+sudo mv node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
+
+sudo cat > /etc/systemd/system/node_exporter.service <<EOF
+[Unit]
+Description=Node Exporter
+After=network.target
+ 
+[Service]
+User=jason
+Group=jason
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+ 
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter
+```
