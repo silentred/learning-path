@@ -470,8 +470,10 @@ http://www.vultr.com/?ref=7138535 (推广链接), 选择 日本 节点，5$/mont
 adduser jason
 usermod -aG sudo jason
 
-apt-get update --fix-missing
-sudo apt-get install build-essential supervisor nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2 .
+sudo apt-get update --fix-missing
+sudo apt-get install build-essential supervisor nginx unzip python-pip transmission-cli transmission-common transmission-daemon libssl-dev python-setuptools python-dev libsodium-dev
+
+#可以不安装 php7.2-fpm php7.2-cli php7.2 php7.2-common php7.2-dev php7.2-curl php7.2
 
 sudo pip install -U git+https://github.com/shadowsocks/shadowsocks.git@master
 OR pip install shadowsocks
@@ -777,9 +779,19 @@ sudo /etc/init.d/samba restart
 # mount for exfat
 sudo apt-get install exfat-utils
 # 如果是 exfat，建议把 umask 设为0; ntfs-3g 可以用 022
+<<<<<<< HEAD
 sudo mount -t exfat -o umask=0,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/exfat2T
 sudo mount -t ntfs-3g -o umask=022,uid=pi,gid=pi /dev/sdc1 /home/pi/www/video/ntfs1T
 sudo mount -t hfsplus -o force,umask=0,uid=pi,gid=pi /dev/sdb1 /home/pi/www/video/apfs1T
+||||||| merged common ancestors
+sudo mount -t exfat -o umask=0,uid=pi,gid=pi /dev/sdd1 /home/pi/www/video/exfat2T
+sudo mount -t ntfs-3g -o umask=022,uid=pi,gid=pi /dev/sdb1 /home/pi/www/video/ntfs1T
+sudo mount -t hfsplus -o force,umask=0,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/apfs1T
+=======
+sudo mount -t exfat -o umask=0,uid=pi,gid=pi /dev/sdb1 /home/pi/www/video/exfat2T
+sudo mount -t ntfs-3g -o umask=022,uid=pi,gid=pi /dev/sda1 /home/pi/www/video/ntfs1T
+sudo mount -t hfsplus -o force,umask=0,uid=pi,gid=pi /dev/sdc1 /home/pi/www/video/apfs1T
+>>>>>>> 2db4b78d14a581c1d74ce294844a796016c6c72c
 # unmount
 sudo umount /dev/sda1
 
@@ -810,7 +822,7 @@ sudo dockerd --data-root /home/admin/dockerdata -H tcp://0.0.0.0:2376 -H unix://
 
 ```
 ip link add name docker0 type bridge
-ip addr add dev docker0 172.17.0.1/16
+ip addr add dev docker0 192.168.0.1/16
 ```
 
 
@@ -827,6 +839,46 @@ done
 
 ```
 
+## chattr,lsattr
+```
+查看文件属性，
+a 表示 append-only，会导致文件无法删除
+e 表示 extend format
+lsattr filename
+
+删除 a 属性
+chattr -a filename 
+```
+
+## oracle cloud 主机需要关闭防火墙
+```
+#停止firewall
+systemctl stop firewalld.service
+ 
+#禁止firewall开机启动
+systemctl disable firewalld.service
+ 
+#关闭iptables
+service iptables stop
+ 
+#去掉iptables开机启动
+chkconfig iptables off
+
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -F
+```
+
+## 安装pyspider
+
+```
+sudo apt-get install python python-dev python-distribute python-pip libcurl4-openssl-dev libxml2-dev libxslt1-dev python-lxml libssl-dev zlib1g-dev beanstalkd
+
+pip install beanstalkc
+pip uninstall wsgidav
+python -m pip install wsgidav==2.4.1
+
 
 ## 打印视频基本信息
 ```
@@ -837,3 +889,85 @@ ffprobe video.mp4 -v quiet -print_format json -show_format -show_streams
 ## VPN 配置
 
 3.115.9.91
+
+```
+# config.json
+{
+  "message_queue": "beanstalk://localhost:11300/",
+  "webui": {
+    "username": "jason",
+    "password": "jason",
+    "need-auth": true
+  }
+}
+
+
+# 启动脚本 run.sh
+#!/bin/bash
+BASEDIR=$(dirname "$0")
+NAME="pyspider"
+PIDFILE="pyspider.pid"
+start() {
+    $NAME -c=config.json > out.log 2>&1 &
+    echo $! > $BASEDIR/$PIDFILE
+}
+stop() {
+    pid=`cat $BASEDIR/$PIDFILE`
+    # send SIGTERM to pid
+    pkill $NAME && rm $BASEDIR/$PIDFILE
+}
+restart() {
+    stop
+    start
+}
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+esac
+exit
+```
+
+
+## 安装 prometheus, grafana, node_exporter
+```
+sudo apt-get install prometheus
+
+# grafana
+https://grafana.com/docs/installation/debian/
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install grafana
+
+# node exporter
+curl -LO https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+tar -xvf node_exporter-0.18.1.linux-amd64.tar.gz
+sudo mv node_exporter-0.18.1.linux-amd64/node_exporter /usr/local/bin/
+
+sudo cat > /etc/systemd/system/node_exporter.service <<EOF
+[Unit]
+Description=Node Exporter
+After=network.target
+ 
+[Service]
+User=jason
+Group=jason
+Type=simple
+ExecStart=/usr/local/bin/node_exporter
+ 
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl start node_exporter
+```
+
