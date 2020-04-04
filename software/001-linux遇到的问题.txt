@@ -1003,7 +1003,10 @@ static domain_name_server=192.168.199.1
 ```
 wget https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt
 ipset -N cn hash:net
-for i in $(cat china_ip_list.txt); do ipset -A cn $i; done
+for i in $(cat china_ip_list.txt); do sudo ipset -A cn $i; done
+# 添加 cloudflare 的ip
+sudo ipset add cn 104.27.175.3
+sudo ipset add cn 104.27.174.3
 
 # 需要给 iptable 添加以下规则，目标端发现是国内ip，直接
 iptables -t nat -A V2RAY -p tcp -m set --match-set cn dst -j RETURN
