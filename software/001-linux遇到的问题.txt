@@ -1238,3 +1238,14 @@ iptables -t mangle -F
 iptables -t mangle -X
 ```
 
+添加上游DNS服务器，添加自定义DNS
+```
+# https://openwrt.org/docs/guide-user/base-system/dhcp
+# 查看配置
+uci -N show dhcp.@dnsmasq[0]
+
+resolvfile='/tmp/resolv.conf.auto'，这个文件是上游DNS服务器，可以添加靠谱的IP, 例如 114.114.114.114
+
+addnhosts 默认是空，可以设置添加自定义hosts; 或者直接添加在 /etc/hosts 中也可以。
+
+```
