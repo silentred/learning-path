@@ -1,0 +1,33 @@
+# Install Choco 
+
+https://chocolatey.org/install
+
+```
+# Run Get-ExecutionPolicy. If it returns Restricted, then run Set-ExecutionPolicy AllSigned or Set-ExecutionPolicy Bypass -Scope Process.
+
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+# Install Common Softwares
+
+```
+
+choco install git
+choco install SublimeText3
+choco install vscode
+
+# video player
+choco install vlc
+
+# a new cross-platform terminal 
+choco install terminus
+```
+
+# PowerShell Usage
+
+```
+# soft link
+New-Item -Path C:\Windows\git.exe -ItemType SymbolicLink -Value 'C:\Program Files\Git\bin\git.exe'
+
+
+```
