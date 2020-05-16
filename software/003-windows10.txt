@@ -11,7 +11,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 # Install Common Softwares
 
 ```
-
+choco install microsoft-windows-terminal
 choco install git
 choco install SublimeText3
 choco install vscode
@@ -21,6 +21,9 @@ choco install vlc
 
 # a new cross-platform terminal 
 choco install terminus
+
+choco install aida64-extreme
+choco install cpu-z
 ```
 
 # PowerShell Usage
@@ -30,4 +33,12 @@ choco install terminus
 New-Item -Path C:\Windows\git.exe -ItemType SymbolicLink -Value 'C:\Program Files\Git\bin\git.exe'
 
 
+```
+
+# 修改命令行颜色
+
+```
+dircolors -p > ~/.dircolors
+vim ~/.dircolors, 修改如下行
+OTHER_WRITABLE 4;36
 ```
