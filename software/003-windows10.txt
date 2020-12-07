@@ -32,6 +32,19 @@ choco install cpu-z
 # soft link
 New-Item -Path C:\Windows\git.exe -ItemType SymbolicLink -Value 'C:\Program Files\Git\bin\git.exe'
 
+# ps
+
+Get-Process | Where-Object {$_ | Select-String foo}
+get-process | where ProcessName -like *foo*
+get-process | findstr foo
+ps *foo*
+get-process -Name chrome*
+
+# grep
+
+alias | findstr -i Write
+# create a alias
+new-alias grep findstr
 
 ```
 
