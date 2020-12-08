@@ -46,6 +46,10 @@ alias | findstr -i Write
 # create a alias
 new-alias grep findstr
 
+# list all env
+ls env:
+gci env:
+
 ```
 
 # 修改命令行颜色
@@ -54,4 +58,10 @@ new-alias grep findstr
 dircolors -p > ~/.dircolors
 vim ~/.dircolors, 修改如下行
 OTHER_WRITABLE 4;36
+```
+
+# set choco cache location dir
+```
+mkdir tmp
+choco config set cacheLocation C:\Users\silen\tmp 
 ```
