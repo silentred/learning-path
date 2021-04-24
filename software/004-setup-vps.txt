@@ -1,0 +1,47 @@
+# add user
+
+adduser jason
+usermod -aG sudo jason
+
+# install softwares
+
+sudo apt-get update --fix-missing
+sudo apt-get install build-essential supervisor unzip transmission-cli transmission-common transmission-daemon libssl-dev libsodium-dev aria2
+sduo service transmission-daemon stop
+
+# install v2ray
+
+wget https://git.io/v2ray.sh
+sudo bash v2ray.sh
+
+# add config
+
+apppend "export PATH=$PATH:/home/jason/bin" to ~.bashrc 
+source .bashrc
+append conf/Caddyfile to /etc/caddy/Caddyfile
+copy conf/lunnel.conf to /etc/supervisor/conf.d/
+copy settings.json to /etc/transmission/
+
+# install transmission theme
+
+wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh
+bash install-tr-control-cn.sh
+
+# install prometheus
+
+sudo apt-get install prometheus
+vim /etc/prometheus/promethues.yaml
+```
+- job_name: node
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    static_configs:
+            - targets: ['localhost:9100', '140.238.33.60:9100', '144.202.10.97:9100'
+```
+
+# isntall grafana
+
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+sudo apt-get update
+sudo apt-get install grafana
