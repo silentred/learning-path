@@ -18,7 +18,6 @@ sudo bash v2ray.sh
 
 apppend "export PATH=$PATH:/home/jason/bin" to ~.bashrc 
 source .bashrc
-append conf/Caddyfile to /etc/caddy/Caddyfile
 copy conf/lunnel.conf to /etc/supervisor/conf.d/
 copy settings.json to /etc/transmission/
 
@@ -45,3 +44,93 @@ wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
 echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
 sudo apt-get update
 sudo apt-get install grafana
+
+# key config files
+
+lunnul.conf
+```
+[program:lunnel]
+command=lunnelSer -c config.yml
+directory=/home/jason/conf/lunnel
+
+#[program:ssserver]
+#command=ssserver -c config.json --log-file ss.log start
+#directory=/home/jason/conf
+
+[program:caddy]
+command=caddy -conf /home/jason/conf/Caddyfile
+user=jason
+
+[program:aria2c]
+command=aria2c --conf-path=/home/jason/conf/aria2.conf 
+user=jason
+
+[program:tailer]
+directory=/home/jason/conf/tailer
+command=/home/jason/conf/tailer/tailer -city='xxx'
+```
+
+lunnel/config.yaml
+```
+server_domain: 10.0.0.2 
+http_port: 8082
+https_port: 8443
+port: 8080
+aes:
+  secret_key: BXrg9LkVGZQaLjVrCCHhIuTnuoqfevgv7 
+```
+
+aria2.conf
+```
+check-certificate=false
+max-tries=0
+max-concurrent-downloads=4
+dir=/home/jason/www/video
+user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36
+http-user=jason
+http-passwd=jason
+rpc-listen-port=8880
+rpc-secret=jason
+enable-rpc=true
+rpc-listen-all=true
+disable-ipv6=true
+file-allocation=trunc
+save-session-interval=60
+#input-file=aria2.session
+save-session=aria2.session
+```
+
+Caddyfile (for local fs server)
+```
+localhost:8089
+basicauth / jason jason
+root /home/jason/www
+log /home/jason/www/access.log
+gzip
+browse
+markdown
+```
+
+append to /etc/caddy/Caddyfile
+```
+
+http://files.xxx.iloveplayinggolang.xyz {
+    proxy / localhost:8089
+    header / {
+      Access-Control-Allow-Origin  *
+      Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    }
+}
+
+http://bt.xxx.iloveplayinggolang.xyz {
+    proxy / localhost:9091
+}
+
+http://aria.xxx.iloveplayinggolang.xyz {
+    proxy / localhost:6801
+}
+
+http://grafana.xxx.iloveplayinggolang.xyz {
+    proxy / localhost:3000
+}
+```
