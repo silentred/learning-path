@@ -135,9 +135,19 @@ http://grafana.xxx.iloveplayinggolang.xyz {
 }
 ```
 
+# VPS isntall jellyfin
+
+```
+sudo docker run -d --name jellyfin --user 1002:1002 --privileged --net=host  --volume /home/jason/jellyfin/config:/config  --volume /home/jason/jellyfin/cache:/cache  --mount type=bind,source=/home/jason/www/video,target=/media  --mount type=bind,source=/mnt,target=/mnt -v /dev:/dev jellyfin/jellyfin
+
+```
+
 # TrueNAS Setup
 
 ```
+# configure DNS, Route
+/etc/netcli
+
 # add jason to video group to use /dev/dri/renderXXX
 sudo usermod -a -G video jason
 
@@ -175,6 +185,11 @@ sudo docker run -d \
   -v /mnt/shenzhou-500G/oldpc/jason/downloads:/downloads \
   -v /mnt:/mnt \
   p3terx/aria2-pro
+  
+  // aria2 service udp 作用未知
+  -e LISTEN_PORT=6888 \
+  -p 6888:6888 \
+  -p 6888:6888/udp \
 
 # run aria ng web service
 # https://p3terx.com/archives/aria2-frontend-ariang-tutorial.html
