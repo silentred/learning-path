@@ -168,7 +168,7 @@ ExecStart=/usr/bin/dockerd --config-file=/etc/docker/my-daemon.json
 sudo docker run -d --net=host --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/shenzhou-500G/oldpc/jason/portainer-data:/data portainer/portainer-ce
 
 # run jellyfin
-sudo docker run -d --restart unless-stopped --name jellyfin --user 1000:1000 --privileged --net=host  --volume /mnt/shenzhou-500G/oldpc/jason/jellyfin/config:/config  --volume /mnt/shenzhou-500G/oldpc/jason/jellyfin/cache:/cache  --mount type=bind,source=/mnt/Toshiba-202105-3T/videos-202105,target=/media -v /dev/dri:/dev/dri --group-add=107 jellyfin/jellyfin
+sudo docker run -d --restart unless-stopped --name jellyfin --user 1000:1000 --privileged --net=host  --volume /mnt/shenzhou-500G/oldpc/jason/jellyfin/config:/config  --volume /mnt/shenzhou-500G/oldpc/jason/jellyfin/cache:/cache  --mount type=bind,source=/mnt/Toshiba-202105-3T/videos-202105,target=/media -v /mnt:/mnt -v /dev/dri:/dev/dri --group-add=107 jellyfin/jellyfin
 
 # run aria2 service
 sudo docker run -d \
@@ -199,7 +199,85 @@ sudo docker run -d \
   --restart unless-stopped \
   -p 6880:6880 \
   p3terx/ariang
+
+
+# 2合1镜像, 6880 webui, 6900 rpc
+sudo docker run -d \
+    --name aria2ui \
+    --restart unless-stopped \
+    --log-opt max-size=1m \
+    -p 6880:8080 \
+    -p 6900:6800 \
+    -v /home/pi/www/video/exfat2T:/aria2/data \
+    -v /home/pi/aria2:/aria2/conf \
+    -e PUID=1000 \
+    -e PGID=1000 \
+    -e ARIA2RPCPORT=6900 \
+    -e RPC_SECRET=jason \
+    hurlenko/aria2-ariang
+
 ```
+
+# run caddy
+
+```
+docker run --restart=unless-stopped --name caddy -d -p 8089:8089 \
+-v /mnt/shenzhou-500G/oldpc/jason/caddy/Caddyfile:/etc/caddy/Caddyfile \
+-v /mnt:/mnt caddy
+```
+
+Caddyfile
+```
+:8089
+
+root * /mnt
+
+templates
+file_server browse
+encode gzip
+```
+
+HTML and Markdown
+```
+list.html
+
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>TrueNAS</title>
+        </head>
+        <body>
+                <main>
+                        <div class="article-container">
+                                <article class="paper paper3">
+                                        {{include "index.md" | markdown}}
+                                </article>
+                        </div>
+                        <div class="sidebar"></div>
+                </main>
+        </body>
+</html>
+
+
+index.md
+
+# TrueNAS Services
+
+- [Console](http://192.168.199.6)
+- [Portainer](http://192.168.199.6:9000)
+- [Aria2](http://192.168.199.6:6880)
+- [Jellyfin](http://192.168.199.6:8096)
+```
+
+# edit fstab
+
+/conf/base/etc/fstab
+```
+boot-pool/grub  /boot/grub      zfs     relatime,defaults       0       0
+tmpfs   /run/lock       tmpfs   rw,nosuid,nodev,noexec,relatime,size=100m       0       0
+PARTUUID=008bddee-01    /mnt/exfat2T     exfat   umask=0,uid=jason,gid=jason
+```
+
 
 # create bash file
 ~/.bash_profile
