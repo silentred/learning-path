@@ -161,9 +161,39 @@ ExecStart=/usr/bin/dockerd --config-file=/etc/docker/my-daemon.json
 
 ```
 
+# 生产SSL证书
+```
+https://marcincuber.medium.com/lets-encrypt-generating-wildcard-ssl-certificate-using-certbot-ae1c9484c101
+https://medium.com/@saurabh6790/generate-wildcard-ssl-certificate-using-lets-encrypt-certbot-273e432794d7
+
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get install certbot
+
+sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --manual-public-ip-logging-ok --agree-tos -d "*.oracle2.iloveplayinggolang.xyz" --email=silentred3@gmail.com
+
+tls /etc/letsencrypt/live/oracle2.iloveplayinggolang.xyz/cert.pem /etc/letsencrypt/live/oracle2.iloveplayinggolang.xyz/privkey.pem
+
+===
+
+sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --manual-public-ip-logging-ok --agree-tos -d "*.ny.iloveplayinggolang.xyz" --email=silentred3@gmail.com
+
+tls /etc/letsencrypt/live/ny.iloveplayinggolang.xyz/cert.pem /etc/letsencrypt/live/ny.iloveplayinggolang.xyz/privkey.pem
+
+===
+
+sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --manual-public-ip-logging-ok --agree-tos -d "*.oracle.iloveplayinggolang.xyz" --email=silentred3@gmail.com
+
+tls /etc/letsencrypt/live/oracle.iloveplayinggolang.xyz/cert.pem /etc/letsencrypt/live/oracle.iloveplayinggolang.xyz/privkey.pem
+```
+
+
 # Run apps in docker
 
 ```
+# run lunnel
+sudo docker run --network host -d --name=lunnel --restart=always -v /mnt/shenzhou-500G/oldpc/jason/lunnel/lunnel.yaml:/lunnel.yaml silentred/lunnel-cli
+
 # run portainer
 sudo docker run -d --net=host --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/shenzhou-500G/oldpc/jason/portainer-data:/data portainer/portainer-ce
 
@@ -216,6 +246,29 @@ sudo docker run -d \
     -e RPC_SECRET=jason \
     hurlenko/aria2-ariang
 
+```
+
+# 客户端ca证书配置
+
+```
+检查缺少的 root ca cert
+https://superuser.com/questions/437330/how-do-you-add-a-certificate-authority-ca-to-ubuntu
+https://serverfault.com/questions/755248/curl-unable-to-get-local-issuer-certificate-how-to-debug
+
+openssl s_client -connect files.oracle.iloveplayinggolang.xyz:443
+
+
+下载文件
+https://letsencrypt.org/certificates/
+Active
+Let’s Encrypt R3 (RSA 2048, O = Let's Encrypt, CN = R3
+https://letsencrypt.org/certs/lets-encrypt-r3.pem
+
+下载到 /usr/share/ca-certificates/mozilla/ 目录下
+
+添加文件到 /etc/ca-certificates.conf
+
+sudo update-ca-certificates
 ```
 
 # run caddy
@@ -404,4 +457,11 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+```
+
+
+# certbot
+
+```
+sudo certbot certonly --manual --preferred-challenges=dns --server https://acme-v02.api.letsencrypt.org/directory --manual-public-ip-logging-ok --agree-tos -d "*.SUB.DOMAIN.TOP" --email=MYGMAIL@gmail.com
 ```
